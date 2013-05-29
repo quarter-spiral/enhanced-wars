@@ -24,6 +24,26 @@ layerToActor = (renderer, layer) ->
   actor.setScale(TILE_DIMENSIONS.width / (1.0 * image.width), TILE_DIMENSIONS.height / (image.height * 1.0))
   actor
 
+scrollMap = (renderer, newEvent) ->
+  oldEvent = renderer.mouseDragEvent
+  return unless oldEvent
+
+  xDiff = oldEvent.x - newEvent.x
+  yDiff = oldEvent.y - newEvent.y
+  x = renderer.actors.x - xDiff
+  y = renderer.actors.y - yDiff
+  minX = -1 * (renderer.actors.width - renderer.renderer.scene.width)
+  maxX = 0
+  x = minX if x < minX
+  x = maxX if x > maxX
+  minY = -1 * (renderer.actors.height - renderer.renderer.scene.height) + 180
+  maxY = 0
+  y = minY if y < minY
+  y = maxY if y > maxY
+  renderer.actors.setPosition(x, y)
+
+  renderer.mouseDragEvent = null
+
 exports class MapRenderer extends require('Renderer')
   assets: [
     "/assets/terrain/base.png"
@@ -46,6 +66,22 @@ exports class MapRenderer extends require('Renderer')
     radio('ew/game/map/load').subscribe(@loadMap)
     radio("ew/renderer/assets-loaded").subscribe (renderer, images) ->
       renderer.loadMap(renderer.map) if renderer.map
+
+    adjuster = new CAAT.Foundation.ActorContainer();
+    adjuster.setPosition(-32, -48);
+    @renderer.scene.addChild(adjuster)
+    @actors.setParent(adjuster)
+
+    @actors.setPosition(0, 0)
+    @actors.setGestureEnabled(true)
+    scroller = new CAAT.Foundation.Actor()
+    scroller.setBounds(0, 0, @renderer.scene.width, @renderer.scene.height)
+    scroller.mouseDrag = (e) ->
+      scrollMap(renderer, e)
+      renderer.mouseDragEvent = e
+    scroller.mouseUp = (e) ->
+      scrollMap(renderer, e)
+    @renderer.scene.addChild(scroller)
 
   loadMap: (map) =>
     unless @ready

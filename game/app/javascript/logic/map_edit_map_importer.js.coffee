@@ -16,6 +16,8 @@ MapEditMapImporter =
 
         type = 'base' if type == 'none'
         type = 'desert' if type == 'dessert'
+        type = 'deepwater' if type == 'deepWater'
+        type = 'shallowwater' if type == 'shallowWater'
 
         tiles[y][x] = [type: type, variant: 0]
         y++

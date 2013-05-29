@@ -1,5 +1,6 @@
 # 0.0.4 / Unrelased
 
+* Adds scrolling
 * Makes sample maps work
 
 # 0.0.3 / 2013-05-29
