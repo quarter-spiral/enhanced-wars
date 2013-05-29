@@ -1,5 +1,6 @@
 # 0.0.3 / Unreleased
 
+* Adds CAAT and show a simple splash screen
 * Adds Thin as a dependency for Heroku
 * Fixes bug in config.ru
 

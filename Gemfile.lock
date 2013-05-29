@@ -1,9 +1,10 @@
 PATH
   remote: .
   specs:
-    enhanced-wars (0.0.2)
+    enhanced-wars (0.0.3)
       coffee-script
       json (~> 1.7.7)
+      sass
       sprockets (~> 2.0)
       thin
 
@@ -23,6 +24,7 @@ GEM
     multi_json (1.7.4)
     rack (1.5.2)
     rake (10.0.4)
+    sass (3.2.9)
     sprockets (2.10.0)
       hike (~> 1.2)
       multi_json (~> 1.0)

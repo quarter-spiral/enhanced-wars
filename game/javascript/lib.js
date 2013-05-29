@@ -1,4 +1,4 @@
 /*
  *= require ./lib/loader.js
- *= require_tree ./logic
+ *= require_tree ./lib
  */

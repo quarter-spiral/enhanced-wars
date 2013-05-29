@@ -1,0 +1,15 @@
+body {
+  background-color: #000;
+}
+
+$gameWidth: 800px;
+$gameHeight: 600px;
+#game {
+   width: $gameWidth;
+   height: $gameHeight;
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   margin-left: -0.5 * $gameWidth;
+   margin-top: -0.5 * $gameHeight;
+}
