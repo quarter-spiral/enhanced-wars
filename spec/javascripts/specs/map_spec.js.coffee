@@ -1,7 +1,5 @@
 Map = require('Map')
 
 describe 'Map', ->
-
-  it 'is meh', ->
+  it 'is a map', ->
     map = new Map()
-    expect(map.yay).toEqual 'yo'

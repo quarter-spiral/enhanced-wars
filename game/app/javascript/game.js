@@ -7,5 +7,6 @@
  */
 
 require('domReady')(function() {
-  window.game = new require('Game')();
+  var Game = require('Game');
+  window.game = new Game();
 })

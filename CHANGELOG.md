@@ -1,3 +1,7 @@
+# 0.0.4 / Unrelased
+
+* Makes sample maps work
+
 # 0.0.3 / 2013-05-29
 
 * Moves to a threaded Thin server
