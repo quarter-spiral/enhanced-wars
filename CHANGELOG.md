@@ -1,4 +1,4 @@
-# 0.0.2 / Unreleased
+# 0.0.2 / 2013-05-29
 
 * Adds HTTP basic auth for heroku deployment
 

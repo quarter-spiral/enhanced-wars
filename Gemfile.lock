@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    enhanced-wars (0.0.1)
+    enhanced-wars (0.0.2)
       coffee-script
       json (~> 1.7.7)
       sprockets (~> 2.0)
