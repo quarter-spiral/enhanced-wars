@@ -11,5 +11,11 @@ extractNameFromFunction = (fn) ->
 
   exportedObjects[name] = object
 
+@define = (fn) ->
+  fn = fn()
+  name = extractNameFromFunction(fn)
+  exportedObjects[name] = fn
+@define.amd = {}
+
 @require = (name) ->
   exportedObjects[name]

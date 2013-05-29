@@ -1,10 +1,11 @@
 /*
+ *= require ./lib/loader.js
  *= require ./vendor.js
  *= require ./lib.js
  *= require ./logic.js
  *= require ./renderer.js
  */
 
-domready(function() {
+require('domReady')(function() {
   window.game = new require('Game')();
 })
