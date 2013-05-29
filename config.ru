@@ -7,7 +7,7 @@ if ENV['RACK_ENV'] == 'production' && ENV['QS_HTTP_AUTH_PASSWORD']
   end
 end
 
-class PathCorrector
+class IndexHtmlServer
   def initialize(app)
     @app = app
   end
@@ -17,6 +17,24 @@ class PathCorrector
     @app.call(env)
   end
 end
+use IndexHtmlServer
 
-use PathCorrector
+class FallThroughStatic
+  def initialize(app, options = {})
+    @app = app
+    @rack_static = Rack::Static.new(app, options)
+  end
+
+  def call(env)
+    path = env["PATH_INFO"]
+    if @rack_static.can_serve(path)
+      status, header, body = @rack_static.call(env)
+      return [status, header, body] if status.to_i != 404
+    end
+
+    @app.call(env)
+  end
+end
+use FallThroughStatic, :urls => ["/app"], :root => "public/", :header_rules => [[:all, {'Cache-Control' => 'public, max-age=31536000'}]]
+
 run EnhancedWars::App.new

@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "json", "~> 1.7.7"
   spec.add_dependency "thin"
   spec.add_dependency "sass"
+  spec.add_dependency "sprockets-helpers"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
