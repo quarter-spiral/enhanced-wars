@@ -5,6 +5,7 @@ PATH
       coffee-script
       json (~> 1.7.7)
       sprockets (~> 2.0)
+      thin
 
 GEM
   remote: https://rubygems.org/
@@ -40,4 +41,3 @@ DEPENDENCIES
   bundler (~> 1.3)
   enhanced-wars!
   rake
-  thin
