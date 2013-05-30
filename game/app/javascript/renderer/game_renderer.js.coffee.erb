@@ -1,5 +1,7 @@
 radio = require('radio')
 
+@CAAT.DEBUG = true
+
 exports class GameRenderer
   constructor: (@game) ->
     self = @
@@ -26,7 +28,17 @@ exports class GameRenderer
         self.preloader = new CAAT.Module.Preloader.Preloader()
 
         self.director = director
-        self.scene = director.createScene()
+
+        # create an offset adjusting container
+        scene = director.createScene()
+        container = new CAAT.Foundation.ActorContainer()
+        scene.addChild(container)
+        container.setSize(scene.width, scene.height)
+        # nobody knows where that 32x32 offset is coming from but we need to correct it
+        container.setLocation(-32, -32)
+        # set the container as a fake scene
+        self.scene = container
+
         MapRenderer = require('MapRenderer')
         @mapRenderer = new MapRenderer(self.game, self)
 
@@ -37,7 +49,7 @@ exports class GameRenderer
         CAAT.loop(60)
       ,
 
-      # use this image as splash. It will cover all of director's area. optional.
+      # use this image as splash. It wi ll cover all of director's area. optional.
       "/assets/splash.png"
     )
 

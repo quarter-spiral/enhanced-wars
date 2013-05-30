@@ -1,8 +1,18 @@
 radio = require('radio')
 
 TILE_DIMENSIONS =
-  width:  128 / 2
-  height: 150 / 2
+  width:  128
+  height: 150
+
+TILE_SCALE = {
+  width: 0.5
+  height: 0.5
+}
+
+TILE_OFFSET = {
+  x: 0
+  y: -16
+}
 
 TILE_TYPES =
   base: ['map/base.png']
@@ -14,15 +24,33 @@ TILE_TYPES =
   plain: ['map/plain_0.png']
   shallowwater: ['map/shallowwater.png']
 
+class Layer
+  constructor: (@renderer, @layer) ->
+    image_id = TILE_TYPES[@layer.type][@layer.variant || 0]
 
-layerToActor = (renderer, layer) ->
-  image_id = TILE_TYPES[layer.type][layer.variant || 0]
-  image = new CAAT.SpriteImage().initialize(renderer.renderer.director.getImage(image_id), 1, 1)
+    director = renderer.renderer.director
+    @image = new CAAT.SpriteImage().initialize(director.getImage(image_id), 1, 1)
 
-  actor = new CAAT.Foundation.Actor()
-  actor.setBackgroundImage(image, true)
-  actor.setScale(TILE_DIMENSIONS.width / (1.0 * image.width), TILE_DIMENSIONS.height / (image.height * 1.0))
-  actor
+    @actor = new CAAT.Foundation.Actor()
+    @actor.setBackgroundImage(@image)
+    @actor.setSize(TILE_DIMENSIONS.width, TILE_DIMENSIONS.height)
+
+class Tile
+  constructor: (@renderer, @tile) ->
+    @container = new CAAT.Foundation.ActorContainer()
+
+    @container.setSize(TILE_DIMENSIONS.width, TILE_DIMENSIONS.height)
+    @container.setScale(TILE_SCALE.width, TILE_SCALE.height)
+
+    @container.setLocation(
+        @tile.x * TILE_DIMENSIONS.width * TILE_SCALE.width + (@tile.x * TILE_OFFSET.x),
+        @tile.y * TILE_DIMENSIONS.height * TILE_SCALE.height + (@tile.y * TILE_OFFSET.y)
+    )
+
+    for layer in @tile
+      @container.addChild(new Layer(@renderer, layer).actor)
+
+    @container.cacheAsBitmap()
 
 scrollMap = (renderer, newEvent) ->
   oldEvent = renderer.mouseDragEvent
@@ -30,17 +58,17 @@ scrollMap = (renderer, newEvent) ->
 
   xDiff = oldEvent.x - newEvent.x
   yDiff = oldEvent.y - newEvent.y
-  x = renderer.actors.x - xDiff
-  y = renderer.actors.y - yDiff
-  minX = -1 * (renderer.actors.width - renderer.renderer.scene.width)
+  x = renderer.container.x - xDiff
+  y = renderer.container.y - yDiff
+  minX = -1 * (renderer.container.width - renderer.renderer.scene.width)
   maxX = 0
   x = minX if x < minX
   x = maxX if x > maxX
-  minY = -1 * (renderer.actors.height - renderer.renderer.scene.height) + 180
+  minY = -1 * (renderer.container.height - renderer.renderer.scene.height) + 180
   maxY = 0
   y = minY if y < minY
   y = maxY if y > maxY
-  renderer.actors.setPosition(x, y)
+  renderer.container.setPosition(x, y)
 
   renderer.mouseDragEvent = null
 
@@ -67,13 +95,6 @@ exports class MapRenderer extends require('Renderer')
     radio("ew/renderer/assets-loaded").subscribe (renderer, images) ->
       renderer.loadMap(renderer.map) if renderer.map
 
-    adjuster = new CAAT.Foundation.ActorContainer();
-    adjuster.setPosition(-32, -48);
-    @renderer.scene.addChild(adjuster)
-    @actors.setParent(adjuster)
-
-    @actors.setPosition(0, 0)
-    @actors.setGestureEnabled(true)
     scroller = new CAAT.Foundation.Actor()
     scroller.setBounds(0, 0, @renderer.scene.width, @renderer.scene.height)
     scroller.mouseDrag = (e) ->
@@ -84,21 +105,15 @@ exports class MapRenderer extends require('Renderer')
     @renderer.scene.addChild(scroller)
 
   loadMap: (map) =>
-    unless @ready
-      @map = map
-      return
+    return @map = map unless @ready
 
-    @actors.emptyChildren()
-    @actors.setSize(map.width * TILE_DIMENSIONS.width, map.height * TILE_DIMENSIONS.height)
+    @container.emptyChildren()
+    @container.setLocation(0, 0)
+    @container.setSize(
+        map.width * TILE_DIMENSIONS.width * TILE_SCALE.width,
+        map.height * TILE_DIMENSIONS.height * TILE_SCALE.height
+    )
 
-    y = 0
-    for row in map.tiles
-      x = 0
-      for spot in row
-        for layer in spot
-          actor = layerToActor(@, layer)
-          yOffset = (y * 16)
-          actor.setPosition(x * TILE_DIMENSIONS.width, y * TILE_DIMENSIONS.height - yOffset)
-          @actors.addChild(actor)
-        x++
-      y++
+    self = @
+    map.eachTile (tile) ->
+      self.container.addChild(new Tile(self, tile).container)

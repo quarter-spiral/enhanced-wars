@@ -1,11 +1,11 @@
 radio = require('radio')
 
 exports class Renderer
-  actors: new CAAT.ActorContainer()
-
   constructor: (@game, @renderer) ->
-    @actors = new CAAT.Foundation.ActorContainer().setBounds(0, 0, @renderer.director.width, @renderer.director.height);
-    @renderer.scene.addChild(@actors)
+    @container = new CAAT.Foundation.ActorContainer()
+    @renderer.scene.addChild(@container)
+    @container.setLocation(0, 0)
+    @container.setSize(@renderer.director.width, @renderer.director.height)
 
     for asset in @assets
       imageId = asset.replace(/^.*\//, '')
