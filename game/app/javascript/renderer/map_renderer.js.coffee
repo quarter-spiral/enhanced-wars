@@ -1,4 +1,5 @@
 radio = require('radio')
+clone = require('clone')
 
 TILE_DIMENSIONS =
   width:  128
@@ -52,25 +53,60 @@ class Tile
 
     @container.cacheAsBitmap()
 
-scrollMap = (renderer, newEvent) ->
-  oldEvent = renderer.mouseDragEvent
-  return unless oldEvent
+class ScrollController
+  constructor: (@renderer) ->
+    startDragEvent = null
 
-  xDiff = oldEvent.x - newEvent.x
-  yDiff = oldEvent.y - newEvent.y
-  x = renderer.container.x - xDiff
-  y = renderer.container.y - yDiff
-  minX = -1 * (renderer.container.width - renderer.renderer.scene.width)
-  maxX = 0
-  x = minX if x < minX
-  x = maxX if x > maxX
-  minY = -1 * (renderer.container.height - renderer.renderer.scene.height) + 180
-  maxY = 0
-  y = minY if y < minY
-  y = maxY if y > maxY
-  renderer.container.setPosition(x, y)
+    scrollMap = (newEvent) ->
+      return unless startDragEvent
 
-  renderer.mouseDragEvent = null
+      diff =
+        x: startDragEvent.x - newEvent.x
+        y: startDragEvent.y - newEvent.y
+
+      radio('ew/input/scrollMap').broadcast(diff)
+      startDragEvent = null
+
+    @controller = new CAAT.Foundation.Actor()
+    @controller.setBounds(0, 0, @renderer.renderer.director.width, @renderer.renderer.director.height)
+
+    @controller.mouseDrag = (e) ->
+      scrollMap(e)
+      startDragEvent = e
+    @controller.mouseUp = (e) ->
+      scrollMap(e)
+
+class ScrollHandler
+  constructor: (@renderer) ->
+    radio('ew/input/scrollMap').subscribe @scrollMap
+    @reset()
+
+  reset: =>
+    @minimum =
+      x: -1 * (@renderer.container.width - @renderer.renderer.scene.width) + TILE_OFFSET.x
+      y: -1 * (@renderer.container.height - @renderer.renderer.scene.height) + TILE_OFFSET.y
+
+    @maximum =
+      x: TILE_OFFSET.x
+      y: TILE_OFFSET.y
+
+  scrollMap: (diff) =>
+    newPosition =
+      x: @renderer.container.x - diff.x
+      y: @renderer.container.y - diff.y
+
+    newPosition = @toBounds(newPosition)
+    @renderer.container.setPosition(newPosition.x, newPosition.y)
+
+  toBounds: (position) =>
+    position = clone(position)
+    position.x = @minimum.x if position.x < @minimum.x
+    position.x = @maximum.x if position.x > @maximum.x
+
+    position.y = @minimum.y if position.y < @minimum.y
+    position.y = @maximum.y if position.y > @maximum.y
+
+    position
 
 exports class MapRenderer extends require('Renderer')
   assets: [
@@ -92,27 +128,23 @@ exports class MapRenderer extends require('Renderer')
 
     renderer = @
     radio('ew/game/map/load').subscribe(@loadMap)
-    radio("ew/renderer/assets-loaded").subscribe (renderer, images) ->
+
+    radio('ew/renderer/assets-loaded').subscribe (renderer, images) ->
       renderer.loadMap(renderer.map) if renderer.map
 
-    scroller = new CAAT.Foundation.Actor()
-    scroller.setBounds(0, 0, @renderer.scene.width, @renderer.scene.height)
-    scroller.mouseDrag = (e) ->
-      scrollMap(renderer, e)
-      renderer.mouseDragEvent = e
-    scroller.mouseUp = (e) ->
-      scrollMap(renderer, e)
-    @renderer.scene.addChild(scroller)
+    @renderer.scene.addChild(new ScrollController(renderer).controller)
+    @scrollHandler = new ScrollHandler(@)
 
   loadMap: (map) =>
     return @map = map unless @ready
 
     @container.emptyChildren()
-    @container.setLocation(0, 0)
+    @container.setLocation(TILE_OFFSET.x, TILE_OFFSET.y)
     @container.setSize(
-        map.width * TILE_DIMENSIONS.width * TILE_SCALE.width,
-        map.height * TILE_DIMENSIONS.height * TILE_SCALE.height
+        map.width * TILE_DIMENSIONS.width * TILE_SCALE.width + (map.width * TILE_OFFSET.x),
+        map.height * TILE_DIMENSIONS.height * TILE_SCALE.height + (map.height * TILE_OFFSET.y)
     )
+    @scrollHandler.reset()
 
     self = @
     map.eachTile (tile) ->

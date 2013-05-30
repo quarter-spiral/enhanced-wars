@@ -1,5 +1,6 @@
 # 0.0.4 / Unrelased
 
+* Refactors map rendering and scrolling
 * Adds scrolling
 * Makes sample maps work
 
