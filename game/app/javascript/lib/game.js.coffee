@@ -9,8 +9,9 @@ class Game
     json = require('dummy-map')
     map = MapEditMapImporter.import(json)
 
-    setTimeout(->
-      radio('ew/game/map/load').broadcast(map)
-    , 1000)
+    radio("ew/renderer/assets-loaded").subscribe (renderer, images) ->
+      setTimeout(->
+        radio('ew/game/map/load').broadcast(map)
+      , 1000)
 
 exports Game
