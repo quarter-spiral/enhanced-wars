@@ -1,15 +1,17 @@
 radio = require('radio')
 
 exports class Renderer
-  constructor: (@game, @renderer) ->
+  constructor: (@game, @gameRenderer) ->
     @container = new CAAT.Foundation.ActorContainer()
-    @renderer.scene.addChild(@container)
+    @gameRenderer.scene.addChild(@container)
     @container.setLocation(0, 0)
-    @container.setSize(@renderer.director.width, @renderer.director.height)
+    @container.setSize(@gameRenderer.director.width, @gameRenderer.director.height)
+    @container.setGestureEnabled(true)
+    @container.enableEvents(true)
 
     for asset in @assets
-      imageId = asset.replace(/^.*\//, '')
-      @renderer.preloader.addElement("#{@id}/#{imageId}", asset)
+      imageId = asset.replace(/\/assets\//, '')
+      @gameRenderer.preloader.addElement("#{@id}/#{imageId}", asset)
 
     self = @
     radio("ew/renderer/assets-loaded").subscribe (renderer, images) ->

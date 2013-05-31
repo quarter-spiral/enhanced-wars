@@ -1,5 +1,6 @@
 # 0.0.4 / Unrelased
 
+* Imports units and displays them
 * Refactors map rendering and scrolling
 * Adds scrolling
 * Makes sample maps work

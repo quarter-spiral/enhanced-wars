@@ -1,17 +1,22 @@
+radio = require('radio')
+
 class Game
   constructor: ->
-    radio = require('radio')
     GameRenderer = require('GameRenderer')
     MapEditMapImporter = require('MapEditMapImporter')
 
     new GameRenderer(@)
 
     json = require('dummy-map')
-    map = MapEditMapImporter.import(json)
+    imported = new MapEditMapImporter(json)
+
+    @map   = imported.map
+    @units = imported.units
 
     radio("ew/renderer/assets-loaded").subscribe (renderer, images) ->
       setTimeout(->
-        radio('ew/game/map/load').broadcast(map)
+        radio('ew/game/map/load').broadcast()
       , 1000)
+
 
 exports Game

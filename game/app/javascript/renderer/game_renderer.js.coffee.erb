@@ -39,8 +39,17 @@ exports class GameRenderer
         # set the container as a fake scene
         self.scene = container
 
-        MapRenderer = require('MapRenderer')
-        @mapRenderer = new MapRenderer(self.game, self)
+        MapRenderer  = require('MapRenderer')
+        self.mapRenderer = new MapRenderer(self.game, self)
+
+        UnitRenderer  = require('UnitRenderer')
+        self.unitRenderer = new UnitRenderer(self.game, self)
+
+        InputController  = require('InputController')
+        self.inputController = new InputController(scene)
+
+        ScrollHandler = require('ScrollHandler')
+        self.scrollHandler = new ScrollHandler(self.mapRenderer)
 
         self.preloader.load (images) ->
           director.setImagesCache(images)
