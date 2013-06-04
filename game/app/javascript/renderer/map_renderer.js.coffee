@@ -40,7 +40,9 @@ class Tile
   constructor: (@renderer, @tile) ->
     @container = new CAAT.Foundation.ActorContainer()
 
-    @container.setSize(TILE_DIMENSIONS.width, TILE_DIMENSIONS.height)
+    @container.setSize(TILE_DIMENSIONS.width * TILE_SCALE.width, TILE_DIMENSIONS.height * TILE_SCALE.height)
+    @container.scaleTX = 0
+    @container.scaleTY = 0
     @container.setScale(TILE_SCALE.width, TILE_SCALE.height)
 
     @container.setLocation(

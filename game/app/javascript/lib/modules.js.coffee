@@ -1,17 +1,12 @@
 moduleKeywords = ['extended', 'included']
 
-exports class Module
-  @extend: (obj) ->
-    for key, value of obj when key not in moduleKeywords
-      @[key] = value
-
-    obj.extended?.apply(@)
-    this
-
+class Module
   @include: (obj) ->
-    for key, value of obj when key not in moduleKeywords
-      # Assign properties to the prototype
-      @::[key] = value
+    throw('include(obj) requires obj') unless obj
+    for key, value of obj.prototype when key not in moduleKeywords
+        @::[key] = value
 
-    obj.included?.apply(@)
-    this
+    included = obj.included
+    included.apply(this) if included
+
+exports 'Module', Module

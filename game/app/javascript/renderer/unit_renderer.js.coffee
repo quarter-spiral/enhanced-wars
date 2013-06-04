@@ -36,15 +36,26 @@ class Tile
     image_id = "unit/unit/#{@unit.faction}/#{TILE_TYPES[@unit.type][@unit.variant || 0]}_#{ORIENTATION_TYPES[@unit.orientation]}.png"
     @image = new CAAT.SpriteImage().initialize(director.getImage(image_id), 1, 1)
 
-    @actor = new CAAT.Foundation.Actor()
-    @actor.setBackgroundImage(@image)
-    @actor.setSize(TILE_DIMENSIONS.width, TILE_DIMENSIONS.height)
-    @actor.setScale(TILE_SCALE.width, TILE_SCALE.height)
-
-    @actor.setLocation(
+    @actor = new CAAT.Foundation.ActorContainer()
+    @actor.setBounds(
         @unit.position.x * TILE_DIMENSIONS.width * TILE_SCALE.width + (@unit.position.x * TILE_OFFSET.x),
-        @unit.position.y * TILE_DIMENSIONS.height * TILE_SCALE.height + (@unit.position.y * TILE_OFFSET.y)
+        @unit.position.y * TILE_DIMENSIONS.height * TILE_SCALE.height + (@unit.position.y * TILE_OFFSET.y),
+        TILE_DIMENSIONS.width * TILE_SCALE.width
+        TILE_DIMENSIONS.height * TILE_SCALE.height
     )
+    @actor.tile = @
+
+    unitActor = new CAAT.Foundation.Actor()
+    unitActor.setBackgroundImage(@image)
+    unitActor.setSize(TILE_DIMENSIONS.width, TILE_DIMENSIONS.height)
+    unitActor.scaleTX = 0
+    unitActor.scaleTY = 0
+    unitActor.setScale(TILE_SCALE.width, TILE_SCALE.height)
+
+    @actor.addChild(unitActor)
+
+    unit.bindProperty 'selected', (values) =>
+      unitActor.setAlpha(if @unit.get('selected') then 0.1 else 1)
 
 exports class UnitRenderer extends require('Renderer')
   assets: [
@@ -102,7 +113,7 @@ exports class UnitRenderer extends require('Renderer')
     radio('ew/renderer/assets-loaded').subscribe (renderer, images) ->
       renderer.loadUnits(renderer.units) if renderer.units
 
-    @container.setParent(@gameRenderer.mapRenderer.container)
+    @container.setParent(@gameRenderer.renderers.map.container)
 
   loadUnits: (units) =>
     return @units = units unless @ready
@@ -119,3 +130,11 @@ exports class UnitRenderer extends require('Renderer')
     self = @
     for unit in units
       self.container.addChild(new Tile(self, unit).actor)
+
+
+  click: (e) ->
+    foundUnitActor = @container.findActorAtPosition(x: e.point.x - TILE_OFFSET.x, y: e.point.y - TILE_OFFSET.y)
+    return true if foundUnitActor is @container
+    radio('ew/input/unit/clicked').broadcast((foundUnitActor.tile || foundUnitActor.parent.tile).unit)
+    false
+

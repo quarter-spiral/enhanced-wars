@@ -18,5 +18,10 @@ class Game
         radio('ew/game/map/load').broadcast()
       , 1000)
 
+    radio('ew/input/unit/clicked').subscribe @unitClicked
+
+  unitClicked: (unit) =>
+    @selectedUnit = unit
+    radio('ew/game/unit/selected').broadcast(unit)
 
 exports Game

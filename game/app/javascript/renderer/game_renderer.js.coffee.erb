@@ -3,6 +3,10 @@ radio = require('radio')
 @CAAT.DEBUG = true
 
 exports class GameRenderer
+  SCENE_OFFSET:
+    x: 0
+    y: 0
+
   constructor: (@game) ->
     self = @
 
@@ -35,25 +39,34 @@ exports class GameRenderer
         scene.addChild(container)
         container.setSize(scene.width, scene.height)
         # nobody knows where that 32x32 offset is coming from but we need to correct it
-        container.setLocation(-32, -32)
+        container.setLocation(self.SCENE_OFFSET.x, self.SCENE_OFFSET.y)
         # set the container as a fake scene
         self.scene = container
 
+        self.renderers = {}
         MapRenderer  = require('MapRenderer')
-        self.mapRenderer = new MapRenderer(self.game, self)
-
+        self.renderers.map = new MapRenderer(self.game, self)
         UnitRenderer  = require('UnitRenderer')
-        self.unitRenderer = new UnitRenderer(self.game, self)
+        self.renderers.unit = new UnitRenderer(self.game, self)
 
         InputController  = require('InputController')
-        self.inputController = new InputController(scene)
+        self.inputController = new InputController(self)
 
         ScrollHandler = require('ScrollHandler')
-        self.scrollHandler = new ScrollHandler(self.mapRenderer)
+        self.scrollHandler = new ScrollHandler(self.renderers.map)
 
         self.preloader.load (images) ->
           director.setImagesCache(images)
           radio("ew/renderer/assets-loaded").broadcast(self, images)
+
+        inputEnabledRenderers = [
+          self.renderers.unit
+          self.renderers.map
+        ]
+
+        radio("ew/input/click").subscribe (e) ->
+          for renderer in inputEnabledRenderers
+            return unless renderer.click(e)
 
         CAAT.loop(60)
       ,
