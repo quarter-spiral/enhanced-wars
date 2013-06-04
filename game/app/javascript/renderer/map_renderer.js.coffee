@@ -94,4 +94,6 @@ exports class MapRenderer extends require('Renderer')
     map.eachTile (tile) ->
       self.container.addChild(new Tile(self, tile).container)
 
+    @container.cacheAsBitmap(0, CAAT.Foundation.Actor.CACHE_SIMPLE)
+
     radio('ew/game/map/loaded').broadcast()
