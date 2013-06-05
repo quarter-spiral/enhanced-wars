@@ -27,6 +27,11 @@ exports class InputController
       scrollMap(e)
 
     @controller.mouseClick = (e) ->
+      x = e.x + gameRenderer.SCENE_OFFSET.x - gameRenderer.renderers.map.container.x
+      y = e.y + gameRenderer.SCENE_OFFSET.y - gameRenderer.renderers.map.container.y
+
+      tileCoords = gameRenderer.renderers.map.screenToMapCoordinates(x: x, y: y)
+
       ewEvent = {
         modifiers:
           alt: e.alt
@@ -34,8 +39,9 @@ exports class InputController
           control: e.control
           shift: e.shift
         point:
-          x: e.x + gameRenderer.SCENE_OFFSET.x - gameRenderer.renderers.map.container.x
-          y: e.y + gameRenderer.SCENE_OFFSET.y - gameRenderer.renderers.map.container.y
+          x: x
+          y: y
+        tile: tileCoords
         sourceEvent: e.sourceEvent
         rendererEvent: e
       }

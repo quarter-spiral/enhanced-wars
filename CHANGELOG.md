@@ -1,5 +1,6 @@
 # 0.0.4 / Unrelased
 
+* Units can be moved
 * Imports units and displays them
 * Refactors map rendering and scrolling
 * Adds scrolling

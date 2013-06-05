@@ -45,15 +45,15 @@ class Tile
     @container.scaleTY = 0
     @container.setScale(TILE_SCALE.width, TILE_SCALE.height)
 
+    {x,y} = @tile.position()
     @container.setLocation(
-        @tile.x * TILE_DIMENSIONS.width * TILE_SCALE.width + (@tile.x * TILE_OFFSET.x),
-        @tile.y * TILE_DIMENSIONS.height * TILE_SCALE.height + (@tile.y * TILE_OFFSET.y)
+        x * TILE_DIMENSIONS.width * TILE_SCALE.width + (x * TILE_OFFSET.x),
+        y * TILE_DIMENSIONS.height * TILE_SCALE.height + (y * TILE_OFFSET.y)
     )
+    @container.tile = @tile
 
-    for layer in @tile
+    for layer in @tile.get('layers')
       @container.addChild(new Layer(@renderer, layer).actor)
-
-    @container.cacheAsBitmap()
 
 exports class MapRenderer extends require('Renderer')
   assets: [
@@ -88,14 +88,29 @@ exports class MapRenderer extends require('Renderer')
     @container.emptyChildren()
     @container.setLocation(TILE_OFFSET.x, TILE_OFFSET.y)
     @container.setSize(
-        map.width * TILE_DIMENSIONS.width * TILE_SCALE.width + (map.width * TILE_OFFSET.x),
-        map.height * TILE_DIMENSIONS.height * TILE_SCALE.height + (map.height * TILE_OFFSET.y)
+        map.dimensions().width * TILE_DIMENSIONS.width * TILE_SCALE.width + (map.dimensions().width * TILE_OFFSET.x),
+        map.dimensions().height * TILE_DIMENSIONS.height * TILE_SCALE.height + (map.dimensions().height * TILE_OFFSET.y)
     )
 
     self = @
-    map.eachTile (tile) ->
-      self.container.addChild(new Tile(self, tile).container)
+    @tiles = {}
+    map.eachTile (mapTile) ->
+      tile = new Tile(self, mapTile)
+      {x,y} = mapTile.position()
+      self.tiles[y] ||= {}
+      self.tiles[y][x] = tile
+      self.container.addChild(tile.container)
 
     @container.cacheAsBitmap(0, CAAT.Foundation.Actor.CACHE_SIMPLE)
 
     radio('ew/game/map/loaded').broadcast()
+
+  screenToMapCoordinates: (screenCoordinates) =>
+    x: Math.floor((screenCoordinates.x + TILE_OFFSET.x) / (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x))
+    y: Math.floor((screenCoordinates.y + TILE_OFFSET.y) / (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y))
+
+  click: (e) ->
+    tile = @tiles[e.tile.y][e.tile.x]
+    return true unless tile
+    radio('ew/input/map/clicked').broadcast(tile.tile)
+    false

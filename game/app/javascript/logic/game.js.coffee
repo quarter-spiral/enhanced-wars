@@ -19,9 +19,12 @@ class Game
       , 1000)
 
     radio('ew/input/unit/clicked').subscribe @unitClicked
+    radio('ew/input/map/clicked').subscribe @mapClicked
 
   unitClicked: (unit) =>
-    @selectedUnit = unit
     radio('ew/game/unit/selected').broadcast(unit)
+
+  mapClicked: (mapTile) =>
+    radio('ew/game/map/clicked').broadcast(mapTile)
 
 exports Game

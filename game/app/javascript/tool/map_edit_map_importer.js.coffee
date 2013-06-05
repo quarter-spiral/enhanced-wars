@@ -25,6 +25,7 @@ adjustMapSize = (tiles, spot) ->
 exports class MapEditMapImporter
   constructor: (mapEditData) ->
     Map  = require('Map')
+    MapTile  = require('MapTile')
     Unit = require('Unit')
 
     tiles = []
@@ -33,7 +34,9 @@ exports class MapEditMapImporter
       for spot in column
         adjustMapSize(tiles, spot)
 
-        tiles[spot.y][spot.x] = [type: tileTypeFor(spot), variant: spot.terrainVariant]
+        type = tileTypeFor(spot)
+        layers = [type: type, variant: spot.terrainVariant]
+        tiles[spot.y][spot.x] = new MapTile(position: spot, type: type, layers: layers)
 
         if unitType = unitTypeFor(spot)
           unit = new Unit(type: unitType, faction: spot.unitFaction, orientation: spot.unitOrientation, position: spot)
@@ -41,9 +44,4 @@ exports class MapEditMapImporter
 
     @units = units
 
-    map = new Map()
-    map.tiles = tiles
-    map.height = tiles.length
-    map.width = tiles[0].length
-
-    @map = map
+    @map = new Map(tiles: tiles)

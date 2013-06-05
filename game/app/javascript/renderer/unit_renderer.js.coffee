@@ -33,16 +33,23 @@ class Tile
 
     director = @renderer.gameRenderer.director
 
-    image_id = "unit/unit/#{@unit.faction}/#{TILE_TYPES[@unit.type][@unit.variant || 0]}_#{ORIENTATION_TYPES[@unit.orientation]}.png"
+    image_id = "unit/unit/#{@unit.get('faction')}/#{TILE_TYPES[@unit.get('type')][@unit.get('variant') || 0]}_#{ORIENTATION_TYPES[@unit.get('orientation')]}.png"
     @image = new CAAT.SpriteImage().initialize(director.getImage(image_id), 1, 1)
 
     @actor = new CAAT.Foundation.ActorContainer()
-    @actor.setBounds(
-        @unit.position.x * TILE_DIMENSIONS.width * TILE_SCALE.width + (@unit.position.x * TILE_OFFSET.x),
-        @unit.position.y * TILE_DIMENSIONS.height * TILE_SCALE.height + (@unit.position.y * TILE_OFFSET.y),
+    @actor.setSize(
         TILE_DIMENSIONS.width * TILE_SCALE.width
         TILE_DIMENSIONS.height * TILE_SCALE.height
     )
+
+    relocateUnit = =>
+      {x,y} = @unit.position()
+      @actor.setLocation(
+        x * TILE_DIMENSIONS.width * TILE_SCALE.width + (y * TILE_OFFSET.x)
+        y * TILE_DIMENSIONS.height * TILE_SCALE.height + (y * TILE_OFFSET.y)
+      )
+    relocateUnit()
+
     @actor.tile = @
 
     unitActor = new CAAT.Foundation.Actor()
@@ -54,8 +61,11 @@ class Tile
 
     @actor.addChild(unitActor)
 
-    unit.bindProperty 'selected', (values) =>
+    unit.bindProperty 'selected', (changedValues) =>
       unitActor.setAlpha(if @unit.get('selected') then 0.1 else 1)
+
+    unit.bindProperty 'position', (changedValues) =>
+      relocateUnit()
 
 exports class UnitRenderer extends require('Renderer')
   assets: [
@@ -116,25 +126,27 @@ exports class UnitRenderer extends require('Renderer')
     @container.setParent(@gameRenderer.renderers.map.container)
 
   loadUnits: (units) =>
-    return @units = units unless @ready
+    @units = units
+    return unless @ready
 
     map = @game.map
 
     @container.emptyChildren()
     @container.setLocation(TILE_OFFSET.x, TILE_OFFSET.y)
     @container.setSize(
-        map.width * TILE_DIMENSIONS.width * TILE_SCALE.width + (map.width * TILE_OFFSET.x),
-        map.height * TILE_DIMENSIONS.height * TILE_SCALE.height + (map.height * TILE_OFFSET.y)
+        map.dimensions().width * TILE_DIMENSIONS.width * TILE_SCALE.width + (map.dimensions().width * TILE_OFFSET.x),
+        map.dimensions().height * TILE_DIMENSIONS.height * TILE_SCALE.height + (map.dimensions().height * TILE_OFFSET.y)
     )
 
     self = @
     for unit in units
-      self.container.addChild(new Tile(self, unit).actor)
+      tile = new Tile(self, unit)
+      self.container.addChild(tile.actor)
 
 
-  click: (e) ->
-    foundUnitActor = @container.findActorAtPosition(x: e.point.x - TILE_OFFSET.x, y: e.point.y - TILE_OFFSET.y)
-    return true if foundUnitActor is @container
-    radio('ew/input/unit/clicked').broadcast((foundUnitActor.tile || foundUnitActor.parent.tile).unit)
-    false
-
+  click: (e) =>
+    for unit in @units
+      if unit.isAtPosition(e.tile)
+        radio('ew/input/unit/clicked').broadcast(unit)
+        return false
+    true

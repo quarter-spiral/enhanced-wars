@@ -20,4 +20,19 @@ clone = (obj) ->
 
   return newInstance
 
-@exports('clone', clone)
+exports('clone', clone)
+
+extend = (object, properties) ->
+  for key, val of properties
+    object[key] = val
+  object
+
+exports('extend', extend)
+
+merge = (options, overrides) ->
+  extend (extend {}, options), overrides
+
+exports('merge', merge)
+
+typeIsArray = Array.isArray || ( value ) -> return {}.toString.call( value ) is '[object Array]'
+exports 'typeIsArray', typeIsArray

@@ -1,16 +1,26 @@
 clone = require('clone')
+Module = require('Module')
+EventedObject = require('EventedObject')
 
-exports class Map
-  constructor: ->
+exports class Map extends Module
+  @include EventedObject
+
+  constructor: (options) ->
+    @set(options)
+    @set(height: @get('tiles').length, width: @get('tiles')[0].length)
+
+  dimensions: =>
+    width: @get('width')
+    height: @get('height')
+
+  tileAt: (x, y) =>
+    @get('tiles')[y][x]
 
   eachTile: (fn) =>
     y = 0
-    for row in @tiles
+    for row in @get('tiles')
       x = 0
       for tile in row
-        tile = clone(tile)
-        tile.x = x
-        tile.y = y
         fn.call(@, tile)
         x++
       y++
