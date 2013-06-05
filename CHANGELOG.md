@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Adds turns to the game
 * Adds an offset to the units
 * Adds new terrain assets from mapEdit
 

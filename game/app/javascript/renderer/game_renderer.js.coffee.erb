@@ -7,12 +7,20 @@ exports class GameRenderer
     x: 0
     y: 0
 
+  CANVAS_DIMENSIONS =
+    width: 960
+    height: 640
+
+  MAP_DIMENSIONS =
+    width: 640
+    height: 480
+
   constructor: (@game) ->
     self = @
 
     CAAT.Module.Initialization.TemplateWithSplash.init(
       # canvas will be 800x600 pixels
-      800, 600,
+      CANVAS_DIMENSIONS.width, CANVAS_DIMENSIONS.height,
 
       # and will be added to the end of document. set an id of a canvas or div element
       'game',
@@ -37,23 +45,33 @@ exports class GameRenderer
         scene = director.createScene()
         container = new CAAT.Foundation.ActorContainer()
         scene.addChild(container)
+        scene.setFillStyle('white')
         container.setSize(scene.width, scene.height)
         # nobody knows where that 32x32 offset is coming from but we need to correct it
         container.setLocation(self.SCENE_OFFSET.x, self.SCENE_OFFSET.y)
         # set the container as a fake scene
         self.scene = container
 
+        self.mapContainer = new CAAT.Foundation.ActorContainer().
+            setSize(MAP_DIMENSIONS.width, MAP_DIMENSIONS.height).
+            setClip(true)
+        container.addChild(self.mapContainer)
+        self.mapContainer.centerAt(CANVAS_DIMENSIONS.width / 2, CANVAS_DIMENSIONS.height / 2)
+
         self.renderers = {}
         MapRenderer  = require('MapRenderer')
-        self.renderers.map = new MapRenderer(self.game, self)
+        self.renderers.map = new MapRenderer(self.game, self, self.mapContainer)
         UnitRenderer  = require('UnitRenderer')
-        self.renderers.unit = new UnitRenderer(self.game, self)
+        self.renderers.unit = new UnitRenderer(self.game, self, self.mapContainer)
 
         InputController  = require('InputController')
-        self.inputController = new InputController(self)
+        self.inputController = new InputController(self, self.mapContainer)
 
         ScrollHandler = require('ScrollHandler')
         self.scrollHandler = new ScrollHandler(self.renderers.map)
+
+        UIRenderer  = require('UIRenderer')
+        self.renderers.ui = new UIRenderer(self.game, self)
 
         self.preloader.load (images) ->
           director.setImagesCache(images)

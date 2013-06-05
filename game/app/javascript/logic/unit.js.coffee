@@ -13,10 +13,13 @@ class Unit extends Module
     @set(merge(defaultOptions, options))
 
     radio('ew/game/unit/selected').subscribe (unit) =>
-      @set(selected: unit is @ and !@get('selected'))
+      @set(selected: unit is @ and game.turnManager.currentPlayer().get('faction') is @get('faction') and !@get('selected'))
 
     radio('ew/game/map/clicked').subscribe (mapTile) =>
       return unless @get('selected')
       @set(selected: false, position: mapTile.position())
+
+    radio('ew/game/next-turn').subscribe =>
+      @set(selected: false)
 
 exports Unit

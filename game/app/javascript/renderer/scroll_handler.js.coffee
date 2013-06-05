@@ -10,8 +10,8 @@ exports class ScrollHandler
 
   reset: =>
     @minimum =
-      x: -1 * (@mapRenderer.container.width - @mapRenderer.gameRenderer.scene.width) + @mapRenderer.TILE_OFFSET.x
-      y: -1 * (@mapRenderer.container.height - @mapRenderer.gameRenderer.scene.height) + @mapRenderer.TILE_OFFSET.y
+      x: -1 * (@mapRenderer.container.width - @mapRenderer.parent.width) + @mapRenderer.TILE_OFFSET.x
+      y: -1 * (@mapRenderer.container.height - @mapRenderer.parent.height) + @mapRenderer.TILE_OFFSET.y
 
     @maximum =
       x: @mapRenderer.TILE_OFFSET.x

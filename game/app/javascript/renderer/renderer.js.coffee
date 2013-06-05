@@ -1,9 +1,10 @@
 radio = require('radio')
 
 exports class Renderer
-  constructor: (@game, @gameRenderer) ->
+  constructor: (@game, @gameRenderer, @parent) ->
+    @parent ||= @gameRenderer.scene
     @container = new CAAT.Foundation.ActorContainer()
-    @gameRenderer.scene.addChild(@container)
+    @parent.addChild(@container)
     @container.setLocation(0, 0)
     @container.setSize(@gameRenderer.director.width, @gameRenderer.director.height)
     @container.setGestureEnabled(true)

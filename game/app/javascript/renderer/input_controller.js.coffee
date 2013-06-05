@@ -1,7 +1,7 @@
 radio = require('radio')
 
 exports class InputController
-  constructor: (gameRenderer) ->
+  constructor: (gameRenderer, parent) ->
     startDragEvent = null
 
     scrollMap = (newEvent) ->
@@ -16,9 +16,8 @@ exports class InputController
 
     @controller = new CAAT.Foundation.Actor()
 
-    scene = gameRenderer.scene
-    @controller.setBounds(0, 0, scene.width, scene.height)
-    scene.addChild(@controller)
+    @controller.setBounds(0, 0, parent.width, parent.height)
+    parent.addChild(@controller)
 
     @controller.mouseDrag = (e) ->
       scrollMap(e)
