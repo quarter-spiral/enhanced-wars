@@ -1,4 +1,4 @@
-# 0.0.4 / Unrelased
+# 0.0.4 / 2013-06-05
 
 * Units can be moved
 * Imports units and displays them

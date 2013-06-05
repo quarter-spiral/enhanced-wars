@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    enhanced-wars (0.0.3)
+    enhanced-wars (0.0.4)
       coffee-script
       json (~> 1.7.7)
       sass
