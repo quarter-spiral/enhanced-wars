@@ -1,3 +1,7 @@
+# 0.0.5 / Unreleased
+
+* Adds new terrain assets from mapEdit
+
 # 0.0.4 / 2013-06-05
 
 * Units can be moved

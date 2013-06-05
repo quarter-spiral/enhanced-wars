@@ -18,12 +18,13 @@ TILE_OFFSET = {
 TILE_TYPES =
   base: ['map/terrain/base.png']
   deepwater: ['map/terrain/deepwater.png']
-  desert: ['map/terrain/dessert_0.png', 'map/terrain/dessert_1.png']
+  desert: ['map/terrain/dessert_0.png', 'map/terrain/dessert_1.png', 'map/terrain/dessert_2.png']
   factory: ['map/terrain/factory.png']
   forrest: ['map/terrain/forrest_0.png']
   mountain: ['map/terrain/mountain_0.png']
   plain: ['map/terrain/plain_0.png']
   shallowwater: ['map/terrain/shallowwater.png']
+  road: ['map/terrain/road_horizontal.png', 'map/terrain/road_vertical.png', 'map/terrain/road_cross.png']
 
 class Layer
   constructor: (@renderer, @layer) ->
@@ -61,11 +62,15 @@ exports class MapRenderer extends require('Renderer')
     "/assets/terrain/deepwater.png"
     "/assets/terrain/dessert_0.png"
     "/assets/terrain/dessert_1.png"
+    "/assets/terrain/dessert_2.png"
     "/assets/terrain/factory.png"
     "/assets/terrain/forrest_0.png"
     "/assets/terrain/mountain_0.png"
     "/assets/terrain/plain_0.png"
     "/assets/terrain/shallowwater.png"
+    "/assets/terrain/road_cross.png"
+    "/assets/terrain/road_horizontal.png"
+    "/assets/terrain/road_vertical.png"
   ]
 
   id: "map"
