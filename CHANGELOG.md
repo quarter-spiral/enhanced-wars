@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Adds an offset to the units
 * Adds new terrain assets from mapEdit
 
 # 0.0.4 / 2013-06-05

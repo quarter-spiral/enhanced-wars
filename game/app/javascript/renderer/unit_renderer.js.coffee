@@ -10,9 +10,11 @@ TILE_SCALE = {
   height: 0.5
 }
 
+MAP_TILE_OFFSET = null
+
 TILE_OFFSET = {
   x: 0
-  y: -16
+  y: 10
 }
 
 TILE_TYPES =
@@ -45,8 +47,8 @@ class Tile
     relocateUnit = =>
       {x,y} = @unit.position()
       @actor.setLocation(
-        x * TILE_DIMENSIONS.width * TILE_SCALE.width + (y * TILE_OFFSET.x)
-        y * TILE_DIMENSIONS.height * TILE_SCALE.height + (y * TILE_OFFSET.y)
+        x * TILE_DIMENSIONS.width * TILE_SCALE.width + (y * MAP_TILE_OFFSET.x) + TILE_OFFSET.x
+        y * TILE_DIMENSIONS.height * TILE_SCALE.height + (y * MAP_TILE_OFFSET.y) + TILE_OFFSET.y
       )
     relocateUnit()
 
@@ -116,6 +118,8 @@ exports class UnitRenderer extends require('Renderer')
   constructor: ->
     super
 
+    MAP_TILE_OFFSET = @gameRenderer.renderers.map.TILE_OFFSET
+
     renderer = @
     radio('ew/game/map/load').subscribe ->
       renderer.loadUnits(renderer.game.units)
@@ -132,10 +136,10 @@ exports class UnitRenderer extends require('Renderer')
     map = @game.map
 
     @container.emptyChildren()
-    @container.setLocation(TILE_OFFSET.x, TILE_OFFSET.y)
+    @container.setLocation(MAP_TILE_OFFSET.x, MAP_TILE_OFFSET.y)
     @container.setSize(
-        map.dimensions().width * TILE_DIMENSIONS.width * TILE_SCALE.width + (map.dimensions().width * TILE_OFFSET.x),
-        map.dimensions().height * TILE_DIMENSIONS.height * TILE_SCALE.height + (map.dimensions().height * TILE_OFFSET.y)
+        map.dimensions().width * TILE_DIMENSIONS.width * TILE_SCALE.width + (map.dimensions().width * MAP_TILE_OFFSET.x),
+        map.dimensions().height * TILE_DIMENSIONS.height * TILE_SCALE.height + (map.dimensions().height * MAP_TILE_OFFSET.y)
     )
 
     self = @
