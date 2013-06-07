@@ -81,7 +81,7 @@ class Tile
         path.addLineTo(x, y)
       path.endPath()
 
-      timePerTile = 450
+      timePerTile = 15000 / Math.pow(@renderer.game.ruleSet.unitSpecs[@unit.get('type')].mp, 2)
       pathStartTime = @actor.time
       pathDuration = timePerTile * (mapPath.length - 1)
       pathBehaviour.
