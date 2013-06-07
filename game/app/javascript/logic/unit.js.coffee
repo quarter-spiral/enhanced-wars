@@ -55,7 +55,8 @@ class Unit extends Module
   costToMoveTo: (tile) =>
     costs = @game().ruleSet.terrainCosts[tile.get('type')]
 
-    return infinity if @get('map').unitAt(tile.position())
+    unitAtPosition = @get('map').unitAt(tile.position())
+    return infinity if unitAtPosition and unitAtPosition.get('faction') isnt @get('faction')
 
     cost = null
     cost = costs[tag] for tag in @tags() when costs[tag] and (!cost or costs[tag] > cost)
