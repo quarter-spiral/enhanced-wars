@@ -1,13 +1,12 @@
 radio = require('radio')
 
 class Game
-  AP_PER_TURN: 20
-
   constructor: ->
     GameRenderer = require('GameRenderer')
     MapEditMapImporter = require('MapEditMapImporter')
     Player = require('Player')
     TurnManager = require('TurnManager')
+    DefaultRuleSet = require('DefaultRuleSet')
 
     new GameRenderer(@)
 
@@ -18,8 +17,10 @@ class Game
 
     @turnManager = new TurnManager(@players)
 
+    @ruleSet = new DefaultRuleSet()
+
     json = require('dummy-map')
-    imported = new MapEditMapImporter(json)
+    imported = new MapEditMapImporter(json, @)
 
     @map   = imported.map
     @units = imported.units
@@ -32,8 +33,10 @@ class Game
     radio('ew/input/unit/clicked').subscribe @unitClicked
     radio('ew/input/map/clicked').subscribe @mapClicked
 
+    @turnManager.setTurn(0)
+
   unitClicked: (unit) =>
-    radio('ew/game/unit/selected').broadcast(unit)
+    unit.select()
 
   mapClicked: (mapTile) =>
     radio('ew/game/map/clicked').broadcast(mapTile)

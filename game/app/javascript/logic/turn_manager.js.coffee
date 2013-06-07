@@ -2,7 +2,6 @@ radio = require('radio')
 
 exports class TurnManager
   constructor: (@players) ->
-    @setTurn(0)
 
   currentPlayer: =>
     @players[@turn]

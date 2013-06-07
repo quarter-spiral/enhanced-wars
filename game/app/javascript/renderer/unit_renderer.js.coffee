@@ -35,8 +35,14 @@ class Tile
 
     director = @renderer.gameRenderer.director
 
-    image_id = "unit/unit/#{@unit.get('faction')}/#{TILE_TYPES[@unit.get('type')][@unit.get('variant') || 0]}_#{ORIENTATION_TYPES[@unit.get('orientation')]}.png"
-    @image = new CAAT.SpriteImage().initialize(director.getImage(image_id), 1, 1)
+    unitActor = new CAAT.Foundation.Actor()
+
+    setImage = =>
+      image_id = "unit/unit/#{@unit.get('faction')}/#{TILE_TYPES[@unit.get('type')][@unit.get('variant') || 0]}_#{ORIENTATION_TYPES[@unit.get('orientation')]}.png"
+      @image = new CAAT.SpriteImage().initialize(director.getImage(image_id), 1, 1)
+      unitActor.setBackgroundImage(@image)
+
+    setImage()
 
     @actor = new CAAT.Foundation.ActorContainer()
     @actor.setSize(
@@ -54,7 +60,6 @@ class Tile
 
     @actor.tile = @
 
-    unitActor = new CAAT.Foundation.Actor()
     unitActor.setBackgroundImage(@image)
     unitActor.setSize(TILE_DIMENSIONS.width, TILE_DIMENSIONS.height)
     unitActor.scaleTX = 0
@@ -68,6 +73,9 @@ class Tile
 
     unit.bindProperty 'position', (changedValues) =>
       relocateUnit()
+
+    unit.bindProperty 'orientation', (changedValues) =>
+      setImage()
 
 exports class UnitRenderer extends require('Renderer')
   assets: [

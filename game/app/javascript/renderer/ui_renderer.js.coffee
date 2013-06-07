@@ -18,7 +18,7 @@ class APIndicatorDotContainer extends UIElement
 
     @dots = []
     width = 0
-    for i in [1..@game.AP_PER_TURN]
+    for i in [1..@game.ruleSet.apPerTurn]
       dot = new APIndicatorDot(@)
       x = (i - 1) * (dot.container.width + MARGIN)
       width = x + dot.container.width
@@ -29,8 +29,8 @@ class APIndicatorDotContainer extends UIElement
 
 
   setRemainingActionPoints: (ap) =>
-    for i in [1..@game.AP_PER_TURN]
-      @dots[i - 1].setAvailable(i > @game.AP_PER_TURN - ap)
+    for i in [1..@game.ruleSet.apPerTurn]
+      @dots[i - 1].setAvailable(i > @game.ruleSet.apPerTurn - ap)
 
 class APIndicatorDot extends UIElement
   COLORS =
@@ -76,7 +76,7 @@ class APText extends UIElement
     @container.addChild(@text)
 
   setRemainingActionPoints: (ap) ->
-    @text.setText("#{@game.AP_PER_TURN - ap}/#{@game.AP_PER_TURN} AP used").
+    @text.setText("#{@game.ruleSet.apPerTurn - ap}/#{@game.ruleSet.apPerTurn} AP used").
         centerAt(@container.width / 2, @container.height - FONT_SIZE / 2)
 
 class APIndicator extends UIElement

@@ -41,10 +41,11 @@ class Tile
   constructor: (@renderer, @tile) ->
     @container = new CAAT.Foundation.ActorContainer()
 
-    @container.setSize(TILE_DIMENSIONS.width * TILE_SCALE.width, TILE_DIMENSIONS.height * TILE_SCALE.height)
+    @container.setSize(TILE_DIMENSIONS.width, TILE_DIMENSIONS.height)
     @container.scaleTX = 0
     @container.scaleTY = 0
     @container.setScale(TILE_SCALE.width, TILE_SCALE.height)
+    @container.setGlobalAlpha true
 
     {x,y} = @tile.position()
     @container.setLocation(
@@ -55,6 +56,18 @@ class Tile
 
     for layer in @tile.get('layers')
       @container.addChild(new Layer(@renderer, layer).actor)
+
+    @darkener = new CAAT.Foundation.Actor()
+        .setFillStyle('#000000')
+        .setAlpha(0.6)
+        .setSize(@container.width + (TILE_OFFSET.x / TILE_SCALE.width), @container.height + (TILE_OFFSET.y / TILE_SCALE.height))
+        .setVisible(false)
+    @container.addChild(@darkener)
+
+    self = @
+    radio('ew/game/unit/selected').subscribe (unit) ->
+      self.darkener.setVisible(unit.get('selected') and !self.tile.canBeReachedBy(unit))
+
 
 exports class MapRenderer extends require('Renderer')
   assets: [
@@ -105,8 +118,6 @@ exports class MapRenderer extends require('Renderer')
       self.tiles[y] ||= {}
       self.tiles[y][x] = tile
       self.container.addChild(tile.container)
-
-    @container.cacheAsBitmap(0, CAAT.Foundation.Actor.CACHE_SIMPLE)
 
     radio('ew/game/map/loaded').broadcast()
 
