@@ -53,15 +53,17 @@ exports class MoveableTiles
   pathTo: (mapTile) =>
     return null if @costFor(mapTile) is null
 
-    path = [tile: mapTile]
     checkingTile = mapTile
+    path = [tile: checkingTile]
 
     start = @map.tileAt(@unit.position())
     while checkingTile isnt start
       newTile = @cheapestNeighbor(checkingTile, path)
       path[path.length - 1].orientation = @directionForMove(checkingTile, newTile)
-      path.push(tile: checkingTile)
+      path.push(tile: newTile)
       checkingTile = newTile
+
+    path[path.length - 1].orientation = @directionForMove(path[path.length - 2].tile, path[path.length - 1].tile)
 
     path.reverse()
 

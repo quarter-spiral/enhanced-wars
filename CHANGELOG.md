@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Adds unit movement along paths
 * Adds unit movement
 * Adds rule sets
 * Adds turns to the game

@@ -37,8 +37,9 @@ class Tile
 
     unitActor = new CAAT.Foundation.Actor()
 
-    setImage = =>
-      image_id = "unit/unit/#{@unit.get('faction')}/#{TILE_TYPES[@unit.get('type')][@unit.get('variant') || 0]}_#{ORIENTATION_TYPES[@unit.get('orientation')]}.png"
+    setImage = (orientation) =>
+      orientation ||= @unit.get('orientation')
+      image_id = "unit/unit/#{@unit.get('faction')}/#{TILE_TYPES[@unit.get('type')][@unit.get('variant') || 0]}_#{ORIENTATION_TYPES[orientation]}.png"
       @image = new CAAT.SpriteImage().initialize(director.getImage(image_id), 1, 1)
       unitActor.setBackgroundImage(@image)
 
@@ -50,13 +51,48 @@ class Tile
         TILE_DIMENSIONS.height * TILE_SCALE.height
     )
 
+    toMapCoordinates = (position) =>
+      {x,y} = position
+
+      x: x * TILE_DIMENSIONS.width * TILE_SCALE.width + (y * MAP_TILE_OFFSET.x) + TILE_OFFSET.x
+      y: y * TILE_DIMENSIONS.height * TILE_SCALE.height + (y * MAP_TILE_OFFSET.y) + TILE_OFFSET.y
+
+    pathBehaviour = null
+
     relocateUnit = =>
-      {x,y} = @unit.position()
-      @actor.setLocation(
-        x * TILE_DIMENSIONS.width * TILE_SCALE.width + (y * MAP_TILE_OFFSET.x) + TILE_OFFSET.x
-        y * TILE_DIMENSIONS.height * TILE_SCALE.height + (y * MAP_TILE_OFFSET.y) + TILE_OFFSET.y
-      )
+      {x,y} = toMapCoordinates(@unit.position())
+
+      unless pathBehaviour
+        pathBehaviour = new CAAT.PathBehavior().
+            setPath(new CAAT.Path().setLinear(x,y, x,y)).
+            setInterpolator(new CAAT.Interpolator().createExponentialInOutInterpolator(2,false)).
+            setFrameTime(@actor.time, 10)
+        @actor.addBehavior(pathBehaviour)
+
+      @actor.setLocation(x, y)
+
     relocateUnit()
+
+    transitionUnit = (mapPath) =>
+      {x,y} = toMapCoordinates(mapPath[0].tile.position())
+      path = new CAAT.Path().beginPath(x, y)
+      for segment in mapPath when segment isnt mapPath[0]
+        {x,y} = toMapCoordinates(segment.tile.position())
+        path.addLineTo(x, y)
+      path.endPath()
+
+      timePerTile = 450
+      pathStartTime = @actor.time
+      pathDuration = timePerTile * (mapPath.length - 1)
+      pathBehaviour.
+          setPath(path).
+          setFrameTime(pathStartTime, pathDuration)
+
+      orientations = mapPath[1..-1].map (e) -> e.orientation
+      for startTime in pathBehaviour.path.pathSegmentStartTime
+        director.currentScene.createTimer(pathStartTime, startTime * pathDuration, ->
+          setImage(orientations.shift())
+        )
 
     @actor.tile = @
 
@@ -72,10 +108,13 @@ class Tile
       unitActor.setAlpha(if @unit.get('selected') then 0.1 else 1)
 
     unit.bindProperty 'position', (changedValues) =>
-      relocateUnit()
+      relocateUnit() unless changedValues.move
 
-    unit.bindProperty 'orientation', (changedValues) =>
-      setImage()
+    unit.bindProperty 'move', (changedValues) =>
+      transitionUnit(changedValues.move.new)
+
+    # unit.bindProperty 'orientation', (changedValues) =>
+    #   setImage()
 
 exports class UnitRenderer extends require('Renderer')
   assets: [

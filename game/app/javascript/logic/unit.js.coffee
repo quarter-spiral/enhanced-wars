@@ -44,7 +44,7 @@ class Unit extends Module
     return if movementCost > mp
 
     path = map.unitsPathTo(@, mapTile)
-    @set(position: mapTile.position(), mp: mp - movementCost, orientation: path[path.length - 1].orientation)
+    @set(position: mapTile.position(), mp: mp - movementCost, orientation: path[path.length - 1].orientation, move: path)
 
   game: =>
     @get('map').get('game')
