@@ -64,9 +64,8 @@ class Tile
         .setVisible(false)
     @container.addChild(@darkener)
 
-    self = @
-    radio('ew/game/unit/selected').subscribe (unit) ->
-      self.darkener.setVisible(unit.get('selected') and !self.tile.canBeReachedBy(unit))
+    radio('ew/game/unit/unselected').subscribe (unit) =>
+      @darkener.setVisible(false)
 
 
 exports class MapRenderer extends require('Renderer')
@@ -98,10 +97,18 @@ exports class MapRenderer extends require('Renderer')
     radio('ew/renderer/assets-loaded').subscribe (renderer, images) ->
       renderer.loadMap(renderer.map) if renderer.map
 
+    radio('ew/game/unit/selected').subscribe (unit) =>
+      return unless unit.get('selected')
+      @map.eachTile (mapTile) =>
+        enemy = @map.unitAt(mapTile.position())
+        rendererTile = @tiles[mapTile.position().y][mapTile.position().x]
+        rendererTile.darkener.setVisible(!mapTile.canBeReachedBy(unit) and !unit.canAttack(enemy))
+
     @TILE_OFFSET = TILE_OFFSET
 
   loadMap: (map) =>
-    return @map = map unless @ready
+    @map = map
+    return map unless @ready
 
     @container.emptyChildren()
     @container.setLocation(TILE_OFFSET.x, TILE_OFFSET.y)

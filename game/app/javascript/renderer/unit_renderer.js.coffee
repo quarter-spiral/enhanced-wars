@@ -113,9 +113,6 @@ class Tile
     unit.bindProperty 'move', (changedValues) =>
       transitionUnit(changedValues.move.new)
 
-    # unit.bindProperty 'orientation', (changedValues) =>
-    #   setImage()
-
 exports class UnitRenderer extends require('Renderer')
   assets: [
     '/assets/unit/0/ht_d.png'

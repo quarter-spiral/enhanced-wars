@@ -15,23 +15,26 @@ class Unit extends Module
     @set(merge(defaultOptions, options))
 
     radio('ew/game/unit/selected').subscribe (selectedUnit) =>
-      @select(false) if selectedUnit isnt @ and selectedUnit.get('selected')
+      @select(false) if selectedUnit isnt @
 
     radio('ew/game/map/clicked').subscribe (mapTile) =>
       return unless @get('selected')
       @moveTo(mapTile)
 
     radio('ew/game/next-turn').subscribe =>
-      @set(mp: @game().ruleSet.unitSpecs[@get('type')].mp)
+      @set(mp: @specs().mp)
       @select(false)
 
   select: (newState) =>
+    stateToSet = newState
+    oldState = @get('selected')
+    itIsMyTurn = @game().turnManager.currentPlayer().get('faction') is @get('faction')
     if newState is undefined
-      itIsMyTurn = @game().turnManager.currentPlayer().get('faction') is @get('faction')
       newState = itIsMyTurn and !@get('selected')
 
     @set(selected: newState)
-    radio('ew/game/unit/selected').broadcast(@)
+    radio('ew/game/unit/selected').broadcast(@) if (newState and !oldState) or (!itIsMyTurn and stateToSet is undefined)
+    radio('ew/game/unit/unselected').broadcast(@) if !newState and oldState
 
   moveTo: (mapTile) =>
     @select(false)
@@ -46,11 +49,19 @@ class Unit extends Module
     path = map.unitsPathTo(@, mapTile)
     @set(position: mapTile.position(), mp: mp - movementCost, orientation: path[path.length - 1].orientation, move: path)
 
+  canAttack: (enemy) =>
+    return false unless enemy
+    return false if enemy.get('faction') is @get('faction')
+    @distanceTo(enemy) >= @specs().attackRange.min and @distanceTo(enemy) <= @specs().attackRange.max
+
   game: =>
     @get('map').get('game')
 
   tags: =>
-    @game().ruleSet.unitSpecs[@get('type')].tags
+    @specs().tags
+
+  specs: =>
+    @game().ruleSet.unitSpecs[@get('type')]
 
   costToMoveTo: (tile) =>
     costs = @game().ruleSet.terrainCosts[tile.get('type')]
@@ -61,6 +72,9 @@ class Unit extends Module
     cost = null
     cost = costs[tag] for tag in @tags() when costs[tag] and (!cost or costs[tag] > cost)
     cost || costs.default
+
+  distanceTo: (enemy) =>
+    Math.abs(@position().x - enemy.position().x) + Math.abs(@position().y - enemy.position().y)
 
 
 exports Unit
