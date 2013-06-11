@@ -50,6 +50,7 @@ exports class DefaultRuleSet
       modifiers:
         heavy: 2.3
 
+
   unitSpecs:
     heavytank:
       costs:
@@ -127,7 +128,7 @@ exports class DefaultRuleSet
       costs:
         create: 5
         fire: 1
-      hp: 4
+      hp: 10
       mp: 8
       attackRange:
         min: 1

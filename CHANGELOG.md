@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Adds fights
 * Adds unit movement along paths
 * Adds unit movement
 * Adds rule sets

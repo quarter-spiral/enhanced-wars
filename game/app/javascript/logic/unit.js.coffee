@@ -15,6 +15,8 @@ class Unit extends Module
     @set(merge(defaultOptions, options))
 
     radio('ew/game/unit/selected').subscribe (selectedUnit) =>
+      @attack(selectedUnit) if @canAttack(selectedUnit)
+
       @select(false) if selectedUnit isnt @
 
     radio('ew/game/map/clicked').subscribe (mapTile) =>
@@ -22,6 +24,7 @@ class Unit extends Module
       @moveTo(mapTile)
 
     radio('ew/game/next-turn').subscribe =>
+      @set(hp: @specs().hp) if @get('hp') is undefined
       @set(mp: @specs().mp)
       @select(false)
 
@@ -52,13 +55,30 @@ class Unit extends Module
   canAttack: (enemy) =>
     return false unless enemy
     return false if enemy.get('faction') is @get('faction')
+    return false unless @get('selected')
+
     @distanceTo(enemy) >= @specs().attackRange.min and @distanceTo(enemy) <= @specs().attackRange.max
+
+  attack: (enemy) =>
+    return unless @canAttack(enemy)
+
+    Fight = require('Fight')
+    fight = new Fight(attacker: @, enemy: enemy)
+
+  isAlive: =>
+    @get('hp') > 0
+
+  canReturnFire: =>
+    @specs().returnsFire
 
   game: =>
     @get('map').get('game')
 
   tags: =>
     @specs().tags
+
+  isTagged: (tag) =>
+    @tags().indexOf(tag) isnt -1
 
   specs: =>
     @game().ruleSet.unitSpecs[@get('type')]
@@ -75,6 +95,10 @@ class Unit extends Module
 
   distanceTo: (enemy) =>
     Math.abs(@position().x - enemy.position().x) + Math.abs(@position().y - enemy.position().y)
+
+  player: =>
+    faction = @get('faction')
+    @game().players.detect (player) -> player.get('faction') is faction
 
 
 exports Unit
