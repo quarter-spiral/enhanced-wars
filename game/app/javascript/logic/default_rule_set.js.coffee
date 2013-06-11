@@ -33,6 +33,23 @@ exports class DefaultRuleSet
       naval: infinity
       default: 1
 
+  bulletSpecs:
+    default:
+      accuracy: 0.8
+      damage:
+        min: 3
+        max: 5
+      criticial: 0.1
+      modifiers: {}
+    artilleryShell:
+      accuracy: 0.6
+      damage:
+        min: 5
+        max: 10
+      criticial: 0.05
+      modifiers:
+        heavy: 2.3
+
   unitSpecs:
     heavytank:
       costs:
@@ -79,7 +96,7 @@ exports class DefaultRuleSet
       attackRange:
         min: 2
         max: 5
-      bullets: -> ['default']
+      bullets: -> ['artilleryShell']
       tags: ['land', 'medium', 'artillery']
       returnsFire: false
       movesAndFires: false
