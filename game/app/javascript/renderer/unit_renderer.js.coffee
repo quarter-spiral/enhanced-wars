@@ -131,9 +131,19 @@ class Tile
       newWidth = (@hpMeterContainer.width - 2) * percentage
       @hpMeter.setSize(newWidth, @hpMeter.height)
 
-    FlyingInfo = require('FlyingInfo')
+    FlyingInfoQueue = require('FlyingInfoQueue')
     radio('ew/game/attack').subscribe ({attacker, enemy, bullet}) =>
-      new FlyingInfo("-#{bullet.damage}", parent: @actor) if bullet.hit and enemy is @unit
+      return unless enemy is @unit
+      infoQueue = new FlyingInfoQueue(parent: @actor)
+
+      if bullet.hit
+        infoQueue.add("-#{bullet.damage}")
+        infoQueue.add("Critical") if bullet.criticalStrike
+      else
+        infoQueue.add("Miss")
+
+  remove: =>
+    @actor.setExpired(0)
 
 exports class UnitRenderer extends require('Renderer')
   assets: [
@@ -208,11 +218,14 @@ exports class UnitRenderer extends require('Renderer')
         map.dimensions().height * TILE_DIMENSIONS.height * TILE_SCALE.height + (map.dimensions().height * MAP_TILE_OFFSET.y)
     )
 
+    @tiles = []
     self = @
     for unit in units
       tile = new Tile(self, unit)
       self.container.addChild(tile.actor)
-
+      @tiles.push(tile)
+      unit.bindProperty 'dead', (changedValues) ->
+        self.removeUnit(this) unless this.isAlive()
 
   click: (e) =>
     for unit in @units
@@ -220,3 +233,8 @@ exports class UnitRenderer extends require('Renderer')
         radio('ew/input/unit/clicked').broadcast(unit)
         return false
     true
+
+  removeUnit: (unit) =>
+    @units = @units.filter (u) -> u.isAlive()
+    for tile in @tiles
+      return tile.remove() if tile.unit is unit

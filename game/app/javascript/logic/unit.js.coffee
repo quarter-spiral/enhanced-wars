@@ -15,7 +15,7 @@ class Unit extends Module
     @set(merge(defaultOptions, options))
 
     radio('ew/game/unit/selected').subscribe (selectedUnit) =>
-      @attack(selectedUnit) if @canAttack(selectedUnit)
+      @attack(selectedUnit) if @get('selected') and @canAttack(selectedUnit)
 
       @select(false) if selectedUnit isnt @
 
@@ -55,7 +55,6 @@ class Unit extends Module
   canAttack: (enemy) =>
     return false unless enemy
     return false if enemy.get('faction') is @get('faction')
-    return false unless @get('selected')
 
     @distanceTo(enemy) >= @specs().attackRange.min and @distanceTo(enemy) <= @specs().attackRange.max
 
@@ -64,6 +63,9 @@ class Unit extends Module
 
     Fight = require('Fight')
     fight = new Fight(attacker: @, enemy: enemy)
+
+  die: =>
+    @set(dead: true)
 
   isAlive: =>
     @get('hp') > 0

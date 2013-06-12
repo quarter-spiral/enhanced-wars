@@ -13,7 +13,10 @@ exports class Map extends Module
     @set(height: @get('tiles').length, width: @get('tiles')[0].length)
 
     radio('ew/game/next-turn').subscribe =>
-      @moveableTiles = null
+      delete @moveableTiles
+
+    radio('ew/game/unit/unselected').subscribe =>
+      delete @moveableTiles
 
   dimensions: =>
     width: @get('width')

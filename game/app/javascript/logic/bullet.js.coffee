@@ -9,7 +9,7 @@ exports class Bullet
 
       damageModifier = 1
       for type, modifier of @specs.modifiers
-        damageModifier = modifier if enemey.isTagged(type) and modifier > damageModifier
+        damageModifier = modifier if enemy.isTagged(type) and modifier > damageModifier
 
       @damage *= damageModifier
 

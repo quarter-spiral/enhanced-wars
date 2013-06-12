@@ -12,7 +12,7 @@ exports class Fight extends Module
     enemy = @get('enemy')
 
     @attack(attacker, enemy)
-    @attack(enemy, attacker) if enemy.isAlive() and enemy.canReturnFire()
+    @attack(enemy, attacker) if enemy.isAlive() and enemy.canReturnFire() and enemy.canAttack(attacker)
 
   attack: (attacker, enemy) =>
     Bullet = require('Bullet')
@@ -21,3 +21,5 @@ exports class Fight extends Module
       bullet = new Bullet(game: attacker.game(), type: bulletType)
       enemy.set(hp: enemy.get('hp') - bullet.damage) if bullet.fireAt(enemy)
       radio('ew/game/attack').broadcast(attacker: attacker, enemy: enemy, bullet: bullet)
+
+    enemy.die() unless enemy.isAlive()

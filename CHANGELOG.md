@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Lets units become mortal
 * Adds fights
 * Adds unit movement along paths
 * Adds unit movement

@@ -39,14 +39,14 @@ exports class DefaultRuleSet
       damage:
         min: 3
         max: 5
-      criticial: 0.1
+      critical: 0.1
       modifiers: {}
     artilleryShell:
       accuracy: 0.6
       damage:
         min: 5
         max: 10
-      criticial: 0.05
+      critical: 0.05
       modifiers:
         heavy: 2.3
 
@@ -128,8 +128,8 @@ exports class DefaultRuleSet
       costs:
         create: 5
         fire: 1
-      hp: 10
-      mp: 8
+      hp: 20
+      mp: 200
       attackRange:
         min: 1
         max: 1

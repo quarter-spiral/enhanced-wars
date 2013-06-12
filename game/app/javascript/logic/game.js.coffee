@@ -25,6 +25,10 @@ class Game
     @map   = imported.map
     @units = imported.units
 
+    for unit in @units
+      unit.bindProperty 'dead', (changedValues) =>
+        @units = @units.filter (u) -> u.isAlive()
+
     radio("ew/renderer/assets-loaded").subscribe (renderer, images) ->
       setTimeout(->
         radio('ew/game/map/load').broadcast()

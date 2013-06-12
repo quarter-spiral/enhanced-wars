@@ -4,8 +4,8 @@ behaviors =
   fallingDown: (flyingInfo) ->
     flyingInfo.x += flyingInfo.parent.width / 2
 
-    yMargin = -50
-    xMargin = if Math.random() > 0.5 then -70 else 70
+    yMargin = -30 - (Math.random() * 150)
+    xMargin = -120 + (Math.random() * 240)
 
     scene = CAAT.getCurrentScene()
 
