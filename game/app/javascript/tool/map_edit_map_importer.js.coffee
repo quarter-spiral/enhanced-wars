@@ -31,7 +31,7 @@ exports class MapEditMapImporter
     tiles = []
     units = []
     @map = new Map()
-    for column in mapEditData
+    for column in mapEditData.data
       for spot in column
         adjustMapSize(tiles, spot)
 

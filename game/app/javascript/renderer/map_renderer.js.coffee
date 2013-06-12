@@ -21,10 +21,10 @@ TILE_TYPES =
   desert: ['map/terrain/dessert_0.png', 'map/terrain/dessert_1.png', 'map/terrain/dessert_2.png']
   factory: ['map/terrain/factory.png']
   forrest: ['map/terrain/forrest_0.png']
-  mountain: ['map/terrain/mountain_0.png']
-  plain: ['map/terrain/plain_0.png']
+  mountain: ['map/terrain/mountain_0.png', 'map/terrain/mountain_1.png', 'map/terrain/mountain_2.png']
+  plain: ['map/terrain/plain_0.png', 'map/terrain/plain_1.png']
   shallowwater: ['map/terrain/shallowwater.png']
-  road: ['map/terrain/road_horizontal.png', 'map/terrain/road_vertical.png', 'map/terrain/road_cross.png']
+  road: ['map/terrain/road_horizontal.png', 'map/terrain/road_vertical.png', 'map/terrain/road_left_down.png', 'map/terrain/road_left_up.png', 'map/terrain/road_right_up.png', 'map/terrain/road_right_down.png', 'map/terrain/road_cross.png']
 
 class Layer
   constructor: (@renderer, @layer) ->
@@ -78,11 +78,18 @@ exports class MapRenderer extends require('Renderer')
     "/assets/terrain/factory.png"
     "/assets/terrain/forrest_0.png"
     "/assets/terrain/mountain_0.png"
+    "/assets/terrain/mountain_1.png"
+    "/assets/terrain/mountain_2.png"
     "/assets/terrain/plain_0.png"
+    "/assets/terrain/plain_1.png"
     "/assets/terrain/shallowwater.png"
     "/assets/terrain/road_cross.png"
     "/assets/terrain/road_horizontal.png"
     "/assets/terrain/road_vertical.png"
+    "/assets/terrain/road_left_down.png"
+    "/assets/terrain/road_left_up.png"
+    "/assets/terrain/road_right_down.png"
+    "/assets/terrain/road_right_up.png"
   ]
 
   id: "map"
