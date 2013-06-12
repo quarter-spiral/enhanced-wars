@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Adds AP
 * Lets units become mortal
 * Adds fights
 * Adds unit movement along paths

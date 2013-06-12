@@ -13,6 +13,7 @@ exports class Fight extends Module
 
     @attack(attacker, enemy)
     @attack(enemy, attacker) if enemy.isAlive() and enemy.canReturnFire() and enemy.canAttack(attacker)
+    attacker.player().deductAp(attacker.specs().costs.fire)
 
   attack: (attacker, enemy) =>
     Bullet = require('Bullet')

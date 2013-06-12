@@ -182,7 +182,7 @@ class BottomUI extends UIElement
     @container.enableEvents(true)
 
     @actionPointsIndicator = new APIndicator(@)
-    @actionPointsIndicator.setRemainingActionPoints(8)
+
 
     @revertTurnControll = new RevertTurnControll(@)
     @revertTurnControll.container.setLocation(@actionPointsIndicator.container.width - 1, 0)
@@ -194,6 +194,22 @@ class BottomUI extends UIElement
         @container.width - @revertTurnControll.container.x + @revertTurnControll.container.width
         @container.height
     )
+
+    self = @
+    setAp = (ap) ->
+      self.actionPointsIndicator.setRemainingActionPoints(ap)
+
+    currentAp = ->
+      self.game.turnManager.currentPlayer().get('ap')
+
+    radio('ew/game/next-turn').subscribe ->
+      setAp(currentAp())
+
+    @game.onready ->
+      for player in game.players
+        player.bindProperty 'ap', (changedValues) ->
+          if self.game.turnManager.currentPlayer() is this
+            self.actionPointsIndicator.setRemainingActionPoints(changedValues.ap.new)
 
 
 exports class UIRenderer extends require('Renderer')

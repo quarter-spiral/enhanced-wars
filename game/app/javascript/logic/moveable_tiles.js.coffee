@@ -5,7 +5,9 @@ exports class MoveableTiles
   constructor: (@map, @unit)->
     @initializeMarkers()
 
-    while @currentTile and @currentTile.cost <= @unit.get('mp') and @currentTile.cost isnt infinity
+    remainingAp = @map.get('game').turnManager.currentPlayer().get('ap')
+
+    while @currentTile and @currentTile.cost <= @unit.get('mp') and @unit.distanceTo(@currentTile.tile) < remainingAp and @currentTile.cost isnt infinity
       for tile in @currentTile.tile.neighbors()
         costOfCurrentTile = @costFor(@currentTile.tile)
         if @visitedTiles.indexOf(tile) < 0

@@ -15,7 +15,7 @@ class Unit extends Module
     @set(merge(defaultOptions, options))
 
     radio('ew/game/unit/selected').subscribe (selectedUnit) =>
-      @attack(selectedUnit) if @get('selected') and @canAttack(selectedUnit)
+      @attack(selectedUnit) if @get('selected') and @canAttack(selectedUnit) and @hasEnoughApToAttack() and !@get('fired')
 
       @select(false) if selectedUnit isnt @
 
@@ -25,7 +25,7 @@ class Unit extends Module
 
     radio('ew/game/next-turn').subscribe =>
       @set(hp: @specs().hp) if @get('hp') is undefined
-      @set(mp: @specs().mp)
+      @set(mp: @specs().mp, fired: false)
       @select(false)
 
   select: (newState) =>
@@ -42,6 +42,11 @@ class Unit extends Module
   moveTo: (mapTile) =>
     @select(false)
 
+    currentPlayer = @game().turnManager.currentPlayer()
+    remainingAp = currentPlayer.get('ap')
+    apCost = @distanceTo(mapTile)
+    return if remainingAp < apCost
+
     map = @get('map')
     return unless map.unitCanReach(@, mapTile)
 
@@ -50,11 +55,14 @@ class Unit extends Module
     return if movementCost > mp
 
     path = map.unitsPathTo(@, mapTile)
+
+    currentPlayer.deductAp(apCost)
     @set(position: mapTile.position(), mp: mp - movementCost, orientation: path[path.length - 1].orientation, move: path)
 
   canAttack: (enemy) =>
     return false unless enemy
     return false if enemy.get('faction') is @get('faction')
+    return false if @get('fired')
 
     @distanceTo(enemy) >= @specs().attackRange.min and @distanceTo(enemy) <= @specs().attackRange.max
 
@@ -63,6 +71,9 @@ class Unit extends Module
 
     Fight = require('Fight')
     fight = new Fight(attacker: @, enemy: enemy)
+
+    @set(fired: true)
+    @set(mp: 0) unless @specs().movesAndFires
 
   die: =>
     @set(dead: true)
@@ -101,6 +112,9 @@ class Unit extends Module
   player: =>
     faction = @get('faction')
     @game().players.detect (player) -> player.get('faction') is faction
+
+  hasEnoughApToAttack: =>
+    @player().get('ap') >= @specs().costs.fire
 
 
 exports Unit

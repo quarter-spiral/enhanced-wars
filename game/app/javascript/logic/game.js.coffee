@@ -1,6 +1,8 @@
 radio = require('radio')
 
 class Game
+  loadQueue: [],
+
   constructor: ->
     GameRenderer = require('GameRenderer')
     MapEditMapImporter = require('MapEditMapImporter')
@@ -11,8 +13,8 @@ class Game
     new GameRenderer(@)
 
     @players = [
-      new Player(faction: 0, color: '#a2c88e')
-      new Player(faction: 1, color: '#aa7092')
+      new Player(faction: 0, color: '#a2c88e', game: @)
+      new Player(faction: 1, color: '#aa7092', game: @)
     ]
 
     @turnManager = new TurnManager(@players)
@@ -38,6 +40,13 @@ class Game
     radio('ew/input/map/clicked').subscribe @mapClicked
 
     @turnManager.setTurn(0)
+
+    callback.apply(@) for callback in @loadQueue
+    @ready = true
+
+  onready: (callback) =>
+     return callback.apply(@) if @ready
+     @loadQueue.push callback
 
   unitClicked: (unit) =>
     unit.select()

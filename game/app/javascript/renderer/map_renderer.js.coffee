@@ -102,7 +102,7 @@ exports class MapRenderer extends require('Renderer')
       @map.eachTile (mapTile) =>
         enemy = @map.unitAt(mapTile.position())
         rendererTile = @tiles[mapTile.position().y][mapTile.position().x]
-        rendererTile.darkener.setVisible(!mapTile.canBeReachedBy(unit) and !unit.canAttack(enemy))
+        rendererTile.darkener.setVisible(!mapTile.canBeReachedBy(unit) and (!unit.canAttack(enemy) or !unit.hasEnoughApToAttack()))
 
     @TILE_OFFSET = TILE_OFFSET
 
