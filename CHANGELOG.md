@@ -1,5 +1,7 @@
 # 0.0.5 / Unreleased
 
+* Makes games winable
+* Adds points for attacks and captures
 * Adds drop zones
 * Adds support for new map format and updated units
 * Adds AP

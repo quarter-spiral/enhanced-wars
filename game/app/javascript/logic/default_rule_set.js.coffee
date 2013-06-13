@@ -2,6 +2,11 @@ infinity = 1 / 0
 
 exports class DefaultRuleSet
   apPerTurn: 20
+  pointsForWin: 30
+
+  rewards:
+    captureDropZone: 3
+    attack: 1
 
   terrainCosts:
     base:

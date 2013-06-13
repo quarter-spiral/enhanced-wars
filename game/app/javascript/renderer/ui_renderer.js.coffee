@@ -23,6 +23,8 @@ exports class UIRenderer extends require('Renderer')
 
     BottomUI = require('BottomUI')
     ShopUI = require('ShopUI')
+    PointsUI = require('PointsUI')
+    WinUI = require('WinUI')
 
     originalFindActorAtPosition = @container.findActorAtPosition
     container = @container
@@ -34,3 +36,5 @@ exports class UIRenderer extends require('Renderer')
     radio("ew/renderer/assets-loaded").subscribe ->
       self.bottomUI = new BottomUI(self, self.game, self.gameRenderer.director)
       self.shopUI = new ShopUI(self, self.game, self.gameRenderer.director)
+      self.pointsUI = new PointsUI(self, self.game, self.gameRenderer.director)
+      self.winUI = new WinUI(self, self.game, self.gameRenderer.director)
