@@ -26,16 +26,41 @@ TILE_TYPES =
   shallowwater: ['map/terrain/shallowwater.png']
   road: ['map/terrain/road_horizontal.png', 'map/terrain/road_vertical.png', 'map/terrain/road_left_down.png', 'map/terrain/road_left_up.png', 'map/terrain/road_right_up.png', 'map/terrain/road_right_down.png', 'map/terrain/road_cross.png']
 
+DROP_ZONE_TILES =
+  neutral: ['map/building/dropzone_neutral.png']
+  0: ['map/building/dropzone_faction_0.png']
+  1: ['map/building/dropzone_faction_1.png']
+
 class Layer
-  constructor: (@renderer, @layer) ->
-    image_id = TILE_TYPES[@layer.type][@layer.variant || 0]
+  constructor: (@renderer, @entity) ->
+    @actor = new CAAT.Foundation.Actor()
+    @setupImage()
+
+  setupImage: =>
+    image_id = @imagePool[@type()][@variant()]
 
     director = @renderer.gameRenderer.director
     @image = new CAAT.SpriteImage().initialize(director.getImage(image_id), 1, 1)
 
-    @actor = new CAAT.Foundation.Actor()
     @actor.setBackgroundImage(@image)
     @actor.setSize(TILE_DIMENSIONS.width, TILE_DIMENSIONS.height)
+
+  type: => @entity.type
+  variant: => @entity.variant || 0
+
+class TerrainLayer extends Layer
+  imagePool: TILE_TYPES
+
+class DropZoneLayer extends Layer
+  imagePool: DROP_ZONE_TILES
+
+  constructor: (@renderer, @entity) ->
+    super
+    @entity.bindProperty 'faction', @setupImage
+
+  type: =>
+    if @entity.get('faction') is null then 'neutral' else @entity.get('faction')
+  variant: =>  @entity.get('variant') || 0
 
 class Tile
   constructor: (@renderer, @tile) ->
@@ -55,7 +80,10 @@ class Tile
     @container.tile = @tile
 
     for layer in @tile.get('layers')
-      @container.addChild(new Layer(@renderer, layer).actor)
+      @container.addChild(new TerrainLayer(@renderer, layer).actor)
+
+    if dropZone = @tile.get('dropZone')
+      @container.addChild(new DropZoneLayer(@renderer, dropZone).actor)
 
     @darkener = new CAAT.Foundation.Actor()
         .setFillStyle('#000000')
@@ -90,6 +118,9 @@ exports class MapRenderer extends require('Renderer')
     "/assets/terrain/road_left_up.png"
     "/assets/terrain/road_right_down.png"
     "/assets/terrain/road_right_up.png"
+    "/assets/building/dropzone_faction_0.png"
+    "/assets/building/dropzone_faction_1.png"
+    "/assets/building/dropzone_neutral.png"
   ]
 
   id: "map"

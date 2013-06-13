@@ -27,6 +27,7 @@ exports class MapEditMapImporter
     Map  = require('Map')
     MapTile  = require('MapTile')
     Unit = require('Unit')
+    DropZone = require('DropZone')
 
     tiles = []
     units = []
@@ -37,7 +38,12 @@ exports class MapEditMapImporter
 
         type = tileTypeFor(spot)
         layers = [type: type, variant: spot.terrainVariant]
-        tiles[spot.y][spot.x] = new MapTile(position: spot, type: type, layers: layers, map: @map)
+        dropZone = null
+        if spot.building is 'dropzone'
+          faction = if spot.buildingFaction is "neutral" then null else spot.buildingFaction - 1
+          dropZone = new DropZone(faction: faction, variant: 0, position: spot)
+
+        tiles[spot.y][spot.x] = new MapTile(position: spot, type: type, layers: layers, map: @map, dropZone: dropZone)
 
         if unitType = unitTypeFor(spot)
           unit = new Unit(type: unitType, faction: spot.unitFaction, orientation: spot.unitOrientation, position: spot, map: @map)

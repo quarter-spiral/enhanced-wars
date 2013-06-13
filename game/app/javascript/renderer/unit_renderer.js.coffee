@@ -203,7 +203,13 @@ exports class UnitRenderer extends require('Renderer')
     radio('ew/renderer/assets-loaded').subscribe (renderer, images) ->
       renderer.loadUnits(renderer.units) if renderer.units
 
+    radio('ew/game/unit/bought').subscribe (unit) =>
+      @loadUnit(unit)
+
     @container.setParent(@gameRenderer.renderers.map.container)
+
+    @TILE_TYPES = TILE_TYPES
+    @TILE_SCALE = TILE_SCALE
 
   loadUnits: (units) =>
     @units = units
@@ -219,13 +225,18 @@ exports class UnitRenderer extends require('Renderer')
     )
 
     @tiles = []
+
+    @loadUnit(unit) for unit in units
+
+  loadUnit: (unit) =>
+    tile = new Tile(@, unit)
+    @container.addChild(tile.actor)
+    @tiles.push(tile)
+    @units.push(unit)
+
     self = @
-    for unit in units
-      tile = new Tile(self, unit)
-      self.container.addChild(tile.actor)
-      @tiles.push(tile)
-      unit.bindProperty 'dead', (changedValues) ->
-        self.removeUnit(this) unless this.isAlive()
+    unit.bindProperty 'dead', (changedValues) ->
+      self.removeUnit(this) unless this.isAlive()
 
   click: (e) =>
     for unit in @units

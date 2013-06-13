@@ -8,6 +8,14 @@ exports class MapTile extends Module
   constructor: (options) ->
     @set(options)
 
+    self = @
+    radio('ew/game/map/clicked').subscribe (mapTile) ->
+      game = self.get('map').get('game')
+      return if mapTile isnt self or (game.selectedUnit() or game.map.unitAt(self.position()))
+      if dropZone = self.get('dropZone') and self.get('dropZone').get('faction') is game.turnManager.currentPlayer().get('faction')
+        self.get('map').get('game').activeDropZone = self.get('dropZone')
+        radio('ew/game/shop/open').broadcast()
+
   neighbors: =>
     {x,y} = @position()
     neighbors = []

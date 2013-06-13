@@ -1,5 +1,7 @@
 # 0.0.5 / Unreleased
 
+* Adds drop zones
+* Adds support for new map format and updated units
 * Adds AP
 * Lets units become mortal
 * Adds fights

@@ -23,10 +23,15 @@ class Unit extends Module
       return unless @get('selected')
       @moveTo(mapTile)
 
-    radio('ew/game/next-turn').subscribe =>
+    resetAttributes = =>
       @set(hp: @specs().hp) if @get('hp') is undefined
       @set(mp: @specs().mp, fired: false)
       @select(false)
+
+    radio('ew/game/next-turn').subscribe =>
+      resetAttributes()
+
+    resetAttributes() if @game() and @game().ready
 
   select: (newState) =>
     stateToSet = newState
@@ -55,6 +60,8 @@ class Unit extends Module
     return if movementCost > mp
 
     path = map.unitsPathTo(@, mapTile)
+
+    dropZone.capturedBy(@) for tile in path when dropZone = tile.tile.get('dropZone')
 
     currentPlayer.deductAp(apCost)
     @set(position: mapTile.position(), mp: mp - movementCost, orientation: path[path.length - 1].orientation, move: path)
@@ -115,6 +122,5 @@ class Unit extends Module
 
   hasEnoughApToAttack: =>
     @player().get('ap') >= @specs().costs.fire
-
 
 exports Unit
