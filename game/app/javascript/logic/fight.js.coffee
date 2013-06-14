@@ -15,7 +15,8 @@ exports class Fight extends Module
     @attack(enemy, attacker) if enemy.isAlive() and enemy.canReturnFire() and enemy.canAttack(attacker)
     player = attacker.player()
     player.deductAp(attacker.specs().costs.fire)
-    player.scorePoints(player.get('game').ruleSet.rewards.attack)
+    player.scorePoints(player.get('game').ruleSet.rewards.attack) unless player.get('fired')
+    player.set(fired: true)
 
   attack: (attacker, enemy) =>
     Bullet = require('Bullet')

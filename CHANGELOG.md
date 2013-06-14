@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Adds streaks
 * Makes games winable
 * Adds points for attacks and captures
 * Adds drop zones

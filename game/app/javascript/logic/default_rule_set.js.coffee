@@ -7,6 +7,16 @@ exports class DefaultRuleSet
   rewards:
     captureDropZone: 3
     attack: 1
+    streak: (streak) ->
+      switch streak
+        when 0
+          0
+        when 1
+          1
+        when 2
+          3
+        else
+          5
 
   terrainCosts:
     base:

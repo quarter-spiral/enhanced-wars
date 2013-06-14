@@ -6,7 +6,6 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @container.enableEvents(true)
       @container.setVisible(false)
 
-      player =
       @background = new CAAT.Foundation.ActorContainer().
           setSize(@container.width / 2, @container.height / 2).
           centerAt(@container.width / 2, @container.height / 2)
