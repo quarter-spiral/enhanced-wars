@@ -3,6 +3,7 @@ TILE_TYPES =
   dessert: 'desert'
   deepWater: 'deepwater'
   shallowWater: 'shallowwater'
+  pineForrest: 'pineforrest'
 
 UNIT_TYPES =
   none: null
