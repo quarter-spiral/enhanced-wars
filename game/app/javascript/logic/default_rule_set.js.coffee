@@ -34,6 +34,10 @@ exports class DefaultRuleSet
       default: 5
       light: 2
       naval: infinity
+    pineforrest:
+      default: 4
+      light: 2
+      naval: infinity
     mountain:
       default: infinity
       naval: infinity

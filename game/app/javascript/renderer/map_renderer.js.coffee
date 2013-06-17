@@ -32,6 +32,24 @@ DROP_ZONE_TILES =
   0: ['map/building/dropzone_faction_0.png']
   1: ['map/building/dropzone_faction_1.png']
 
+class DummyTile
+  constructor: (@renderer, x, y) ->
+    @container = new CAAT.Foundation.ActorContainer()
+
+    director = @renderer.gameRenderer.director
+    image = new CAAT.SpriteImage().initialize(director.getImage('map/terrain/base.png'), 1, 1)
+    @container.setSize(TILE_DIMENSIONS.width, TILE_DIMENSIONS.height).
+        setBackgroundImage(image)
+    @container.scaleTX = 0
+    @container.scaleTY = 0
+    @container.setScale(TILE_SCALE.width, TILE_SCALE.height)
+    @container.setGlobalAlpha true
+
+    @container.setLocation(
+        (x) * TILE_DIMENSIONS.width * TILE_SCALE.width + ((x) * TILE_OFFSET.x),
+        (y) * TILE_DIMENSIONS.height * TILE_SCALE.height + ((y) * TILE_OFFSET.y)
+    )
+
 class Layer
   constructor: (@renderer, @entity) ->
     @actor = new CAAT.Foundation.Actor()
@@ -75,8 +93,8 @@ class Tile
 
     {x,y} = @tile.position()
     @container.setLocation(
-        x * TILE_DIMENSIONS.width * TILE_SCALE.width + (x * TILE_OFFSET.x),
-        y * TILE_DIMENSIONS.height * TILE_SCALE.height + (y * TILE_OFFSET.y)
+        (x + 1) * TILE_DIMENSIONS.width * TILE_SCALE.width + ((x + 1) * TILE_OFFSET.x),
+        (y + 1) * TILE_DIMENSIONS.height * TILE_SCALE.height + ((y + 1) * TILE_OFFSET.y)
     )
     @container.tile = @tile
 
@@ -158,8 +176,8 @@ exports class MapRenderer extends require('Renderer')
     @container.emptyChildren()
     @container.setLocation(TILE_OFFSET.x, TILE_OFFSET.y)
     @container.setSize(
-        map.dimensions().width * TILE_DIMENSIONS.width * TILE_SCALE.width + (map.dimensions().width * TILE_OFFSET.x),
-        map.dimensions().height * TILE_DIMENSIONS.height * TILE_SCALE.height + (map.dimensions().height * TILE_OFFSET.y)
+        (map.dimensions().width + 2) * TILE_DIMENSIONS.width * TILE_SCALE.width + ((map.dimensions().width + 2) * TILE_OFFSET.x),
+        (map.dimensions().height + 2) * TILE_DIMENSIONS.height * TILE_SCALE.height + ((map.dimensions().height + 2) * TILE_OFFSET.y)
     )
 
     self = @
@@ -171,11 +189,23 @@ exports class MapRenderer extends require('Renderer')
       self.tiles[y][x] = tile
       self.container.addChild(tile.container)
 
+    for x in [0..map.dimensions().width + 1]
+      dummyTileTop = new DummyTile(self, x, 0)
+      self.container.addChild(dummyTileTop.container)
+      dummyTileBottom = new DummyTile(self, x, map.dimensions().height + 1)
+      self.container.addChild(dummyTileBottom.container)
+
+    for y in [1..map.dimensions().width]
+      dummyTileLeft = new DummyTile(self, 0, y)
+      self.container.addChild(dummyTileLeft.container)
+      dummyTileRight = new DummyTile(self, map.dimensions().width + 1, y)
+      self.container.addChild(dummyTileRight.container)
+
     radio('ew/game/map/loaded').broadcast()
 
   screenToMapCoordinates: (screenCoordinates) =>
-    x: Math.floor((screenCoordinates.x + TILE_OFFSET.x) / (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x))
-    y: Math.floor((screenCoordinates.y + TILE_OFFSET.y) / (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y))
+    x: Math.floor((screenCoordinates.x + TILE_OFFSET.x) / (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x)) - 1
+    y: Math.floor((screenCoordinates.y + TILE_OFFSET.y) / (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y)) - 1
 
   click: (e) ->
     tile = @tiles[e.tile.y][e.tile.x]

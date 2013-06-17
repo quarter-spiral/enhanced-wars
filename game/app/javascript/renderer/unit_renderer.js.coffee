@@ -64,8 +64,8 @@ class Tile
     toMapCoordinates = (position) =>
       {x,y} = position
 
-      x: x * TILE_DIMENSIONS.width * TILE_SCALE.width + (y * MAP_TILE_OFFSET.x) + TILE_OFFSET.x
-      y: y * TILE_DIMENSIONS.height * TILE_SCALE.height + (y * MAP_TILE_OFFSET.y) + TILE_OFFSET.y
+      x: (x + 1) * TILE_DIMENSIONS.width * TILE_SCALE.width + ((x + 1) * MAP_TILE_OFFSET.x) + TILE_OFFSET.x
+      y: (y + 1) * TILE_DIMENSIONS.height * TILE_SCALE.height + ((y + 1) * MAP_TILE_OFFSET.y) + TILE_OFFSET.y
 
     pathBehaviour = null
 

@@ -11,12 +11,19 @@ exports class GameRenderer
     width: 960
     height: 640
 
-  MAP_DIMENSIONS =
-    width: 640
-    height: 480
-
   constructor: (@game) ->
     self = @
+
+    # windowWidth = window.innerWidth
+#     windowHeight = window.innerHeight
+#     if windowWidth / 1.5 > windowHeight
+#       windowWidth = windowHeight * 1.5
+#     else
+#       windowHeight = windowWidth / 1.5
+#
+#     console.log(windowWidth, windowHeight)
+#     CANVAS_DIMENSIONS.width = windowWidth
+#     CANVAS_DIMENSIONS.height = windowHeight
 
     CAAT.Module.Initialization.TemplateWithSplash.init(
       # canvas will be 800x600 pixels
@@ -53,7 +60,7 @@ exports class GameRenderer
         self.scene = container
 
         self.mapContainer = new CAAT.Foundation.ActorContainer().
-            setSize(MAP_DIMENSIONS.width, MAP_DIMENSIONS.height).
+            setSize(CANVAS_DIMENSIONS.width, CANVAS_DIMENSIONS.height).
             setClip(true)
         container.addChild(self.mapContainer)
         self.mapContainer.centerAt(CANVAS_DIMENSIONS.width / 2, CANVAS_DIMENSIONS.height / 2)
