@@ -23,7 +23,7 @@ exports class Map extends Module
     height: @get('height')
 
   tileAt: (x, y) =>
-    {x,y} = x unless y
+    {x,y} = x if y is undefined
 
     @get('tiles')[y][x]
 
@@ -37,7 +37,7 @@ exports class Map extends Module
       y++
 
   unitAt: (x, y) =>
-    {x,y} = x unless y
+    {x,y} = x if y is undefined
     @get('game').units.detect (unit) -> unit.isAtPosition(x: x, y: y)
 
   unitCanReach: (unit, mapTile) =>

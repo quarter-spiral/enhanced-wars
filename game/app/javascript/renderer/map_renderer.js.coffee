@@ -67,6 +67,7 @@ class Layer
 
     @actor.setBackgroundImage(@image)
     @actor.setSize(TILE_DIMENSIONS.width, TILE_DIMENSIONS.height)
+    @renderer.cache()
 
   type: => @entity.type
   variant: => @entity.variant || 0
@@ -117,6 +118,7 @@ class Tile
 
     radio('ew/game/unit/unselected').subscribe (unit) =>
       @darkener.setVisible(false)
+      @renderer.cache()
 
 
 exports class MapRenderer extends require('Renderer')
@@ -170,12 +172,15 @@ exports class MapRenderer extends require('Renderer')
         enemy = @map.unitAt(mapTile.position())
         rendererTile = @tiles[mapTile.position().y][mapTile.position().x]
         rendererTile.darkener.setVisible(!mapTile.canBeReachedBy(unit) and (!unit.canAttack(enemy) or !unit.hasEnoughApToAttack()))
+      @cache()
 
     @TILE_OFFSET = TILE_OFFSET
 
   loadMap: (map) =>
     @map = map
     return map unless @ready
+
+    @disableCaching = true
 
     @border =
       x: Math.ceil(((@parent.width * 1.0 / MAP_FACTOR.width) - map.dimensions().width) / 2)
@@ -205,17 +210,22 @@ exports class MapRenderer extends require('Renderer')
       for y in [0...self.border.y]
         dummyTileTop = new DummyTile(self, x, y)
         self.container.addChild(dummyTileTop.container)
-        dummyTileBottom = new DummyTile(self, x, map.dimensions().height + 1 + y)
+        dummyTileBottom = new DummyTile(self, x, map.dimensions().height + self.border.y + y)
         self.container.addChild(dummyTileBottom.container)
 
-    for y in [1..map.dimensions().width]
+    for y in [0...map.dimensions().width]
       for x in [0...self.border.x]
-        dummyTileLeft = new DummyTile(self, x, y)
+        dummyTileLeft = new DummyTile(self, x, y + self.border.y)
         self.container.addChild(dummyTileLeft.container)
-        dummyTileRight = new DummyTile(self, map.dimensions().width + self.border.x + x, y)
+        dummyTileRight = new DummyTile(self, map.dimensions().width + self.border.x + x, y + self.border.y)
         self.container.addChild(dummyTileRight.container)
 
+    @disableCaching = false
+    @cache()
     radio('ew/game/map/loaded').broadcast()
+
+  cache: =>
+    return
 
   screenToMapCoordinates: (screenCoordinates) =>
     x: Math.floor(screenCoordinates.x / MAP_FACTOR.width) - @border.x
