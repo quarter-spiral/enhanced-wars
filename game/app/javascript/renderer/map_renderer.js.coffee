@@ -16,8 +16,8 @@ TILE_OFFSET = {
 }
 
 MAP_FACTOR =
-  width: (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x)
-  height: (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y)
+  width: (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x) - 2
+  height: (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y) - 1
 
 TILE_TYPES =
   base: ['map/terrain/base.png']
@@ -218,8 +218,8 @@ exports class MapRenderer extends require('Renderer')
     radio('ew/game/map/loaded').broadcast()
 
   screenToMapCoordinates: (screenCoordinates) =>
-    x: Math.floor((screenCoordinates.x + TILE_OFFSET.x) / (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x)) - @border.x
-    y: Math.floor((screenCoordinates.y + TILE_OFFSET.y) / (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y)) - @border.y
+    x: Math.floor(screenCoordinates.x / MAP_FACTOR.width) - @border.x
+    y: Math.floor(screenCoordinates.y / MAP_FACTOR.height) - @border.y
 
   click: (e) ->
     tile = @tiles[e.tile.y][e.tile.x]

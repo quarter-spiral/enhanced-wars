@@ -23,8 +23,8 @@ OVERALL_OFFSET = {
 }
 
 MAP_FACTOR =
-  width: (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x)
-  height: (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y)
+  width: (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x) - 2
+  height: (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y) - 1
 
 TILE_TYPES =
   heavytank: ['ht']

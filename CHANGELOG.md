@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Renders maps the same as in the map editor
 * Makes custom maps loadable
 * Centers map nicely
 * Improves sizing, adds border
