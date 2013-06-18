@@ -14,8 +14,17 @@ MAP_TILE_OFFSET = null
 
 TILE_OFFSET = {
   x: 0
+  y: -16
+}
+
+OVERALL_OFFSET = {
+  x: 0
   y: 10
 }
+
+MAP_FACTOR =
+  width: (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x)
+  height: (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y)
 
 TILE_TYPES =
   heavytank: ['ht']
@@ -64,8 +73,10 @@ class Tile
     toMapCoordinates = (position) =>
       {x,y} = position
 
-      x: (x + 1) * TILE_DIMENSIONS.width * TILE_SCALE.width + ((x + 1) * MAP_TILE_OFFSET.x) + TILE_OFFSET.x
-      y: (y + 1) * TILE_DIMENSIONS.height * TILE_SCALE.height + ((y + 1) * MAP_TILE_OFFSET.y) + TILE_OFFSET.y
+      border = @renderer.mapRenderer.border
+
+      x: (x + border.x) * MAP_FACTOR.width + OVERALL_OFFSET.x
+      y: (y + border.y) * MAP_FACTOR.height + OVERALL_OFFSET.y
 
     pathBehaviour = null
 
@@ -194,7 +205,9 @@ exports class UnitRenderer extends require('Renderer')
   constructor: ->
     super
 
-    MAP_TILE_OFFSET = @gameRenderer.renderers.map.TILE_OFFSET
+    @mapRenderer = @gameRenderer.renderers.map
+
+    MAP_TILE_OFFSET = @mapRenderer.TILE_OFFSET
 
     renderer = @
     radio('ew/game/map/load').subscribe ->
@@ -219,9 +232,11 @@ exports class UnitRenderer extends require('Renderer')
 
     @container.emptyChildren()
     @container.setLocation(MAP_TILE_OFFSET.x, MAP_TILE_OFFSET.y)
+
+    border = @mapRenderer.border
     @container.setSize(
-        map.dimensions().width * TILE_DIMENSIONS.width * TILE_SCALE.width + (map.dimensions().width * MAP_TILE_OFFSET.x),
-        map.dimensions().height * TILE_DIMENSIONS.height * TILE_SCALE.height + (map.dimensions().height * MAP_TILE_OFFSET.y)
+        (map.dimensions().width + (border.x * 2)) * MAP_FACTOR.width
+        (map.dimensions().height + (border.y * 2)) * MAP_FACTOR.height
     )
 
     @tiles = []

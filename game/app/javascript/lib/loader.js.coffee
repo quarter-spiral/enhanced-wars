@@ -36,14 +36,26 @@ checkForSacrificedNeeds = ->
   checkForSacrificedNeeds()
   exportedObjects[name]
 
-@define = (fn) ->
-  fn = fn()
-  name = extractNameFromFunction(fn)
-  exportedObjects[name] = fn
-  checkForSacrificedNeeds()
-  fn
+@define = () ->
+  switch arguments.length
+    when 1
+      fn = arguments[0]()
+      name = extractNameFromFunction(fn)
+      exportedObjects[name] = fn
+      checkForSacrificedNeeds()
+      return fn
+    when 2
+      return @needs(arguments[0], arguments[1])
+    when 3
+      args = [arguments[1]]
+      name = arguments[0]
+      module = arguments[2]
+      args.push ->
+        fn = -> module.apply(this, arguments)
+        exports(name, fn())
+      @needs.apply(this, args)
 
-@define.amd = {}
+@define.amd = {jQuery: true}
 
 @require = (name) ->
   exportedObjects[name]

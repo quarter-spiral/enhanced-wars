@@ -15,6 +15,10 @@ TILE_OFFSET = {
   y: -16
 }
 
+MAP_FACTOR =
+  width: (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x)
+  height: (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y)
+
 TILE_TYPES =
   base: ['map/terrain/base.png']
   deepwater: ['map/terrain/deepwater.png']
@@ -46,8 +50,8 @@ class DummyTile
     @container.setGlobalAlpha true
 
     @container.setLocation(
-        (x) * TILE_DIMENSIONS.width * TILE_SCALE.width + ((x) * TILE_OFFSET.x),
-        (y) * TILE_DIMENSIONS.height * TILE_SCALE.height + ((y) * TILE_OFFSET.y)
+      x * MAP_FACTOR.width
+      y * MAP_FACTOR.height
     )
 
 class Layer
@@ -93,8 +97,8 @@ class Tile
 
     {x,y} = @tile.position()
     @container.setLocation(
-        (x + 1) * TILE_DIMENSIONS.width * TILE_SCALE.width + ((x + 1) * TILE_OFFSET.x),
-        (y + 1) * TILE_DIMENSIONS.height * TILE_SCALE.height + ((y + 1) * TILE_OFFSET.y)
+        (x + @renderer.border.x) * MAP_FACTOR.width
+        (y + @renderer.border.y) * MAP_FACTOR.height
     )
     @container.tile = @tile
 
@@ -173,11 +177,19 @@ exports class MapRenderer extends require('Renderer')
     @map = map
     return map unless @ready
 
+    @border =
+      x: Math.ceil(((@parent.width * 1.0 / MAP_FACTOR.width) - map.dimensions().width) / 2)
+      y: Math.ceil(((@parent.height * 1.0 / MAP_FACTOR.height) - map.dimensions().height) / 2)
+
+    @border.x = 1 if @border.x < 1
+    @border.y = 1 if @border.y < 1
+
     @container.emptyChildren()
     @container.setLocation(TILE_OFFSET.x, TILE_OFFSET.y)
+
     @container.setSize(
-        (map.dimensions().width + 2) * TILE_DIMENSIONS.width * TILE_SCALE.width + ((map.dimensions().width + 2) * TILE_OFFSET.x),
-        (map.dimensions().height + 2) * TILE_DIMENSIONS.height * TILE_SCALE.height + ((map.dimensions().height + 2) * TILE_OFFSET.y)
+        (map.dimensions().width + (@border.x * 2)) * MAP_FACTOR.width
+        (map.dimensions().height + (@border.y * 2)) * MAP_FACTOR.height
     )
 
     self = @
@@ -189,23 +201,25 @@ exports class MapRenderer extends require('Renderer')
       self.tiles[y][x] = tile
       self.container.addChild(tile.container)
 
-    for x in [0..map.dimensions().width + 1]
-      dummyTileTop = new DummyTile(self, x, 0)
-      self.container.addChild(dummyTileTop.container)
-      dummyTileBottom = new DummyTile(self, x, map.dimensions().height + 1)
-      self.container.addChild(dummyTileBottom.container)
+    for x in [0..map.dimensions().width + (self.border.x * 2)]
+      for y in [0...self.border.y]
+        dummyTileTop = new DummyTile(self, x, y)
+        self.container.addChild(dummyTileTop.container)
+        dummyTileBottom = new DummyTile(self, x, map.dimensions().height + 1 + y)
+        self.container.addChild(dummyTileBottom.container)
 
     for y in [1..map.dimensions().width]
-      dummyTileLeft = new DummyTile(self, 0, y)
-      self.container.addChild(dummyTileLeft.container)
-      dummyTileRight = new DummyTile(self, map.dimensions().width + 1, y)
-      self.container.addChild(dummyTileRight.container)
+      for x in [0...self.border.x]
+        dummyTileLeft = new DummyTile(self, x, y)
+        self.container.addChild(dummyTileLeft.container)
+        dummyTileRight = new DummyTile(self, map.dimensions().width + self.border.x + x, y)
+        self.container.addChild(dummyTileRight.container)
 
     radio('ew/game/map/loaded').broadcast()
 
   screenToMapCoordinates: (screenCoordinates) =>
-    x: Math.floor((screenCoordinates.x + TILE_OFFSET.x) / (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x)) - 1
-    y: Math.floor((screenCoordinates.y + TILE_OFFSET.y) / (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y)) - 1
+    x: Math.floor((screenCoordinates.x + TILE_OFFSET.x) / (TILE_DIMENSIONS.width * TILE_SCALE.width + TILE_OFFSET.x)) - @border.x
+    y: Math.floor((screenCoordinates.y + TILE_OFFSET.y) / (TILE_DIMENSIONS.height * TILE_SCALE.height + TILE_OFFSET.y)) - @border.y
 
   click: (e) ->
     tile = @tiles[e.tile.y][e.tile.x]

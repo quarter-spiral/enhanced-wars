@@ -1,4 +1,5 @@
 radio = require('radio')
+$ = require('jquery')
 
 @CAAT.DEBUG = true
 
@@ -8,25 +9,24 @@ exports class GameRenderer
     y: 0
 
   CANVAS_DIMENSIONS =
-    width: 960
-    height: 640
+    minimum:
+      width: 960
+      height: 640
 
   constructor: (@game) ->
     self = @
 
-    # windowWidth = window.innerWidth
-#     windowHeight = window.innerHeight
-#     if windowWidth / 1.5 > windowHeight
-#       windowWidth = windowHeight * 1.5
-#     else
-#       windowHeight = windowWidth / 1.5
-#
-#     console.log(windowWidth, windowHeight)
-#     CANVAS_DIMENSIONS.width = windowWidth
-#     CANVAS_DIMENSIONS.height = windowHeight
+    win = $(window)
+    windowWidth = win.width()
+    windowWidth = CANVAS_DIMENSIONS.minimum.width if windowWidth < CANVAS_DIMENSIONS.minimum.width
+    windowHeight = win.height() - 50
+    windowHeight = CANVAS_DIMENSIONS.minimum.height if windowHeight < CANVAS_DIMENSIONS.minimum.height
+
+    CANVAS_DIMENSIONS =
+      width: windowWidth
+      height: windowHeight
 
     CAAT.Module.Initialization.TemplateWithSplash.init(
-      # canvas will be 800x600 pixels
       CANVAS_DIMENSIONS.width, CANVAS_DIMENSIONS.height,
 
       # and will be added to the end of document. set an id of a canvas or div element
@@ -44,6 +44,9 @@ exports class GameRenderer
       # onEndSplash callback function.
       # Create your scenes on this method.
       (director) ->
+        div = $('#game')
+        div.css('margin-left': "#{-0.5 * div.width()}px", 'margin-top': "#{-0.5 * div.height()}px")
+
         self.preloader = new CAAT.Module.Preloader.Preloader()
 
         self.director = director
