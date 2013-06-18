@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Makes custom maps loadable
 * Centers map nicely
 * Improves sizing, adds border
 * Adds streaks

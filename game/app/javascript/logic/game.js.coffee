@@ -3,12 +3,32 @@ radio = require('radio')
 class Game
   loadQueue: [],
 
-  constructor: ->
+  constructor: (options)->
+    mapToLoad = options.map
+
+    if mapToLoad
+      $ = require('jquery')
+      mapUrl = "https://mapEdit.firebaseio.com/v2/maps/#{mapToLoad}.json"
+
+      self = @
+      $.ajax(url: mapUrl, dataType: 'jsonp').
+          done((data) ->
+            self.init(data.map)
+          ).
+          fail(->
+            console.log("could not load map :/", mapToLoad)
+          )
+    else
+      json = require('dummy-map')
+      @init(json)
+
+  init: (mapData) =>
     GameRenderer = require('GameRenderer')
-    MapEditMapImporter = require('MapEditMapImporter')
+
     Player = require('Player')
     TurnManager = require('TurnManager')
     DefaultRuleSet = require('DefaultRuleSet')
+    MapEditMapImporter = require('MapEditMapImporter')
 
     @gameRenderer = new GameRenderer(@)
 
@@ -21,9 +41,7 @@ class Game
 
     @ruleSet = new DefaultRuleSet()
 
-    json = require('dummy-map')
-    imported = new MapEditMapImporter(json, @)
-
+    imported = new MapEditMapImporter(mapData, @)
     @map   = imported.map
     @units = []
     @addUnit(unit) for unit in imported.units
