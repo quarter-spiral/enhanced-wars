@@ -33,6 +33,7 @@ exports class Player extends Module
     Unit = require('Unit')
     game = @get('game')
     unit = new Unit(type: unitType, faction: @get('faction'), orientation: 'down', position: game.activeDropZone.position(), map: game.map)
+    unit.set(mp: 0)
     game.addUnit(unit)
     @set(ap: @get('ap') - @apToCreateUnit(unitType))
     radio('ew/game/unit/bought').broadcast(unit)

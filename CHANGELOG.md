@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Prohibits newly created units to move
 * Renders maps the same as in the map editor
 * Makes custom maps loadable
 * Centers map nicely
