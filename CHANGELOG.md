@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Turns off debugging panel
 * Makes game playable when logged in only
 * Fixes border rendering for small maps
 * Prohibits newly created units to move
