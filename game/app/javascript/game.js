@@ -24,6 +24,20 @@ function gup(name) {
 var mapToLoad = gup('m');
 
 $(function() {
-  var Game = require('Game');
-  window.game = new Game({map: mapToLoad});
+  QS.setup().then(function (qs) {
+    $('#loading').hide();
+    qs.retrievePlayerInfo().then(function (player) {
+      var Game = require('Game');
+      window.game = new Game({map: mapToLoad});
+    }, function(error) {
+      throw(error.message);
+    });
+  }, function(error) {
+    if (error.message === 'Not logged in') {
+      $('#loading').hide();
+      $('#must-be-logged-in').show();
+    } else {
+      throw(error.message);
+    }
+  });
 });

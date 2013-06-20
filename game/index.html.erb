@@ -1,10 +1,19 @@
 <html>
 <head>
   <title>Enhanced Wars (alpha)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <% sdk_url = ENV['QS_SDK_URL'] || 'http://localhost:8192' %>
+  <script src="<%= sdk_url %>/javascripts/sdk.js" type="text/javascript"></script>
+
   <script src="<%= asset_path('/app/javascript/game.js') %>"></script>
   <link rel="stylesheet" href="<%= asset_path('/app/stylesheet/game.css') %>"></link>
 </head>
 <body>
+  <div id="loading">Loading…</div>
+  <div id="must-be-logged-in">
+    <p>Please log in to play</p>
+    <p>Enhanced Wars</p>
+  </div>
   <canvas id="game"></canvas>
 </body>
 </html>
