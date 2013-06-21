@@ -11,21 +11,21 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
           enableEvents(false)
 
       @pointsLabel = new CAAT.TextActor().
-          setFont('24px sans-serif').
+          setFont('20px sans-serif').
           setText(@game.ruleSet.pointsForWin).
           setTextFillStyle('#ffffff').
           setTextAlign("center")
 
       @container.addChild(@pointsLabel)
-      @pointsLabel.centerAt(@container.width / 2, @pointsLabel.height / 2)
+      @pointsLabel.centerAt(@container.width / 2, @pointsLabel.height / 1.8)
 
       @subtitleLabel = new CAAT.TextActor().
-          setFont('12px sans-serif').
-          setText("wins").
+          setFont('10px sans-serif').
+          setText("WINS").
           setTextFillStyle('#ffffff').
           setTextAlign("center")
       @container.addChild(@subtitleLabel)
-      @subtitleLabel.centerAt(@container.width / 2, @pointsLabel.height + @subtitleLabel.height / 2 - 2)
+      @subtitleLabel.centerAt(@container.width / 2, @pointsLabel.height + @subtitleLabel.height / 1.5 - 2)
 
   class PointBarContainer extends UIElement
     constructor: ->
@@ -55,17 +55,20 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       height: 30
 
     MARGIN =
-      x: -10
+      x: -5
+
+    LINE =
+      width: 3
 
     constructor: ->
       super
 
       @container.setFillStyle(@parent.container.fillStyle).
         setSize(DIMENSIONS.width, DIMENSIONS.height).
-        setLocation(@parent.container.x - DIMENSIONS.width + MARGIN.x, -1 * DIMENSIONS.height)
+        setLocation(@parent.container.x - DIMENSIONS.width + MARGIN.x, -1 * DIMENSIONS.height + LINE.width)
 
       @label = new CAAT.TextActor().
-          setFont('24px sans-serif').
+          setFont('20px sans-serif').
           setText(@game.ruleSet.pointsForWin).
           setTextFillStyle('#ffffff').
           setTextAlign("center")
@@ -75,13 +78,14 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @label.setLocation(@container.width / 2, @container.height / 2 - @label.height / 2)
 
       line = new CAAT.Foundation.Actor().
-          setSize(@container.width + MARGIN.x + @parent.container.width, 1).
+          setSize(MARGIN.x * -1, LINE.width).
           setFillStyle(@container.fillStyle)
       @container.addChild(line)
-      line.setLocation(0, @container.height)
+      line.setLocation(@container.width, @container.height - LINE.width)
 
       @parent.player.bindProperty 'points', (changedValues) =>
         @label.setText(changedValues.points.new)
+
 
   class PointBar extends UIElement
     constructor: (@parent, @player) ->

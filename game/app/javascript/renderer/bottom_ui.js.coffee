@@ -104,7 +104,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @arrow = new CAAT.Foundation.Actor().
           setBackgroundImage(new CAAT.SpriteImage().initialize(@director.getImage("ui/ui/undo.png"), 1, 1))
       @container.addChild(@arrow)
-      @arrow.centerAt(@container.width / 2, @container.height / 2)
+      @arrow.centerAt(Math.floor(@container.width / 2), Math.floor(@container.height / 2))
 
       @text = new CAAT.TextActor().
           setFont("#{FONT_SIZE}px sans-serif").
@@ -129,7 +129,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @arrow = new CAAT.Foundation.Actor().
           setBackgroundImage(new CAAT.SpriteImage().initialize(@director.getImage("ui/ui/end_turn.png"), 1, 1))
       @container.addChild(@arrow)
-      @arrow.setLocation(10, @container.height / 2 - @arrow.height / 2 + 2).
+      @arrow.setLocation(10, Math.floor(@container.height / 2 - @arrow.height / 2) + 2).
           enableEvents(false)
 
       @label = new CAAT.TextActor().
@@ -159,7 +159,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
   exports class BottomUI extends UIElement
     DIMENSIONS = {
-      width: 580
+      width: 620
       height: 50
     }
 

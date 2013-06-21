@@ -78,7 +78,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       super
 
       @container.enableEvents(true).
-          setVisible(true).
+          setVisible(false).
           setFillStyle('#575757').
           setClip(true).
           setSize(DIMENSIONS.width, DIMENSIONS.height).
@@ -100,6 +100,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
         for player in @game.players
           player.bindProperty 'fired', (changedValues) ->
             if this is self.game.turnManager.currentPlayer()
+              self.container.setVisible(true)
               self.aggressionLabel.activate()
 
           player.bindProperty 'streak', (changedValues) ->
@@ -123,6 +124,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
         @knockOutLabel.deactivate()
         @doubleDownLabel.deactivate()
         @tripleThreatLabel.deactivate()
+        @container.setVisible(false)
 
       @container.mouseEnter = =>
         @container.setSize(EXPANDED_DIMENSIONS.width, EXPANDED_DIMENSIONS.height).
