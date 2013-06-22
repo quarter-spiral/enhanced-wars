@@ -5,6 +5,7 @@
 
 # 0.0.5 / Unreleased
 
+* Adds QS debug panel
 * Turns off debugging panel
 * Makes game playable when logged in only
 * Fixes border rendering for small maps

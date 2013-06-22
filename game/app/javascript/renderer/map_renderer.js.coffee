@@ -232,7 +232,10 @@ exports class MapRenderer extends require('Renderer')
     y: Math.floor(screenCoordinates.y / MAP_FACTOR.height) - @border.y
 
   click: (e) ->
-    tile = @tiles[e.tile.y][e.tile.x]
-    return true unless tile
+    tile = null
+    tile = @tiles[e.tile.y][e.tile.x] if e.tile.x >= 0 and e.tile.y >= 0
+    unless tile
+      @game.toggleDebug() if e.tile.x is -1 and e.tile.y is -1
+      return true
     radio('ew/input/map/clicked').broadcast(tile.tile)
     false

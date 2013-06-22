@@ -66,3 +66,36 @@ $gameHeight: 640px;
    margin-left: -0.5 * $gameWidth;
    margin-top: -0.5 * $gameHeight;
 }
+
+#ew-debug-panel {
+  display: none;
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  left: 50%;
+  top: 50%;
+  margin-left: -200px;
+  margin-top: -200px;
+
+  background: #fef8ea;
+  border: 1px solid #7a827e;
+  color: #7a827e;
+  font-family: sans-serif;
+  padding: 5px;
+
+  h1, h2, h3, h4 {
+    color: #ff6660;
+  }
+
+  .ew-debug & {
+    display: block;
+  }
+
+  .no-local-rules, .local-rules {
+    display: none;
+  }
+
+  #default-local-rules {
+    display: none;
+  }
+}

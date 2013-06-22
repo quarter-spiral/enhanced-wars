@@ -27,7 +27,6 @@ class Game
 
     Player = require('Player')
     TurnManager = require('TurnManager')
-    DefaultRuleSet = require('DefaultRuleSet')
     MapEditMapImporter = require('MapEditMapImporter')
 
     @gameRenderer = new GameRenderer(@)
@@ -39,13 +38,18 @@ class Game
 
     @turnManager = new TurnManager(@players)
 
-    @ruleSet = new DefaultRuleSet()
+    if (!window.localStorage) or (window.localStorage.getItem("EWRules") is undefined) or (window.localStorage.getItem("EWRules") is null)
+      DefaultRuleSet = require('DefaultRuleSet')
+      @ruleSet = new DefaultRuleSet()
+    else
+      eval(window.localStorage.getItem("EWRules"));
+      LocalRuleSet = require('LocalRuleSet')
+      @ruleSet = LocalRuleSet
 
     imported = new MapEditMapImporter(mapData, @)
     @map   = imported.map
     @units = []
     @addUnit(unit) for unit in imported.units
-
 
     radio("ew/renderer/assets-loaded").subscribe (renderer, images) ->
       setTimeout(->
@@ -83,5 +87,10 @@ class Game
 
   mapClicked: (mapTile) =>
     radio('ew/game/map/clicked').broadcast(mapTile)
+
+  toggleDebug: =>
+
+    jQuery = require('jquery')
+    jQuery('body').toggleClass('ew-debug')
 
 exports Game
