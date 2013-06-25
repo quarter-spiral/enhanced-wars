@@ -3,7 +3,6 @@ infinity = 1 / 0
 exports class DefaultRuleSet
   apPerTurn: 20
   pointsForWin: 30
-
   rewards:
     captureDropZone: 3
     attack: 1
@@ -21,143 +20,183 @@ exports class DefaultRuleSet
   terrainCosts:
     base:
       default: infinity
+
     deepwater:
       default: infinity
       naval: 3
+
     desert:
-      default: 4
+      default: 5
       naval: infinity
+
     factory:
       default: 2
       naval: infinity
+
     forrest:
-      default: 5
-      light: 2
+      default: 4
+
+      #light: 2,
       naval: infinity
+
     pineforrest:
       default: 4
-      light: 2
+
+      #light: 2,
       naval: infinity
+
     mountain:
-      default: infinity
+      default: 6
       naval: infinity
-      infantry: 6
+
+
+    #infantry: 6
     plain:
-      default: 2
+      default: 3
       naval: infinity
+
     shallowwater:
       default: infinity
       naval: 5
+
     road:
       naval: infinity
-      default: 1
+      default: 2
 
   bulletSpecs:
     default:
-      accuracy: 0.8
+      accuracy: 0.7
       damage:
-        min: 3
-        max: 5
-      critical: 0.1
-      modifiers: {}
+        min: 1
+        max: 4
+
+      critical: 0.05
+      modifiers:
+        light: 0.8
+        heavy: .4
+
     artilleryShell:
       accuracy: 0.6
       damage:
         min: 5
         max: 10
+
       critical: 0.05
       modifiers:
         heavy: 2.3
-
 
   unitSpecs:
     heavytank:
       costs:
         create: 12
         fire: 1
+
       hp: 20
-      mp: 3
+      mp: 8
       attackRange:
         min: 1
-        max: 3
-      bullets: -> ['default']
-      tags: ['land', 'heavy']
+        max: 1
+
+      bullets: ->
+        ["default", "default", "default", "default"]
+
+      tags: ["land", "heavy"]
       returnsFire: true
       movesAndFires: true
       labels:
-        name: "Heavy Tank"
+        name: "Big Boy"
         description: "Heavy Tank Yay"
-        weakVs: 'weak weak'
-        strongVs: 'strong strong'
+        weakVs: "weak weak"
+        strongVs: "strong strong"
+
     lighttank:
       costs:
         create: 5
         fire: 1
-      hp: 8
-      mp: 7
+
+      hp: 10
+      mp: 12
       attackRange:
         min: 1
-        max: 3
-      bullets: -> ['default']
-      tags: ['land', 'light']
+        max: 1
+
+      bullets: ->
+        ["default", "default"]
+
+      tags: ["land", "light"]
       returnsFire: true
       movesAndFires: true
       labels:
-        name: "Light Tank"
-        description: "Light Tank Yay"
-        weakVs: 'weak weak'
-        strongVs: 'strong strong'
+        name: "Raider"
+        description: "Fast first striker"
+        weakVs: "weak weak"
+        strongVs: "strong strong"
+
     mediumartillery:
       costs:
         create: 14
         fire: 1
-      hp: 8
-      mp: 3
+
+      hp: 13
+      mp: 6
       attackRange:
         min: 2
-        max: 5
-      bullets: -> ['artilleryShell']
-      tags: ['land', 'medium', 'artillery']
+        max: 4
+
+      bullets: ->
+        ["default", "default", "default", "default"]
+
+      tags: ["land", "light", "artillery"]
       returnsFire: false
       movesAndFires: false
       labels:
-        name: "Medium Artillery"
+        name: "Spear Chucker"
         description: "Medium Artillery"
-        weakVs: 'weak weak'
-        strongVs: 'strong strong'
+        weakVs: "weak weak"
+        strongVs: "strong strong"
+
     mediumtank:
       costs:
         create: 8
         fire: 1
-      hp: 10
-      mp: 5
-      attackRange:
-        min: 1
-        max: 3
-      bullets: -> ['default']
-      tags: ['land', 'medium']
-      returnsFire: true
-      movesAndFires: true
-      labels:
-        name: "Medium Tank"
-        description: "Medium Tank Yay"
-        weakVs: 'weak weak'
-        strongVs: 'strong strong'
-    spiderbot:
-      costs:
-        create: 5
-        fire: 1
-      hp: 20
-      mp: 200
+
+      hp: 12
+      mp: 10
       attackRange:
         min: 1
         max: 1
-      bullets: -> ['default']
-      tags: ['land', 'light']
+
+      bullets: ->
+        ["default", "default", "default"]
+
+      tags: ["land", "medium"]
       returnsFire: true
       movesAndFires: true
       labels:
-        name: "Spider Bot"
+        name: "Work Horse"
+        description: "Medium Tank Yay"
+        weakVs: "weak weak"
+        strongVs: "strong strong"
+
+    spiderbot:
+      costs:
+        create: 3
+        fire: 1
+
+      hp: 7
+      mp: 15
+      attackRange:
+        min: 1
+        max: 1
+
+      bullets: ->
+        ["default"]
+
+      tags: ["land", "light"]
+      returnsFire: true
+      movesAndFires: true
+      labels:
+        name: "Scout"
         description: "Spider Bot Yay"
-        weakVs: 'weak weak'
-        strongVs: 'strong strong'
+        weakVs: "weak weak"
+        strongVs: "strong strong"
