@@ -1,3 +1,8 @@
+# 0.0.6 / Unreleased
+
+* Only shows streak UI after first attack
+* Repositions labels on points UI to prevent overlaps
+
 # 0.0.5 / Unreleased
 
 * Turns off debugging panel

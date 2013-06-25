@@ -52,3 +52,4 @@ exports class Player extends Module
       radio('ew/game/won').broadcast(@)
 
     @set(points: newPoints)
+    radio('ew/game/pointsScored').broadcast()

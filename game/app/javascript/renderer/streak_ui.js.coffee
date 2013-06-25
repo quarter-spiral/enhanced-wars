@@ -138,6 +138,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
         @container.setVisible(false)
 
       radio('ew/game/shop/close').subscribe =>
-        @container.setVisible(true)
+        if @game.turnManager.currentPlayer().get("fired")
+          @container.setVisible(true)
 
   exports StreakUI
