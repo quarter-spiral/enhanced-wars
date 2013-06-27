@@ -17,6 +17,7 @@ exports class Player extends Module
         newStreak = @get('streak') + 1
         @set(streak: newStreak)
         @scorePoints(@get('game').ruleSet.rewards.streak(newStreak))
+        radio('ew/game/streak').broadcast(streak: newStreak)
 
     @get('game').onready =>
       game = @get('game')

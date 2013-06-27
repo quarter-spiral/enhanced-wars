@@ -1,3 +1,7 @@
+# 0.0.7 / Unreleased
+
+* Shows overlays on streak events
+
 # 0.0.6 / Unreleased
 
 * Only shows streak UI after first attack

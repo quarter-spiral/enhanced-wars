@@ -102,6 +102,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
             if this is self.game.turnManager.currentPlayer()
               self.container.setVisible(true)
               self.aggressionLabel.activate()
+              radio('ew/game/streak').broadcast(streak: 0)
 
           player.bindProperty 'streak', (changedValues) ->
             if this is self.game.turnManager.currentPlayer()

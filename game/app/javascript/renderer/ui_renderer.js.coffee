@@ -27,6 +27,7 @@ exports class UIRenderer extends require('Renderer')
     ShopUI = require('ShopUI')
     PointsUI = require('PointsUI')
     WinUI = require('WinUI')
+    textOverlayUI = require('textOverlayUI')
     StreakUI = require('StreakUI')
 
     originalFindActorAtPosition = @container.findActorAtPosition
@@ -41,4 +42,5 @@ exports class UIRenderer extends require('Renderer')
       self.shopUI = new ShopUI(self, self.game, self.gameRenderer.director)
       self.pointsUI = new PointsUI(self, self.game, self.gameRenderer.director)
       self.winUI = new WinUI(self, self.game, self.gameRenderer.director)
+      self.textOverlayUI = new textOverlayUI(self, self.game, self.gameRenderer.director)
       self.streakUI = new StreakUI(self, self.game, self.gameRenderer.director)
