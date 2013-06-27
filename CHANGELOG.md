@@ -1,13 +1,17 @@
-# 0.0.7 / Unreleased
+# 0.0.8 / 2013-06-27
+
+* Fixes for streak bug
+
+# 0.0.7 / 2013-06-26
 
 * Shows overlays on streak events
 
-# 0.0.6 / Unreleased
+# 0.0.6 / 2013-06-26
 
 * Only shows streak UI after first attack
 * Repositions labels on points UI to prevent overlaps
 
-# 0.0.5 / Unreleased
+# 0.0.5 / 2013-06-25
 
 * Adds QS debug panel
 * Turns off debugging panel

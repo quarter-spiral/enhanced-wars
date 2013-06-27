@@ -26,4 +26,6 @@ exports class Fight extends Module
       enemy.set(hp: enemy.get('hp') - bullet.damage) if bullet.fireAt(enemy)
       radio('ew/game/attack').broadcast(attacker: attacker, enemy: enemy, bullet: bullet)
 
-    enemy.die() unless enemy.isAlive()
+    if !enemy.isAlive()
+      enemy.die()
+      radio('ew/game/kill').broadcast(attacker: attacker, enemy: enemy, bullet: bullet)

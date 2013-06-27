@@ -12,12 +12,12 @@ exports class Player extends Module
     radio('ew/game/next-turn').subscribe =>
       @set(ap: @get('game').ruleSet.apPerTurn, fired: false, streak: 0)
 
-    radio('ew/game/attack').subscribe ({attacker, enemy, bullet}) =>
-      if attacker.player() is @ and !enemy.isAlive()
+    radio('ew/game/kill').subscribe ({attacker, enemy, bullet}) =>
+      if attacker.player() is @
         newStreak = @get('streak') + 1
         @set(streak: newStreak)
         @scorePoints(@get('game').ruleSet.rewards.streak(newStreak))
-        radio('ew/game/streak').broadcast(streak: newStreak)
+        radio('ew/game/streak').broadcast(streakValue: newStreak)
 
     @get('game').onready =>
       game = @get('game')

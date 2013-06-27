@@ -20,8 +20,8 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
       @container.addChild(@background)
 
-      radio('ew/game/streak').subscribe ({streak}) =>
-        switch streak
+      radio('ew/game/streak').subscribe ({streakValue}) =>
+        switch streakValue
           when 0
             @text.setText "First Blood!"
           when 1
