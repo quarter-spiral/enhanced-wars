@@ -1,3 +1,7 @@
+# 0.0.9 / 2013-06-27
+
+* Shows pop over when capturing a drop zone
+
 # 0.0.8 / 2013-06-27
 
 * Fixes for streak bug

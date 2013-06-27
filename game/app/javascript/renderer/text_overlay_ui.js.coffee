@@ -8,7 +8,8 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
       @background = new CAAT.Foundation.ActorContainer().
           setSize(@container.width / 3, @container.height / 3).
-          centerAt(@container.width / 2, @container.height / 2)
+          centerAt(@container.width / 2, @container.height / 2).
+          setFillStyle('#000000').setAlpha(0.6)
 
       @text = new CAAT.TextActor().
           setFont('36px sans-serif').
@@ -20,18 +21,40 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
       @container.addChild(@background)
 
+      radio('ew/game/drope-zone-captured').subscribe () =>
+
+        @text.setText "Drop Zone Captured!"
+
+        #Show the dialogue with a short delay so it does not obscure the action
+        @director.currentScene.createTimer(@container.time, 200, (=>
+          #this will happen when the duration is over
+          @container.setVisible(true)
+        ), (=>
+          #this will happen every tick of the game (like very often ;))
+        ), (=>
+          #this will happen when the timeout is canceled
+        ))
+        #Hide the dialogue again
+        @director.currentScene.createTimer(@container.time, 1000, (=>
+          #this will happen when the duration is over
+          @container.setVisible(false)
+        ), (=>
+          #this will happen every tick of the game (like very often ;))
+        ), (=>
+          #this will happen when the timeout is canceled
+        ))
+
       radio('ew/game/streak').subscribe ({streakValue}) =>
         switch streakValue
           when 0
-            @text.setText "First Blood!"
+            @text.setText "Attack!"
           when 1
-            @text.setText "Fist Kill!"
+            @text.setText "Knock Out!"
           when 2
-            @text.setText "Double Kill!"
+            @text.setText "Double Down!"
           when 3
-            @text.setText "Trippe Kill!"
+            @text.setText "Tripple Threat!"
 
-        @background.setFillStyle('#000000').setAlpha(0.6)
         #Show the dialogue with a short delay so it does not obscure the action
         @director.currentScene.createTimer(@container.time, 200, (=>
           #this will happen when the duration is over

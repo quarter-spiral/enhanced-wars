@@ -1,4 +1,5 @@
 Module = require('Module')
+radio = require('radio')
 
 exports class DropZone extends Module
   @include lazy: -> require('EventedObject')
@@ -9,3 +10,4 @@ exports class DropZone extends Module
 
   capturedBy: (unit) =>
     @set(faction: unit.player().get('faction'))
+    radio('ew/game/drope-zone-captured').broadcast()
