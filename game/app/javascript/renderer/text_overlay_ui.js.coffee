@@ -54,7 +54,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
             @text.setText "Double Down!"
           when 3
             @text.setText "Tripple Threat!"
-
+          
         #Show the dialogue with a short delay so it does not obscure the action
         @director.currentScene.createTimer(@container.time, 200, (=>
           #this will happen when the duration is over

@@ -9,5 +9,7 @@ exports class DropZone extends Module
     @set(options)
 
   capturedBy: (unit) =>
-    @set(faction: unit.player().get('faction'))
-    radio('ew/game/drope-zone-captured').broadcast()
+    if @get('faction') != unit.player().get('faction')
+      radio('ew/game/drope-zone-captured').broadcast()
+      @set(faction: unit.player().get('faction'))
+    
