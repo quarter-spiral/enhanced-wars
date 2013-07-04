@@ -1,0 +1,213 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+.section-header {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  font-weight: normal;
+}
+
+
+
+.main-navigation {
+  position:absolute;
+  top:10px;
+  left:10px;
+  .main-navigation-entry {
+    display:none;
+    &:first-child {
+      display:block;
+    }
+    .main-navigation-entry-link {
+      display:block;
+      padding:15px 20px;
+      cursor:pointer;
+      color:#FFF;
+      font-weight:bold;
+      background-color: rgba(150,200,255,0.8);
+      &:hover {
+        background-color: rgba(120,180,230,1);
+      }
+      .main-navigation-entry-label {
+        margin-left: 10px;
+        display: none;
+      }
+    }
+  }
+  &:hover {
+    .main-navigation-entry {
+      display:block;
+      background-color: rgba(150,200,255,1);
+    }
+    .main-navigation-entry-link {
+      .main-navigation-entry-label {
+        display: inline;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+a {
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.new-game-button, .create-custom-game-link, .create-game-link {
+  display:block;
+  background-color: #8FBE00;
+  padding:25px 20px;
+  color:#FFF;
+  font-weight: bold;
+  &:hover {
+    background-color: #84ab00;
+    color:#FFF;
+  }
+}
+
+
+.waiting-for-label {
+  color:#999;
+  display: block;
+}
+
+.pace-label {
+  display: block;
+}
+
+
+
+
+
+.game-list-container {
+  margin:0 0 30px 0;
+}
+
+.game-list {
+  background-color: #F6F6F6;
+}
+
+.game-list-entry {
+
+}
+
+.game-list-entry-link {
+  display:block;
+  padding:15px 20px;
+  i {
+    display:none;
+  }
+  &:hover {
+    background-color: #76BBD6;
+    color:#FFF;
+    i {
+      display:block;
+    }
+  }
+}
+
+
+.pace-tabs, .map-tabs, .game-type-tabs {
+  margin:0;
+}
+
+.map-tabs, .game-type-tabs {
+  margin-bottom: 20px;
+}
+
+.pace-tab, .map-tab, .game-type-tab {
+  display: inline-block;
+  padding:10px 20px;
+  background-color: #FFF;
+  margin:0px;
+  cursor:pointer;
+}
+
+.pace-tab.active, .map-tab.active, .game-type-tab.active {
+  background-color: #76BBD6;
+  color:#FFF;
+}
+
+
+
+
+
+
+
+
+.map-list {
+}
+
+.map-list-entry {
+  display: block;
+  height:100px;
+  line-height: 100px;
+  margin-bottom: 20px;
+  background-color: #EEE;
+  text-align: center;
+
+  &.active {
+    background-color: #0088cc;
+    font-weight: bold;
+    text-decoration: underline;
+
+    a {
+      color: #eeeeee;
+    }
+  }
+}
+
+.map-list-entry-link {
+
+}
+
+
+
+
+
+
+.custom-map-form {
+  background-color: #F6F6F6;
+  padding:30px;
+  margin-top: -20px;
+}
+
+
+
+
+.friends-list {
+  background-color: #F6F6F6;
+  padding:10px 20px;
+  margin-top: -20px;
+}
+
+.friends-list-header {
+  font-size: 1em;
+  margin:0;
+}
+
+.friends-list-entry {
+  margin:8px 0;
+}
+
+.friends-list-tip {
+  font-style: italic;
+  font-size: 0.9em;
+  color:#666;
+  margin-top: 15px;
+}

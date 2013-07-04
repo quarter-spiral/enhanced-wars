@@ -2,61 +2,6 @@ body {
   background-color: #000;
 }
 
-@mixin small-centered-box {
-  position: absolute;
-  width: 400px;
-  height: 200px;
-  left: 50%;
-  top: 50%;
-
-  margin-left: -200px;
-  margin-top: -50px;
-
-  font-size: 40pt;
-  font-family: 'Helvetica Neue', Helvetica, 'Arial Black', Arial, sans-serif;
-  font-weight: bold;
-
-  text-align: center;
-  vertical-align: center;
-
-  p {
-    margin: 0;
-    padding: 0;
-  }
-
-  $bgColor1: #2bb2dc;
-  $bgColor2: #00ccff;
-
-  background: $bgColor1; /* Old browsers */
-  background: -moz-linear-gradient(top, $bgColor1 43%, $bgColor2 99%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(43%,$bgColor1), color-stop(99%,$bgColor2)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, $bgColor1 43%,$bgColor2 99%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, $bgColor1 43%,$bgColor2 99%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, $bgColor1 43%,$bgColor2 99%); /* IE10+ */
-  background: linear-gradient(to bottom, $bgColor1 43%,$bgColor2 99%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$bgColor1', endColorstr='$bgColor2',GradientType=0 ); /* IE6-9 */
-
-  border-radius: 10px;
-
-  color: #ff395b;
-
-  padding: 0px 20px 0px 20px;
-}
-
-#loading {
-  @include small-centered-box;
-
-  p:first-child {
-    padding-top: 60px;
-  }
-}
-
-#must-be-logged-in {
-  @include small-centered-box;
-
-  display: none;
-}
-
 $gameWidth: 940px;
 $gameHeight: 640px;
 #game {
@@ -65,6 +10,7 @@ $gameHeight: 640px;
    top: 50%;
    margin-left: -0.5 * $gameWidth;
    margin-top: -0.5 * $gameHeight;
+   display: none;
 }
 
 #ew-debug-panel {
