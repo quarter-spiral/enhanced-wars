@@ -1,0 +1,265 @@
+<h1>EW Debug Panel</h1>
+
+<div class="no-local-rules">
+  <a id="enable-local-rules" href="<%= ENV['QS_GAME_URL'] %>" target="_parent">Enable local rules</a>
+  <textarea id="default-local-rules">
+    (function() {
+        var infinity = 1 / 0;
+
+        var ruleSet = {
+          apPerTurn: 20,
+          pointsForWin: 30,
+          rewards: {
+            captureDropZone: 3,
+            attack: 1,
+            streak: function(streak) {
+              switch (streak) {
+                case 0:
+                  return 0;
+                case 1:
+                  return 1;
+                case 2:
+                  return 3;
+                default:
+                  return 5;
+              }
+            }
+          },
+          terrainCosts: {
+            base: {
+              &quot;default&quot;: infinity
+            },
+            deepwater: {
+              &quot;default&quot;: infinity,
+              naval: 3
+            },
+            desert: {
+              &quot;default&quot;: 4,
+              naval: infinity
+            },
+            factory: {
+              &quot;default&quot;: 2,
+              naval: infinity
+            },
+            forrest: {
+              &quot;default&quot;: 5,
+              light: 2,
+              naval: infinity
+            },
+            pineforrest: {
+              &quot;default&quot;: 4,
+              light: 2,
+              naval: infinity
+            },
+            mountain: {
+              &quot;default&quot;: infinity,
+              naval: infinity,
+              infantry: 6
+            },
+            plain: {
+              &quot;default&quot;: 2,
+              naval: infinity
+            },
+            shallowwater: {
+              &quot;default&quot;: infinity,
+              naval: 5
+            },
+            road: {
+              naval: infinity,
+              &quot;default&quot;: 1
+            }
+          },
+          bulletSpecs: {
+            &quot;default&quot;: {
+              accuracy: 0.8,
+              damage: {
+                min: 3,
+                max: 5
+              },
+              critical: 0.1,
+              modifiers: {}
+            },
+            artilleryShell: {
+              accuracy: 0.6,
+              damage: {
+                min: 5,
+                max: 10
+              },
+              critical: 0.05,
+              modifiers: {
+                heavy: 2.3
+              }
+            }
+          },
+          unitSpecs: {
+            heavytank: {
+              costs: {
+                create: 12,
+                fire: 1
+              },
+              hp: 20,
+              mp: 3,
+              attackRange: {
+                min: 1,
+                max: 3
+              },
+              bullets: function() {
+                return [&#x27;default&#x27;];
+              },
+              tags: [&#x27;land&#x27;, &#x27;heavy&#x27;],
+              returnsFire: true,
+              movesAndFires: true,
+              labels: {
+                name: &quot;Heavy Tank&quot;,
+                description: &quot;Heavy Tank Yay&quot;,
+                weakVs: &#x27;weak weak&#x27;,
+                strongVs: &#x27;strong strong&#x27;
+              }
+            },
+            lighttank: {
+              costs: {
+                create: 5,
+                fire: 1
+              },
+              hp: 8,
+              mp: 7,
+              attackRange: {
+                min: 1,
+                max: 3
+              },
+              bullets: function() {
+                return [&#x27;default&#x27;];
+              },
+              tags: [&#x27;land&#x27;, &#x27;light&#x27;],
+              returnsFire: true,
+              movesAndFires: true,
+              labels: {
+                name: &quot;Light Tank&quot;,
+                description: &quot;Light Tank Yay&quot;,
+                weakVs: &#x27;weak weak&#x27;,
+                strongVs: &#x27;strong strong&#x27;
+              }
+            },
+            mediumartillery: {
+              costs: {
+                create: 14,
+                fire: 1
+              },
+              hp: 8,
+              mp: 3,
+              attackRange: {
+                min: 2,
+                max: 5
+              },
+              bullets: function() {
+                return [&#x27;artilleryShell&#x27;];
+              },
+              tags: [&#x27;land&#x27;, &#x27;medium&#x27;, &#x27;artillery&#x27;],
+              returnsFire: false,
+              movesAndFires: false,
+              labels: {
+                name: &quot;Medium Artillery&quot;,
+                description: &quot;Medium Artillery&quot;,
+                weakVs: &#x27;weak weak&#x27;,
+                strongVs: &#x27;strong strong&#x27;
+              }
+            },
+            mediumtank: {
+              costs: {
+                create: 8,
+                fire: 1
+              },
+              hp: 10,
+              mp: 5,
+              attackRange: {
+                min: 1,
+                max: 3
+              },
+              bullets: function() {
+                return [&#x27;default&#x27;];
+              },
+              tags: [&#x27;land&#x27;, &#x27;medium&#x27;],
+              returnsFire: true,
+              movesAndFires: true,
+              labels: {
+                name: &quot;Medium Tank&quot;,
+                description: &quot;Medium Tank Yay&quot;,
+                weakVs: &#x27;weak weak&#x27;,
+                strongVs: &#x27;strong strong&#x27;
+              }
+            },
+            spiderbot: {
+              costs: {
+                create: 5,
+                fire: 1
+              },
+              hp: 20,
+              mp: 200,
+              attackRange: {
+                min: 1,
+                max: 1
+              },
+              bullets: function() {
+                return [&#x27;default&#x27;];
+              },
+              tags: [&#x27;land&#x27;, &#x27;light&#x27;],
+              returnsFire: true,
+              movesAndFires: true,
+              labels: {
+                name: &quot;Spider Bot&quot;,
+                description: &quot;Spider Bot Yay&quot;,
+                weakVs: &#x27;weak weak&#x27;,
+                strongVs: &#x27;strong strong&#x27;
+              }
+            }
+          }
+        };
+
+        exports(&#x27;LocalRuleSet&#x27;, ruleSet);
+    })();
+  </textarea>
+</div>
+
+<div class="local-rules">
+  <a href="<%= ENV['QS_GAME_URL'] %>" target="_parent" id="disable-local-rules">Disable local rules</a>
+  <hr />
+  <textarea id="local-rules-content"></textarea>
+
+  <a href="<%= ENV['QS_GAME_URL'] %>" target="_parent" id="save-rules">Save rules</a>
+</div>
+
+<script>
+var $ = require('jquery');
+$(function() {
+  if (!window.localStorage || !window.localStorage.getItem('EWRules')) {
+    $('.no-local-rules').show();
+  } else {
+    $('#local-rules-content').val(window.localStorage.getItem('EWRules'));
+    $('.local-rules').show();
+  }
+
+  $('#close-debug').on('click', function(e) {
+    e.preventDefault();
+    $('body').toggleClass('ew-debug');
+  });
+
+  $('#save-rules').on('click', function(e) {
+    window.localStorage.setItem('EWRules', $('#local-rules-content').val());
+    window.parent.location.reload();
+  });
+
+  $('#enable-local-rules').on('click', function(e) {
+    window.localStorage.setItem('EWRules', $('#default-local-rules').val());
+    window.parent.location.reload();
+  });
+
+  $('#disable-local-rules').on('click', function(e) {
+    delete window.localStorage.EWRules
+    window.parent.location.reload();
+  });
+})
+</script>
+
+<p>
+  <button id="close-debug">Close Debug Panel</button>
+</p>

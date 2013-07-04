@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="span6 offset1">
+
+    <h1 class="section-header">Available games</h1>
+
+    <div class="game-list-container">
+      <div ng-init="selectedPace = 'fast'" class="pace-tabs">
+        <a ng-click="selectedPace = 'fast'" class="pace-tab" ng-class="{active:selectedPace == 'fast'}">Fast</a>
+        <a ng-click="selectedPace = 'medium'" class="pace-tab" ng-class="{active:selectedPace == 'medium'}">Medium</a>
+        <a ng-click="selectedPace = 'slow'" class="pace-tab" ng-class="{active:selectedPace == 'slow'}">Slow</a>
+      </div>
+      <ul class="game-list unstyled">
+        <li ng-repeat="game in availableGames | filter:{pace: selectedPace}" class="game-list-entry">
+          <a href="#/game" class="game-list-entry-link">{{game.pace}} game {{$index+1}} <i class="icon-ok icon-white pull-right"></i></a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="span3 offset1">
+
+    <h1 class="section-header">...or create your own game</h1>
+    <a href="#/create" class="create-custom-game-link">Set up a custom game <i class="icon-chevron-right icon-white"></i></a>
+
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="row" ng-init="newMatch = {invitations: {}};newMatch.invitations[player().uuid] = '1'">
+
+  <div class="span3 offset1">
+
+    <h2 class="section-header">Opponents</h2>
+
+    <div ng-init="newMatch.type = 'anybody'" class="game-type-tabs">
+      <a ng-click="newMatch.type = 'anybody'; useCustomMap = false;" class="game-type-tab" ng-class="{active:newMatch.type == 'anybody'}">Random</a>
+      <a ng-click="newMatch.type = 'friendsOnly'" class="game-type-tab" ng-class="{active:newMatch.type == 'friendsOnly'}">Friends</a>
+    </div>
+
+    <div ng-show="newMatch.type == 'friendsOnly'" class="friends-list">
+      <h3 class="friends-list-header">invite:</h3>
+      <label class="checkbox friends-list-entry" ng-repeat="(friendUuid, friendIdentities) in friends()">
+        <input type="checkbox" id="inlineCheckbox1" ng-model="newMatch.invitations[friendUuid]" ng-true-value="1" ng-false-value="" ng-disabled="friendUuid == player().uuid"> {{friendIdentities[qsData().info.venue].name}}
+      </label>
+      <p class="friends-list-tip">First come first serve basis. You will also be able to share the game's url to invite more people.</p>
+    </div>
+
+    <h2 class="section-header">Ready?</h2>
+    <span class="create-game-link" ng-hide="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Select a map</span>
+    <a href="#/games" ng-click="createMatch(newMatch)" class="create-game-link" ng-show="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Play first turn</a>
+
+  </div>
+
+
+  <div class="span6 offset1">
+
+    <h1 class="section-header">Map</h1>
+
+    <div ng-init="useCustomMap = false;" class="map-tabs" ng-show="newMatch.type == 'friendsOnly'">
+      <a ng-click="useCustomMap = false;" class="map-tab" ng-class="{active:useCustomMap == false}">Default</a>
+      <a ng-click="useCustomMap = true;" class="map-tab" ng-class="{active:useCustomMap == true}">Custom</a>
+    </div>
+
+    <div class="row">
+      <ul ng-hide="useCustomMap" class="map-list unstyled">
+        <li ng-repeat="map in defaultMaps" class="span2 map-list-entry" ng-class="{active: newMatch.map.name == map.name}">
+          <a ng-click="newMatch.map = cloneMap(map)" class="map-list-entry-link">{{map.name}} map</a>
+        </li>
+      </ul>
+    </div>
+
+    <div ng-show="useCustomMap" class="custom-map-form">
+      <label>Map JSON</label>
+      <textarea rows="10" class="input-block-level" placeholder="Paste in map json from a 3rd party" ng-model="newMatch.mapJson"></textarea>
+    </div>
+  </div>
+</div>
