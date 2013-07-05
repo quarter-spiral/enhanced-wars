@@ -62,12 +62,13 @@ class Tile
 
     @hpMeterContainer = new CAAT.Foundation.ActorContainer().
         setFillStyle('#FFFFFF').
-        setSize(@actor.width - 10, 10)
+        setSize(@actor.width - 30, 4).
+        setAlpha(0.8)
 
     @hpMeter = new CAAT.Foundation.Actor().
         setFillStyle(@unit.player().get('color')).
-        setSize(@hpMeterContainer.width - 2, @hpMeterContainer.height - 2).
-        setLocation(1, 1)
+        setSize(@hpMeterContainer.width, @hpMeterContainer.height).
+        setLocation(0, 0)
     @hpMeterContainer.addChild(@hpMeter)
 
     toMapCoordinates = (position) =>
@@ -126,7 +127,7 @@ class Tile
     @actor.addChild(unitActor)
 
     @actor.addChild(@hpMeterContainer)
-    @hpMeterContainer.setLocation(5, @actor.height - @hpMeterContainer.height - 5)
+    @hpMeterContainer.setLocation(@actor.width/2-@hpMeterContainer.width/2, @actor.height - @hpMeterContainer.height - 5)
 
     unit.bindProperty 'selected', (changedValues) =>
       unitActor.setAlpha(if @unit.get('selected') then 0.1 else 1)
