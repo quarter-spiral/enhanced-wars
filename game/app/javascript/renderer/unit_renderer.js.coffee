@@ -130,7 +130,7 @@ class Tile
     @hpMeterContainer.setLocation(@actor.width/2-@hpMeterContainer.width/2, @actor.height - @hpMeterContainer.height - 5)
 
     unit.bindProperty 'selected', (changedValues) =>
-      unitActor.setAlpha(if @unit.get('selected') then 0.1 else 1)
+      unitActor.setAlpha(if @unit.get('selected') then 0.5 else 1)
 
     unit.bindProperty 'position', (changedValues) =>
       relocateUnit() unless changedValues.move

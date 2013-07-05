@@ -64,7 +64,9 @@ class Unit extends Module
     dropZone.capturedBy(@) for tile in path when dropZone = tile.tile.get('dropZone')
 
     currentPlayer.deductAp(apCost)
-    @set(position: mapTile.position(), mp: mp - movementCost, orientation: path[path.length - 1].orientation, move: path)
+    newMp = mp - movementCost
+    @set(position: mapTile.position(), mp: newMp, orientation: path[path.length - 1].orientation, move: path)
+    @select(true) unless newMp <= 1 and @get('fired')
 
   canAttack: (enemy) =>
     return false unless enemy

@@ -1,3 +1,7 @@
+# 0.0.12 / 2013-07-05
+
+* improves unit selection
+
 # 0.0.11 / 2013-07-05
 
 * fixed fly over queue bug

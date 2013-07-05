@@ -166,6 +166,7 @@ exports class MapRenderer extends require('Renderer')
     radio('ew/renderer/assets-loaded').subscribe (renderer, images) ->
       renderer.loadMap(renderer.map) if renderer.map
 
+    # highlights tiles that the selected unit can either reach or attack
     radio('ew/game/unit/selected').subscribe (unit) =>
       return unless unit.get('selected')
       @map.eachTile (mapTile) =>
