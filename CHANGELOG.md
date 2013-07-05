@@ -1,3 +1,9 @@
+# 0.0.11 / 2013-07-05
+
+* fixed fly over queue bug
+* improved path behaviour
+* added fadeout bahviour
+
 # 0.0.9 / 2013-06-27
 
 * Shows pop over when capturing a drop zone

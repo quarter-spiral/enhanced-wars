@@ -8,11 +8,10 @@ exports class FlyingInfoQueue
 
   trigger: =>
     return if @queue.length < 1 or @triggerTimeout
-
     newElement = @queue.shift()
     FlyingInfo = require("FlyingInfo")
     new FlyingInfo(newElement, @options)
-    @triggerTimeout = setTimeout(@timeout, 100)
+    @triggerTimeout = setTimeout(@timeout, 150 + Math.random() * 50)
 
   timeout: =>
     delete @triggerTimeout

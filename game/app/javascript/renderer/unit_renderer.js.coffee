@@ -143,15 +143,16 @@ class Tile
       @hpMeter.setSize(newWidth, @hpMeter.height)
 
     FlyingInfoQueue = require('FlyingInfoQueue')
+    @infoQueue = new FlyingInfoQueue(parent: @actor)
     radio('ew/game/attack').subscribe ({attacker, enemy, bullet}) =>
       return unless enemy is @unit
-      infoQueue = new FlyingInfoQueue(parent: @actor)
 
       if bullet.hit
-        infoQueue.add("-#{bullet.damage}")
-        infoQueue.add("Critical") if bullet.criticalStrike
+        @infoQueue.add("-#{bullet.damage}")
+        # @infoQueue.add("Hit")
+        @infoQueue.add("Critical!") if bullet.criticalStrike
       else
-        infoQueue.add("Miss")
+        @infoQueue.add("Miss")
 
   remove: =>
     @actor.setExpired(0)
