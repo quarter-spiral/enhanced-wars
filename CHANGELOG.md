@@ -1,3 +1,7 @@
+# 0.0.13 / 2013-07-08
+
+* animated text overlays
+
 # 0.0.12 / 2013-07-05
 
 * improves unit selection

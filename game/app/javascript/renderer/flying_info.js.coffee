@@ -20,7 +20,7 @@ exports class FlyingInfo
 
     scene = CAAT.getCurrentScene()
 
-    alphaBehaviour = new CAAT.AlphaBehavior().
+    fadeBehaviour = new CAAT.AlphaBehavior().
         setValues(1,0).
         setFrameTime(scene.time+200, 350)
 
@@ -44,6 +44,6 @@ exports class FlyingInfo
 
 
     @container.addBehavior(pathBehaviour)
-    @container.addBehavior(alphaBehaviour)
+    @container.addBehavior(fadeBehaviour)
 
     @parent.parent.addChild(@container)
