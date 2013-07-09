@@ -23,10 +23,11 @@ class Game
 
     radio('ew/input/unit/clicked').subscribe @unitClicked
     radio('ew/input/map/clicked').subscribe @mapClicked
+    radio('ew/input/actions/seek').subscribe @seekToAction
 
     @init(options.map)
 
-  init: (mapData) =>
+  init: (mapData, @actions = []) =>
     Player = require('Player')
     MapEditMapImporter = require('MapEditMapImporter')
     TurnManager = require('TurnManager')
@@ -57,6 +58,9 @@ class Game
     callback.apply(@) for callback in @loadQueue
     @ready = true
 
+    @currentAction = 0
+    radio('ew/game/actions/updated').broadcast(@)
+
   selectedUnit: =>
     @units.detect (u) -> u.get('selected')
 
@@ -66,11 +70,37 @@ class Game
       @units = @units.filter (u) -> u.isAlive()
     radio('ew/game/unit/added').broadcast(unit)
 
+  addAction: (action) =>
+    @actions.push action
+    radio('ew/game/actions/updated').broadcast(@)
+    @currentAction = @actions.length - 1
+
+  seekToAction: (actionIndex) =>
+    while actionIndex > @currentAction
+      @currentAction += 1
+      @actions[@currentAction].perform(@)
+    while actionIndex < @currentAction
+      @actions[@currentAction].reverse(@)
+      @currentAction -= 1
+
+  isAtLastAction: =>
+    (@currentAction is @actions.length - 1) or (@currentAction is 0 and @actions.length is 0)
+
+  dumpPoints: =>
+    player.get('points') for player in @players
+
+  dumpStreaks: =>
+    player.get('streak') for player in @players
+
+  setPoints: (points) =>
+    player.set(points: points.shift()) for player in @players
+
   onready: (callback) =>
      return callback.apply(@) if @ready
      @loadQueue.push callback
 
   unitClicked: (unit) =>
+    return unless @isAtLastAction()
     unit.select()
 
   mapClicked: (mapTile) =>

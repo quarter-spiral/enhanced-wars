@@ -127,7 +127,7 @@ class Tile
     @actor.addChild(unitActor)
 
     @actor.addChild(@hpMeterContainer)
-    @hpMeterContainer.setLocation(@actor.width/2-@hpMeterContainer.width/2, @actor.height - @hpMeterContainer.height - 5)
+    @hpMeterContainer.setLocation(@actor.width / 2 - @hpMeterContainer.width / 2, @actor.height - @hpMeterContainer.height - 5)
 
     unit.bindProperty 'selected', (changedValues) =>
       unitActor.setAlpha(if @unit.get('selected') then 0.5 else 1)
@@ -218,7 +218,7 @@ exports class UnitRenderer extends require('Renderer')
     radio('ew/renderer/assets-loaded').subscribe (renderer, images) ->
       renderer.loadUnits(renderer.units) if renderer.units
 
-    radio('ew/game/unit/bought').subscribe (unit) =>
+    radio('ew/game/unit/added-to-player').subscribe (unit) =>
       @loadUnit(unit)
 
     @container.setParent(@gameRenderer.renderers.map.container)

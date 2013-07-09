@@ -1,4 +1,5 @@
 overwrite = require('overwrite')
+radio = require('radio')
 
 angular.module('enhancedWars.services', []).
   factory('QSService', ['$rootScope', '$http', 'angularFire', ($rootScope, $http, angularFire) ->
@@ -71,6 +72,12 @@ angular.module('enhancedWars.services', []).
         window.game.init(match.map)
       else
         window.game = new Game(map: match.map)
+
+    radio('ew/game/actions/updated').subscribe (game, action) ->
+      $rootScope.maxActionSteps = game.actions.length - 1
+      $rootScope.$safeApply()
+      $rootScope.actionStep = game.actions.length - 1
+      $rootScope.$safeApply()
 
     QS.setup().then((qs) ->
       service.qs = qs

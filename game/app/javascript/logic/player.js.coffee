@@ -33,17 +33,28 @@ exports class Player extends Module
     return unless @canBuy(unitType)
     Unit = require('Unit')
     game = @get('game')
-    unit = new Unit(type: unitType, faction: @get('faction'), orientation: 'down', position: game.activeDropZone.position(), map: game.map)
+    unitCreationOptions = {type: unitType, faction: @get('faction'), orientation: 'down', position: game.activeDropZone.position(), map: game.map}
+    unit = new Unit(unitCreationOptions)
     unit.set(mp: 0, fired: true)
     game.addUnit(unit)
-    @set(ap: @get('ap') - @apToCreateUnit(unitType))
-    radio('ew/game/unit/bought').broadcast(unit)
+    apCost = @apToCreateUnit(unitType)
+    @deductAp(apCost)
+    radio('ew/game/unit/added-to-player').broadcast(unit)
+
+    BuyUnitAction = require('BuyUnitAction')
+    actionOptions = require('merge')(unitCreationOptions, apCost: apCost)
+    delete actionOptions.map
+    @get('game').addAction new BuyUnitAction(actionOptions)
 
   canBuy: (unitType) ->
     @get('ap') >= @apToCreateUnit(unitType)
 
   apToCreateUnit: (unitType) =>
     @get('game').ruleSet.unitSpecs[unitType].costs.create
+
+  won: =>
+    pointsForWin = @get('game').ruleSet.pointsForWin
+    @get('points') >= pointsForWin
 
   scorePoints: (points) =>
     newPoints = @get('points') + points

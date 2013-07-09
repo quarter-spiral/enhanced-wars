@@ -21,6 +21,14 @@ class EventedObject
 
       @properties[key]
 
+    dump: ->
+      if @dumpableProperties is undefined
+        require('clone')(@properties)
+      else
+        result = {}
+        result[property] = @.get(property) for property in @dumpableProperties
+        result
+
     bindProperty: (boundProperties, fn) ->
       boundProperties = [boundProperties] unless typeIsArray(boundProperties)
       @properties ||= new propertiesObj()

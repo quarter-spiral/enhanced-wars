@@ -11,7 +11,14 @@ class Unit extends Module
   defaultOptions =
     selected: false
 
+  dumpableProperties: [
+    'position', 'hp', 'faction', 'mp', 'fired', 'orientation', 'type'
+  ]
+
   constructor: (options) ->
+    skipReset = options.skipReset
+    delete options.skipReset
+
     @set(merge(defaultOptions, options))
 
     radio('ew/game/unit/selected').subscribe (selectedUnit) =>
@@ -31,7 +38,7 @@ class Unit extends Module
     radio('ew/game/next-turn').subscribe =>
       resetAttributes()
 
-    resetAttributes() if @game() and @game().ready
+    resetAttributes() if @game() and @game().ready and !skipReset
 
   select: (newState) =>
     stateToSet = newState
@@ -60,13 +67,32 @@ class Unit extends Module
     return if movementCost > mp
 
     path = map.unitsPathTo(@, mapTile)
+    newOrientation = path[path.length - 1].orientation
 
-    dropZone.capturedBy(@) for tile in path when dropZone = tile.tile.get('dropZone')
+    actionOptions =
+      from: @position()
+      to: mapTile.position()
+      mpCost: movementCost
+      apCost: apCost
+      oldOrientation: @get('orientation')
+      newOrientation: newOrientation
+      capturedZones: []
+      pointsBefore: @game().dumpPoints()
+
+    for tile in path when dropZone = tile.tile.get('dropZone')
+      actionOptions.capturedZones.push(tile: tile.tile.position(), oldFaction: dropZone.get('faction'))
+      dropZone.capturedBy(@get('faction'))
 
     currentPlayer.deductAp(apCost)
     newMp = mp - movementCost
-    @set(position: mapTile.position(), mp: newMp, orientation: path[path.length - 1].orientation, move: path)
+
+    @set(position: mapTile.position(), mp: newMp, orientation: newOrientation, move: path)
     @select(true) unless newMp <= 1 and @get('fired')
+
+    actionOptions.pointsAfter = @game().dumpPoints()
+
+    MoveAction = require('MoveAction')
+    @game().addAction new MoveAction(actionOptions)
 
   canAttack: (enemy) =>
     return false unless enemy
@@ -85,7 +111,7 @@ class Unit extends Module
     @set(mp: 0) unless @specs().movesAndFires
 
   die: =>
-    @set(dead: true)
+    @set(hp: 0, dead: true)
 
   isAlive: =>
     @get('hp') > 0

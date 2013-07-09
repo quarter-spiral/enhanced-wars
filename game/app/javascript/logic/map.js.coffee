@@ -36,9 +36,9 @@ exports class Map extends Module
         x++
       y++
 
-  unitAt: (x, y) =>
+  unitAt: (x, y, options = {}) =>
     {x,y} = x if y is undefined
-    @get('game').units.detect (unit) -> unit.isAtPosition(x: x, y: y)
+    @get('game').units.detect (unit) -> unit.isAtPosition(x: x, y: y) and (!options.onlyAlive or unit.isAlive())
 
   unitCanReach: (unit, mapTile) =>
     @costToReach(unit, mapTile) isnt null

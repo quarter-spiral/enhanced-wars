@@ -154,8 +154,11 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
       @container.enableEvents(true)
       @container.mouseClick = (e) ->
-        game.turnManager.nextTurn()
-
+        if game.isAtLastAction()
+          apBefore = game.turnManager.currentPlayer().get('ap')
+          game.turnManager.nextTurn()
+          NextTurnAction = require('NextTurnAction')
+          game.addAction new NextTurnAction(apBefore: apBefore)
 
   exports class BottomUI extends UIElement
     DIMENSIONS = {

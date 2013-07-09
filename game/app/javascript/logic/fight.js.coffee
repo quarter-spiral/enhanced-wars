@@ -11,12 +11,40 @@ exports class Fight extends Module
     attacker = @get('attacker')
     enemy = @get('enemy')
 
+    apCost = attacker.specs().costs.fire
+    player = attacker.player()
+    game = player.get('game')
+
+    actionOptions =
+      unitsBefore: [
+        {position: attacker.position(), dump: attacker.dump()}
+        {position: enemy.position(), dump: enemy.dump()}
+      ]
+      streakBefore: game.dumpStreaks()
+      apCost: apCost,
+      pointsBefore: game.dumpPoints()
+      playersFiredBefore: (tPlayer.get('fired') for tPlayer in game.players)
+
     @attack(attacker, enemy)
     @attack(enemy, attacker) if enemy.isAlive() and enemy.canReturnFire() and enemy.canAttack(attacker)
-    player = attacker.player()
-    player.deductAp(attacker.specs().costs.fire)
-    player.scorePoints(player.get('game').ruleSet.rewards.attack) unless player.get('fired')
+
+    player.deductAp(apCost)
+    unless player.get('fired')
+      player.scorePoints(game.ruleSet.rewards.attack)
+      radio('ew/game/streak').broadcast(streakValue: 0)
+
     player.set(fired: true)
+
+    actionOptions.unitsAfter = [
+      {position: attacker.position(), dump: attacker.dump()}
+      {position: enemy.position(), dump: enemy.dump()}
+    ]
+    actionOptions.streakAfter = game.dumpStreaks()
+    actionOptions.pointsAfter = game.dumpPoints()
+    actionOptions.playersFiredAfter = (tPlayer.get('fired') for tPlayer in game.players)
+    FightAction = require('FightAction')
+    game.addAction new FightAction(actionOptions)
+
 
   attack: (attacker, enemy) =>
     Bullet = require('Bullet')

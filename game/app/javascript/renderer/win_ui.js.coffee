@@ -21,9 +21,20 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @container.addChild(@background)
 
       radio('ew/game/won').subscribe (player) =>
-        playerIndex = @game.players.indexOf(player) + 1
-        @text.setText "Player #{playerIndex} won!"
-        @background.setFillStyle(player.get('color'))
-        @container.setVisible(true)
+        setTimeout(=>
+          return unless player.won()
+
+          hideAgain = =>
+            if player.won()
+              setTimeout(hideAgain, 300)
+              return
+            @container.setVisible(false)
+
+          playerIndex = @game.players.indexOf(player) + 1
+          @text.setText "Player #{playerIndex} won!"
+          @background.setFillStyle(player.get('color'))
+          @container.setVisible(true)
+          hideAgain()
+        , 50)
 
   exports WinUI
