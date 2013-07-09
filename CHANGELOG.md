@@ -1,40 +1,17 @@
-# 0.0.14 / 2013-07-08
+# 0.0.5 / Unreleased
 
+* makes matches rewindable
 * queues animated text overlays
-
-# 0.0.13 / 2013-07-08
-
 * animated text overlays
-
-# 0.0.12 / 2013-07-05
-
 * improves unit selection
-
-# 0.0.11 / 2013-07-05
-
 * fixed fly over queue bug
 * improved path behaviour
 * added fadeout bahviour
-
-# 0.0.9 / 2013-06-27
-
 * Shows pop over when capturing a drop zone
-
-# 0.0.8 / 2013-06-27
-
 * Fixes for streak bug
-
-# 0.0.7 / 2013-06-26
-
 * Shows overlays on streak events
-
-# 0.0.6 / 2013-06-26
-
 * Only shows streak UI after first attack
 * Repositions labels on points UI to prevent overlaps
-
-# 0.0.5 / 2013-06-25
-
 * Adds QS debug panel
 * Turns off debugging panel
 * Makes game playable when logged in only
