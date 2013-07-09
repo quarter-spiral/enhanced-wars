@@ -1,6 +1,17 @@
+overwrite = require('overwrite')
+
 angular.module('enhancedWars.services', []).
   factory('QSService', ['$rootScope', '$http', 'angularFire', ($rootScope, $http, angularFire) ->
+    $rootScope.$safeApply = (fn) ->
+      phase = @$root.$$phase
+      if phase is "$apply" or phase is "$digest"
+        fn()  if fn and (typeof (fn) is "function")
+      else
+        @$apply fn
+
     service = {}
+
+    matches = {}
 
     findFriends = (player) ->
       $http(method: 'GET', url: "#{window.ENV.QS_PLAYERCENTER_BACKEND_URL}/v1/#{player.uuid}/friends?oauth_token=#{service.qs.data.tokens.qs}&game=#{service.qs.data.info.game}").
@@ -11,7 +22,7 @@ angular.module('enhancedWars.services', []).
     service.createMatch = (match) ->
       creatorUuid = service.firebaseUser.auth.uuid
       matchToStore = {
-        map: match.map
+        map: match.map || angular.fromJson(match.mapJson)
         players: {}
         type: match.type
       }
@@ -25,9 +36,41 @@ angular.module('enhancedWars.services', []).
           friend = service.friends[uuid][service.qs.data.info.venue]
           player =
             uuid: uuid
-            name: friend.name
             state: if uuid is creatorUuid then 'playing' else 'invited'
           service.firebaseRef.child("v2/matches").child(uuid).child(matchUuid).set(player)
+
+    service.matchData = (matchUuid) ->
+      return matches[matchUuid] if matches[matchUuid]
+      match = {}
+      matches[matchUuid] = match
+
+      service.firebaseRef.child('v2/matchData').child(matchUuid).on('value', (snapshot) ->
+        retrievedMatch= snapshot.val()
+        playerUuids = []
+        playerUuids.push playerUuid for playerUuid, junk of retrievedMatch.players
+        if playerUuids.length > 0 then playerUuids = "uuids[]=#{playerUuids.join('&uuids[]=')}" else ''
+
+        $http(method: 'GET', url: "#{window.ENV.QS_PLAYERCENTER_BACKEND_URL}/v1/public/players?oauth_token=#{service.qs.data.tokens.qs}&#{playerUuids}").
+            success((data, status, headers, config) ->
+              for uuid, venueData of data
+                retrievedMatch.players[uuid] = venueData.venues[service.qs.data.info.venue]
+            )
+        overwrite(match, retrievedMatch)
+        $rootScope.$safeApply()
+      )
+      match
+
+    service.joinMatch = (matchUuid) ->
+      myUuid = service.firebaseUser.auth.uuid
+      service.firebaseRef.child('v2/matchData').child(matchUuid).child('players').child(myUuid).set(true)
+      service.firebaseRef.child('v2/matches').child(myUuid).child(matchUuid).child('state').set('playing')
+
+    service.openMatch = (match) ->
+      Game = require('Game')
+      if window.game and window.game.init isnt undefined
+        window.game.init(match.map)
+      else
+        window.game = new Game(map: match.map)
 
     QS.setup().then((qs) ->
       service.qs = qs
@@ -51,8 +94,6 @@ angular.module('enhancedWars.services', []).
 
         $rootScope.$apply()
 
-#         var Game = require('Game');
-#         window.game = new Game({map: mapToLoad});
       , (error) ->
         throw(error.message)
       )

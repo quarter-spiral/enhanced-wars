@@ -46,6 +46,7 @@ exports class GameRenderer
       (director) ->
         div = $('#game')
         div.css('margin-left': "#{-0.5 * div.width()}px", 'margin-top': "#{-0.5 * div.height()}px")
+        div.show()
 
         self.preloader = new CAAT.Module.Preloader.Preloader()
 

@@ -1,13 +1,32 @@
 angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWars.defaultMaps']).
-  controller('GamesController', ['$scope', 'angularFire', 'QSService', 'DefaultMaps', ($scope, angularFire, QSService, DefaultMaps) ->
+  controller('GamesController', ['$rootScope', '$scope', '$routeParams', 'angularFire', 'QSService', 'DefaultMaps', ($rootScope, $scope, $routeParams, angularFire, QSService, DefaultMaps) ->
+    unless $rootScope.params
+      jQuery = require('jquery')
+      $rootScope.params = $routeParams
+      $rootScope.openMatch = (matchUuid) ->
+        openMatch = ->
+          if jQuery('#game').length < 1
+            setTimeout(openMatch, 100)
+            return
+          QSService.openMatch(QSService.matchData(matchUuid))
+        openMatch()
+
+      $rootScope.$watch 'params.matchUuid', ->
+        unless $rootScope.params.matchUuid
+          jQuery('#game').hide()
+          return
+        jQuery('#game').show()
+        $rootScope.openMatch($rootScope.params.matchUuid)
+
+    $scope.matchData = (matchUuid) ->
+      QSService.matchData(matchUuid)
+
     $scope.notLoggedIn = ->
       QSService.notLoggedIn
     $scope.player = ->
       QSService.player
     $scope.loaded = ->
       QSService.player or QSService.notLoggedIn
-
-    # QSService.whenPlayerReady ->
 
     $scope.defaultMaps = DefaultMaps
 
@@ -44,4 +63,19 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
 
     $scope.createMatch = (match) ->
       QSService.createMatch(match)
+
+    $scope.joinMatch = (matchUuid) ->
+      QSService.joinMatch(matchUuid)
+
+    $scope.currentlyPlaying = (matches) ->
+      return unless matches
+      result = {}
+      result[uuid] = match for uuid, match of matches when match.state is 'playing'
+      result
+
+    $scope.pendingInvitations = (matches) ->
+      return unless matches
+      result = {}
+      result[uuid] = match for uuid, match of matches when match.state is 'invited'
+      result
   ])

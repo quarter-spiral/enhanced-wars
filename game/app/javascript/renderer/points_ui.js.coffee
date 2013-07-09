@@ -34,11 +34,14 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       i = 0
       bars = []
 
-      for player in @game.players
-        bar = new PointBar(@, player)
-        bar.container.setLocation(i * (1 - bar.widthFactor) * @container.width, @container.height)
-        bars.push bar: bar, player: player
-        i++
+      @game.onready =>
+        bar.bar.container.setExpired(0) for bar in bars
+        bars.splice(0, bars.length)
+        for player in @game.players
+          bar = new PointBar(@, player)
+          bar.container.setLocation(i * (1 - bar.widthFactor) * @container.width, @container.height)
+          bars.push bar: bar, player: player
+          i++
 
 
       radio('ew/game/next-turn').subscribe =>
@@ -46,7 +49,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
         i = 0
         for bar in bars
-          @container.setZOrder(bar.bar.container, if bar.player is currentPlayer then i else (bars.length * -1 + i))           
+          @container.setZOrder(bar.bar.container, if bar.player is currentPlayer then i else (bars.length * -1 + i))
           i++
 
 
@@ -56,7 +59,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
         for bar in bars
           if bar.player.get('points') > maxScore
             maxScore = bar.player.get('points')
-            maxScorePlayer = bar.player            
+            maxScorePlayer = bar.player
           bar.bar.label.container.setLocation(bar.bar.label.container.x,0)
           bar.bar.label.line.setLocation(0,0)
 

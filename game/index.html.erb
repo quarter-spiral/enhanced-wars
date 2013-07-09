@@ -30,13 +30,10 @@
 
 </head>
 <body ng-app="enhancedWars">
-  <canvas id="game"></canvas>
-  <div id="ew-debug-panel" ng-include="'/app/partials/ew-debug.html'"></div>
-
   <div class="container">
     <ul class="unstyled main-navigation">
       <li class="main-navigation-entry">
-        <a href="#/games" class="main-navigation-entry-link"><i class="icon-align-justify icon-white"></i><span class="main-navigation-entry-label">Your Games</span></a>
+        <a href="#/matches" class="main-navigation-entry-link"><i class="icon-align-justify icon-white"></i><span class="main-navigation-entry-label">Your Games</span></a>
       </li>
       <li class="main-navigation-entry">
         <a href="#/join" class="main-navigation-entry-link"><i class="icon-plus icon-white"></i><span class="main-navigation-entry-label">New Game</span></a>
@@ -51,6 +48,9 @@
       <div ng-show="loaded() && notLoggedIn()">
         Please log in
       </div>
+
+      <canvas id="game"></canvas>
+      <div id="ew-debug-panel" ng-include="'/app/partials/ew-debug.html'"></div>
 
       <div ng-show="player()" ng-view></div>
     </div>

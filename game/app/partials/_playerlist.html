@@ -1,0 +1,5 @@
+<span ng-repeat="(uuid, player) in matchData(matchUuid).players">
+  <span ng-hide="$first || $last">,</span>
+  {{player.name}}
+  <span ng-show="$first && !$last">&amp;</span>
+</span>

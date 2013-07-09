@@ -16,6 +16,7 @@
   position:absolute;
   top:10px;
   left:10px;
+  z-index: 999;
   .main-navigation-entry {
     display:none;
     &:first-child {
@@ -109,13 +110,13 @@ a {
 .game-list-entry-link {
   display:block;
   padding:15px 20px;
-  i {
+  .action {
     display:none;
   }
   &:hover {
     background-color: #76BBD6;
     color:#FFF;
-    i {
+    .action {
       display:block;
     }
   }

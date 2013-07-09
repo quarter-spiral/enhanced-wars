@@ -34,5 +34,11 @@ merge = (options, overrides) ->
 
 exports('merge', merge)
 
+overwrite = (object, newData) ->
+  delete object[key] for key, val of object
+  for key, val of newData
+    object[key] = val
+exports 'overwrite', overwrite
+
 typeIsArray = Array.isArray || ( value ) -> return {}.toString.call( value ) is '[object Array]'
 exports 'typeIsArray', typeIsArray
