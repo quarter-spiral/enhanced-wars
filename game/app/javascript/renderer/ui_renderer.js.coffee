@@ -29,7 +29,7 @@ exports class UIRenderer extends require('Renderer')
     WinUI = require('WinUI')
     StreakUI = require('StreakUI')
 
-    textOverlay = require('textOverlay')
+    TextOverlayQueue = require('TextOverlayQueue')
 
     originalFindActorAtPosition = @container.findActorAtPosition
     container = @container
@@ -44,9 +44,11 @@ exports class UIRenderer extends require('Renderer')
       self.pointsUI = new PointsUI(self, self.game, self.gameRenderer.director)
       self.winUI = new WinUI(self, self.game, self.gameRenderer.director)
       self.streakUI = new StreakUI(self, self.game, self.gameRenderer.director)
+      self.textOverlayQueue = new TextOverlayQueue(self.container)
+      
 
     radio('ew/game/drope-zone-captured').subscribe () =>
-      self.textOverlay = new textOverlay(self.container, "Drop Zone Captured!")
+      @textOverlayQueue.add("Drop Zone Captured!")
 
     radio('ew/game/streak').subscribe ({streakValue}) =>
       switch streakValue
@@ -59,4 +61,4 @@ exports class UIRenderer extends require('Renderer')
         when 3
           label = "Tripple Threat!"
 
-      self.textOverlay = new textOverlay(self.container, label)
+      @textOverlayQueue.add(label)

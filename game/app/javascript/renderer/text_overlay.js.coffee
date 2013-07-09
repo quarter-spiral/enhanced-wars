@@ -22,14 +22,14 @@ needs ['radio'], (radio) ->
           setTextBaseline("middle").
           setText(@text).
           setLocation(@background.width / 2, @background.height / 2)
-          
+
       @background.addChild(@label)
 
       @container.addChild(@background)
 
       scene = CAAT.getCurrentScene()
 
-      rotation = Math.PI/ ( 10 + Math.random() * 20 ) * ((Math.floor(Math.random()*2) * 2 - 1))
+      rotation = Math.PI/ ( 6 + Math.random() * 40 ) * ((Math.floor(Math.random()*2) * 2 - 1))
       rotate = new CAAT.RotateBehavior().
             setFrameTime( scene.time, 200 ).
             setValues(0, rotation ).
@@ -42,7 +42,7 @@ needs ['radio'], (radio) ->
 
       fadeOut = new CAAT.AlphaBehavior().
           setValues(1,0).
-          setFrameTime(scene.time+500, 200).
+          setFrameTime(scene.time+500, 100).
           addListener(
             behaviorExpired: (behavior, time, actor) ->
               actor.setExpired(scene.time)

@@ -1,3 +1,7 @@
+# 0.0.14 / 2013-07-08
+
+* queues animated text overlays
+
 # 0.0.13 / 2013-07-08
 
 * animated text overlays
