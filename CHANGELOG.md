@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Adds match action persistence
 * makes matches rewindable
 * queues animated text overlays
 * animated text overlays

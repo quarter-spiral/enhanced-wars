@@ -29,6 +29,12 @@ class EventedObject
         result[property] = @.get(property) for property in @dumpableProperties
         result
 
+    fireProperty: (property) ->
+      changes = {}
+      value = @get(property)
+      changes[property] = {old: value, new: value}
+      @properties.trigger('change', changes)
+
     bindProperty: (boundProperties, fn) ->
       boundProperties = [boundProperties] unless typeIsArray(boundProperties)
       @properties ||= new propertiesObj()

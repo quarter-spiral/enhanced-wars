@@ -66,6 +66,16 @@ angular.module('enhancedWars.services', []).
       service.firebaseRef.child('v2/matchData').child(matchUuid).child('players').child(myUuid).set(true)
       service.firebaseRef.child('v2/matches').child(myUuid).child(matchUuid).child('state').set('playing')
 
+    currentActionRef = null
+    reactOnAction = (dataSnapshot) ->
+      {action, index} = dataSnapshot.val()
+      unless window.game.actions[index]
+        Action = require('Action')
+        action = Action.load(action)
+        window.game.actions.push(action)
+        window.game.seekToAction(window.game.actions.length - 1)
+        radio('ew/game/actions/updated').broadcast(game)
+
     service.openMatch = (match) ->
       Game = require('Game')
       if window.game and window.game.init isnt undefined
@@ -73,11 +83,16 @@ angular.module('enhancedWars.services', []).
       else
         window.game = new Game(map: match.map)
 
+      currentActionRef.off('child_added', reactOnAction) if currentActionRef
+      currentActionRef = service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('actions')
+      currentActionRef.on('child_added', reactOnAction)
+
     radio('ew/game/actions/updated').subscribe (game, action) ->
       $rootScope.maxActionSteps = game.actions.length - 1
       $rootScope.$safeApply()
       $rootScope.actionStep = game.actions.length - 1
       $rootScope.$safeApply()
+      service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('actions').push(action: action.dump(), index: game.actions.indexOf(action)) if action
 
     QS.setup().then((qs) ->
       service.qs = qs

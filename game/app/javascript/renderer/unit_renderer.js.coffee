@@ -143,6 +143,8 @@ class Tile
       newWidth = (@hpMeterContainer.width - 2) * percentage
       @hpMeter.setSize(newWidth, @hpMeter.height)
 
+    unit.fireProperty('hp')
+
     FlyingInfoQueue = require('FlyingInfoQueue')
     @infoQueue = new FlyingInfoQueue(parent: @actor)
     radio('ew/game/attack').subscribe ({attacker, enemy, bullet}) =>

@@ -4,9 +4,21 @@ radio('ew/time-control/adjust-score').subscribe (game, points) ->
   game.setPoints(points.slice(0))
 
 class Action
+  constructor: ->
+    @arguments = arguments
+  dump: ->
+    {actionClass: @actionClass, arguments: @arguments}
+
+Action.load = (dump) ->
+  actionClass = require(dump.actionClass)
+  new actionClass(dump.arguments[0])
+
+exports Action
 
 class MoveAction extends Action
+  actionClass: 'MoveAction'
   constructor: ({@from, @to, @mpCost, @apCost, @oldOrientation, @newOrientation, @capturedZones, @pointsBefore, @pointsAfter}) ->
+    super
 
   perform: (game) =>
     game.turnManager.currentPlayer().deductAp(@apCost)
@@ -15,10 +27,11 @@ class MoveAction extends Action
     newMp = unit.get('mp') - @mpCost
     unit.set(position: @to, mp: newMp, orientation: @newOrientation)
 
-    for capture in @capturedZones
-      dropZone = game.map.tileAt(capture.tile).get('dropZone')
-      dropZone.capturedBy(unit.get('faction'))
-    radio('ew/time-control/adjust-score').broadcast(game, @pointsAfter)
+    if @capturedZones
+      for capture in @capturedZones
+        dropZone = game.map.tileAt(capture.tile).get('dropZone')
+        dropZone.capturedBy(unit.get('faction'))
+      radio('ew/time-control/adjust-score').broadcast(game, @pointsAfter)
 
   reverse: (game) =>
     selectedUnit = game.selectedUnit()
@@ -30,15 +43,18 @@ class MoveAction extends Action
     newMp = unit.get('mp') + @mpCost
     unit.set(position: @from, mp: newMp, orientation: @oldOrientation)
 
-    for capture in @capturedZones
-      dropZone = game.map.tileAt(capture.tile).get('dropZone')
-      dropZone.capturedBy(capture.oldFaction, reversePoints: unit.get('faction'))
-    radio('ew/time-control/adjust-score').broadcast(game, @pointsBefore)
+    if @capturedZones
+      for capture in @capturedZones
+        dropZone = game.map.tileAt(capture.tile).get('dropZone')
+        dropZone.capturedBy(capture.oldFaction || null)
+      radio('ew/time-control/adjust-score').broadcast(game, @pointsBefore)
 
 exports MoveAction
 
 class BuyUnitAction extends Action
+  actionClass: 'BuyUnitAction'
   constructor: ({@position, @type, @faction, @orientation, @apCost}) ->
+    super
 
   perform: (game) =>
     game.turnManager.currentPlayer().deductAp(@apCost)
@@ -56,7 +72,9 @@ class BuyUnitAction extends Action
 exports BuyUnitAction
 
 class NextTurnAction extends Action
+  actionClass: 'NextTurnAction'
   constructor: ({@apBefore}) ->
+    super
 
   perform: (game) =>
     game.turnManager.nextTurn()
@@ -68,7 +86,9 @@ class NextTurnAction extends Action
 exports NextTurnAction
 
 class FightAction extends Action
+  actionClass: 'FightAction'
   constructor: ({@unitsBefore, @unitsAfter, @streakBefore, @streakAfter, @apCost, @pointsBefore, @pointsAfter, @playersFiredBefore, @playersFiredAfter}) ->
+    super
 
   perform: (game) =>
     game.turnManager.currentPlayer().deductAp(@apCost)
@@ -113,6 +133,7 @@ class FightAction extends Action
         radio('ew/game/unit/added-to-player').broadcast(unit)
 
       unit.set(clone(unitOptions.dump))
+      unit.fireProperty('hp')
 
     radio('ew/time-control/adjust-score').broadcast(game, @pointsAfter)
 

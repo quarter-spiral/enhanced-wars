@@ -58,7 +58,7 @@ class Game
     callback.apply(@) for callback in @loadQueue
     @ready = true
 
-    @currentAction = 0
+    @currentAction = -1
     radio('ew/game/actions/updated').broadcast(@)
 
   selectedUnit: =>
@@ -72,7 +72,7 @@ class Game
 
   addAction: (action) =>
     @actions.push action
-    radio('ew/game/actions/updated').broadcast(@)
+    radio('ew/game/actions/updated').broadcast(@, action)
     @currentAction = @actions.length - 1
 
   seekToAction: (actionIndex) =>

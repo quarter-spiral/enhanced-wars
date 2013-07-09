@@ -8,7 +8,7 @@ exports class DropZone extends Module
   constructor: (options) ->
     @set(options)
 
-  capturedBy: (faction, options) =>
+  capturedBy: (faction) =>
     if @get('faction') != faction
       radio('ew/game/drope-zone-captured').broadcast()
       @set(faction: faction)
