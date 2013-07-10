@@ -11,7 +11,7 @@ exports class TextOverlayQueue
     newElement = @queue.shift()
     TextOverlay = require('textOverlay')
     new TextOverlay(@parent,newElement)
-    @triggerTimeout = setTimeout(@timeout, 350)
+    @triggerTimeout = setTimeout(@timeout, 450)
 
   timeout: =>
     delete @triggerTimeout

@@ -16,6 +16,7 @@ exports class UIRenderer extends require('Renderer')
     "/assets/ui/end_turn.png"
     "/assets/ui/tik.png"
     "/assets/ui/right_arrow.png"
+    "/assets/ui/sign.png"
   ]
 
   id: "ui"
@@ -44,7 +45,7 @@ exports class UIRenderer extends require('Renderer')
       self.pointsUI = new PointsUI(self, self.game, self.gameRenderer.director)
       self.winUI = new WinUI(self, self.game, self.gameRenderer.director)
       self.streakUI = new StreakUI(self, self.game, self.gameRenderer.director)
-      self.textOverlayQueue = new TextOverlayQueue(self.container)
+      self.textOverlayQueue = new TextOverlayQueue(self)
       
 
     radio('ew/game/drope-zone-captured').subscribe () =>
