@@ -19,20 +19,19 @@ needs ['radio'], (radio) ->
       @director = @parent.gameRenderer.director
 
       @container =  new CAAT.Foundation.ActorContainer()
-      @container.setSize(@parent.container.width, @parent.container.height).
+      @container.setSize(300, 400).
           centerAt(@parent.container.width / 2, @parent.container.height / 2).
           enableEvents(true).
-          setFillStyle('#000000').
-          setAlpha(0.3)
+          enableDrag()
 
 
       @parent.container.addChild(@container)
 
       @box = new CAAT.Foundation.ActorContainer().
-          setSize(300, 400).
+          setSize(@container.width, @container.height).
           centerAt(@container.width / 2, @container.height / 2).
           setFillStyle('#ffffff').
-          enableDrag()
+          enableEvents(false)
 
       @container.addChild(@box)
 
