@@ -77,7 +77,7 @@ needs ['radio'], (radio) ->
         )
 
       @container.addBehavior(dropOut)
-      @container.addBehavior(dropOut)
+      @container.addBehavior(fadeOut)
       @container.addBehavior(rotate)
       @container.addBehavior(scale)
 

@@ -264,6 +264,13 @@ exports class UnitRenderer extends require('Renderer')
         return false
     true
 
+  doubleClick: (e) =>
+    for unit in @units
+      if unit.isAtPosition(e.tile)
+        radio('ew/input/unit/doubleClicked').broadcast(unit)
+        return false
+    true
+
   removeUnit: (unit) =>
     @units = @units.filter (u) -> u.isAlive()
     for tile in @tiles

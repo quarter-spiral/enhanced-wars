@@ -29,6 +29,7 @@ exports class UIRenderer extends require('Renderer')
     PointsUI = require('PointsUI')
     WinUI = require('WinUI')
     StreakUI = require('StreakUI')
+    InspectorUI = require('InspectorUI')
 
     TextOverlayQueue = require('TextOverlayQueue')
 
@@ -46,6 +47,9 @@ exports class UIRenderer extends require('Renderer')
       self.winUI = new WinUI(self, self.game, self.gameRenderer.director)
       self.streakUI = new StreakUI(self, self.game, self.gameRenderer.director)
       self.textOverlayQueue = new TextOverlayQueue(self)
+
+    radio('ew/input/unit/doubleClicked').subscribe (unit) =>
+      self.inspectorUI = new InspectorUI(self,unit)
       
 
     radio('ew/game/drope-zone-captured').subscribe () =>
