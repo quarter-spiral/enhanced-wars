@@ -97,6 +97,10 @@ exports class GameRenderer
           for renderer in inputEnabledRenderers
             return unless renderer.click(e)
 
+        radio("ew/input/doubleClick").subscribe (e) ->
+          for renderer in inputEnabledRenderers
+            return unless renderer.doubleClick(e)
+
         CAAT.loop()
       ,
 
