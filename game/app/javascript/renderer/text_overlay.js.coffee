@@ -2,34 +2,43 @@ needs ['radio'], (radio) ->
   class textOverlay
     constructor: (@parent, @text) ->
 
+      @director = @parent.gameRenderer.director
 
       @container =  new CAAT.Foundation.ActorContainer()
-      @container.setSize(@parent.width, @parent.height).
+      @container.setSize(@parent.container.width, @parent.container.height).
           enableEvents(false).
           setGlobalAlpha(true).
           setRotation( 0 )
 
-      @parent.addChild(@container)
+      @parent.container.addChild(@container)
 
-      @background = new CAAT.Foundation.ActorContainer().
-          setSize(@container.width / 3, @container.height / 3).
+      @box = new CAAT.Foundation.ActorContainer().
+          setSize(500, 148).
           centerAt(@container.width / 2, @container.height / 2)
 
       @label = new CAAT.TextActor().
-          setFont('48px sans-serif').
-          setTextFillStyle('#ffffff').
+          setFont('42px sans-serif').
+          setTextFillStyle('#000000').
           setTextAlign("center").
           setTextBaseline("middle").
           setText(@text).
-          setLocation(@background.width / 2, @background.height / 2)
+          setLocation(@box.width / 2, @box.height / 2)
 
-      @background.addChild(@label)
+      @sign = new CAAT.Foundation.Actor().
+          setBackgroundImage(new CAAT.SpriteImage().initialize(@director.getImage("ui/ui/sign.png"), 1, 1))
 
-      @container.addChild(@background)
+      @sign.centerAt(Math.floor(@box.width / 2), Math.floor(@box.height / 2))
+
+
+
+      @box.addChild(@sign)
+      @box.addChild(@label)
+
+      @container.addChild(@box)
 
       scene = CAAT.getCurrentScene()
 
-      rotation = Math.PI/ ( 6 + Math.random() * 40 ) * ((Math.floor(Math.random()*2) * 2 - 1))
+      rotation = Math.PI/ ( 20 + Math.random() * 30 ) * ((Math.floor(Math.random()*2) * 2 - 1))
       rotate = new CAAT.RotateBehavior().
             setFrameTime( scene.time, 200 ).
             setValues(0, rotation ).
@@ -48,6 +57,26 @@ needs ['radio'], (radio) ->
               actor.setExpired(scene.time)
           )
 
+      if Math.random() > 0.5
+        y = 500 * ((Math.floor(Math.random()*2) * 2 - 1))
+        x = 0
+      else
+        x = 500 * ((Math.floor(Math.random()*2) * 2 - 1))
+        y = 0
+
+      dropOut = new CAAT.PathBehavior().
+        setPath(new CAAT.LinearPath().setInitialPosition(
+            0, 0).
+          setFinalPosition(
+            x, y)).
+        setInterpolator(new CAAT.Interpolator().createExponentialInInterpolator(2, false)).
+        setFrameTime(scene.time+500, 100).
+        addListener(
+          behaviorExpired: (behavior, time, actor) ->
+            actor.setExpired(scene.time)
+        )
+
+      @container.addBehavior(dropOut)
       @container.addBehavior(fadeOut)
       @container.addBehavior(rotate)
       @container.addBehavior(scale)
