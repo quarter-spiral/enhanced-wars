@@ -54,7 +54,8 @@ needs ['radio'], (radio) ->
           setFrameTime(scene.time+500, 100).
           addListener(
             behaviorExpired: (behavior, time, actor) ->
-              actor.setExpired(scene.time)
+              actor.setDiscardable(true)
+              actor.setExpired(true)
           )
 
       if Math.random() > 0.5
@@ -70,11 +71,7 @@ needs ['radio'], (radio) ->
           setFinalPosition(
             x, y)).
         setInterpolator(new CAAT.Interpolator().createExponentialInInterpolator(2, false)).
-        setFrameTime(scene.time+500, 100).
-        addListener(
-          behaviorExpired: (behavior, time, actor) ->
-            actor.setExpired(scene.time)
-        )
+        setFrameTime(scene.time+500, 100)
 
       @container.addBehavior(dropOut)
       @container.addBehavior(fadeOut)

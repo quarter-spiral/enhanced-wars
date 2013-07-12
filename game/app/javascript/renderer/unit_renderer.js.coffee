@@ -158,7 +158,8 @@ class Tile
         @infoQueue.add("Miss")
 
   remove: =>
-    @actor.setExpired(0)
+    @actor.setDiscardable(true)
+    @actor.setExpired(true)
 
 exports class UnitRenderer extends require('Renderer')
   assets: [

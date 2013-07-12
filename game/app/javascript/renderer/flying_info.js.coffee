@@ -39,7 +39,8 @@ exports class FlyingInfo
         setFrameTime(scene.time, 550).
         addListener(
           behaviorExpired: (behavior, time, actor) ->
-            actor.setExpired(scene.time)
+            actor.setDiscardable(true)
+            actor.setExpired(true)
         )
 
 
