@@ -7,7 +7,6 @@ needs ['radio'], (radio) ->
       hpSpecs =  @unit.specs().hp
       mp = @unit.get('mp')
       mpSpecs =  @unit.specs().mp
-      fired = @unit.fired
       canReturnFire = @unit.specs().returnsFire
       faction = @unit.get('faction')
       attackRange =  @unit.specs().attackRange # min and max
@@ -21,14 +20,22 @@ needs ['radio'], (radio) ->
 
 
       @container =  new CAAT.Foundation.ActorContainer()
-      @container.setSize(300, 400).
+      @container.setSize(300, 300).
           centerAt(@parent.container.width / 2, @parent.container.height / 2).
           enableEvents(true).
-          setFillStyle('#ffffff').
+          setGlobalAlpha(true).
+          setBackgroundImage(new CAAT.SpriteImage().initialize(@director.getImage("ui/ui/inspector_card.png"), 1, 1)).
           enableDrag()
 
 
       @parent.container.addChild(@container)
+
+      @coseX = new CAAT.Foundation.Actor().
+          setBackgroundImage(new CAAT.SpriteImage().initialize(@director.getImage("ui/ui/close_x.png"), 1, 1)).
+          enableEvents(false).
+          setLocation(265, 20)
+      @container.addChild(@coseX)
+      
 
       UNIT_TYPES =
         heavytank: ['ht']
@@ -44,7 +51,7 @@ needs ['radio'], (radio) ->
         setBackgroundImage(image).
         setSize(128, 150).
         setScale(0.5, 0.5).
-        setLocation(0, - 20).
+        setLocation(-10, - 25).
         enableEvents(false)
 
       @container.addChild(@unitImage)
@@ -55,10 +62,40 @@ needs ['radio'], (radio) ->
           setTextFillStyle("#666666").
           setTextBaseline("bottom").
           setText(labels.name).
-          setLocation(115, 65).
+          setLocation(100, 60).
           enableEvents(false)
 
       @container.addChild(@text)
+
+
+      statsLine = (text,x,y) =>
+        textActor = new CAAT.TextActor().
+            setFont("14px sans-serif").
+            setTextAlign("left").
+            setTextFillStyle("#000000").
+            setTextBaseline("bottom").
+            setText(text).
+            setLocation(x, y).
+            enableEvents(false)
+        return textActor
+
+      stats = [
+        "Health: " + hp + " / " + hpSpecs, 
+        "Movement: " + mp + " / " + mpSpecs, 
+        "Attack: " + attackRange.min + " - " + attackRange.max
+      ]
+
+      if canReturnFire
+        stats.push("Can return Fire")
+
+      if @unit.get('fired')
+        stats.push("Fired already")
+
+      i = 110
+      for line in stats
+        @container.addChild(statsLine(line,30,i))
+        i = i + 25
+
 
 
       scene = CAAT.getCurrentScene()
@@ -89,17 +126,17 @@ needs ['radio'], (radio) ->
 
         fadeOut = new CAAT.AlphaBehavior().
           setValues(1,0).
-          setFrameTime(scene.time, 150).
+          setFrameTime(scene.time, 250).
           addListener(
             behaviorExpired: (behavior, time, actor) ->
               actor.setExpired(scene.time)
           )
 
         if Math.random() > 0.5
-          y = 500 * ((Math.floor(Math.random()*2) * 2 - 1))
+          y = 700 * ((Math.floor(Math.random()*2) * 2 - 1))
           x = 0
         else
-          x = 500 * ((Math.floor(Math.random()*2) * 2 - 1))
+          x = 700 * ((Math.floor(Math.random()*2) * 2 - 1))
           y = 0
 
         dropOut = new CAAT.PathBehavior().
@@ -108,7 +145,7 @@ needs ['radio'], (radio) ->
             setFinalPosition(
               @container.x + x, @container.y + y)).
           setInterpolator(new CAAT.Interpolator().createExponentialInInterpolator(2, false)).
-          setFrameTime(scene.time, 150)
+          setFrameTime(scene.time, 250)
 
         @container.addBehavior(fadeOut)
         @container.addBehavior(dropOut)
