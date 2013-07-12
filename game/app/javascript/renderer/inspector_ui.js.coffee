@@ -14,26 +14,52 @@ needs ['radio'], (radio) ->
       costs =  @unit.specs().costs # fire and create
       bullets =  @unit.specs().bullets
       tags =  @unit.specs().tags
+      labels =  @unit.specs().labels
 
 
       @director = @parent.gameRenderer.director
+
 
       @container =  new CAAT.Foundation.ActorContainer()
       @container.setSize(300, 400).
           centerAt(@parent.container.width / 2, @parent.container.height / 2).
           enableEvents(true).
+          setFillStyle('#ffffff').
           enableDrag()
 
 
       @parent.container.addChild(@container)
 
-      @box = new CAAT.Foundation.ActorContainer().
-          setSize(@container.width, @container.height).
-          centerAt(@container.width / 2, @container.height / 2).
-          setFillStyle('#ffffff').
+      UNIT_TYPES =
+        heavytank: ['ht']
+        lighttank: ['lt']
+        mediumartillery: ['ma']
+        mediumtank: ['mt']
+        spiderbot: ['sb']
+
+      image_id = "unit/unit/#{@unit.get('faction')}/#{UNIT_TYPES[@unit.get('type')]}_r.png"
+      image = new CAAT.SpriteImage().initialize(@director.getImage(image_id), 1, 1)
+
+      @unitImage = new CAAT.Foundation.Actor().
+        setBackgroundImage(image).
+        setSize(128, 150).
+        setScale(0.5, 0.5).
+        setLocation(0, - 20).
+        enableEvents(false)
+
+      @container.addChild(@unitImage)
+
+      @text = new CAAT.TextActor().
+          setFont("18px sans-serif").
+          setTextAlign("left").
+          setTextFillStyle("#666666").
+          setTextBaseline("bottom").
+          setText(labels.name).
+          setLocation(115, 65).
           enableEvents(false)
 
-      @container.addChild(@box)
+      @container.addChild(@text)
+
 
       scene = CAAT.getCurrentScene()
 
@@ -51,8 +77,8 @@ needs ['radio'], (radio) ->
 
 
 
-      @box.addBehavior(rotate)
-      @box.addBehavior(scale)
+      @container.addBehavior(rotate)
+      @container.addBehavior(scale)
 
       @container.mouseClick = (e) =>
         remove()
@@ -66,7 +92,7 @@ needs ['radio'], (radio) ->
           setFrameTime(scene.time, 150).
           addListener(
             behaviorExpired: (behavior, time, actor) ->
-              actor.parent.setExpired(scene.time)
+              actor.setExpired(scene.time)
           )
 
         if Math.random() > 0.5
@@ -78,14 +104,14 @@ needs ['radio'], (radio) ->
 
         dropOut = new CAAT.PathBehavior().
           setPath(new CAAT.LinearPath().setInitialPosition(
-              @box.x, @box.y).
+              @container.x, @container.y).
             setFinalPosition(
-              @box.x + x, @box.y + y)).
+              @container.x + x, @container.y + y)).
           setInterpolator(new CAAT.Interpolator().createExponentialInInterpolator(2, false)).
           setFrameTime(scene.time, 150)
 
-        @box.addBehavior(fadeOut)
-        @box.addBehavior(dropOut)
+        @container.addBehavior(fadeOut)
+        @container.addBehavior(dropOut)
 
 
   exports InspectorUI

@@ -48,7 +48,7 @@ class Tile
 
     setImage = (orientation) =>
       orientation ||= @unit.get('orientation')
-      image_id = "unit/unit/#{@unit.get('faction')}/#{TILE_TYPES[@unit.get('type')][@unit.get('variant') || 0]}_#{ORIENTATION_TYPES[orientation]}.png"
+      image_id = "unit/unit/#{@unit.get('faction')}/#{TILE_TYPES[@unit.get('type')][@unit.get('variant') || 0]}_#{ORIENTATION_TYPES[@unit.get('orientation')]}.png"
       @image = new CAAT.SpriteImage().initialize(director.getImage(image_id), 1, 1)
       unitActor.setBackgroundImage(@image)
 
