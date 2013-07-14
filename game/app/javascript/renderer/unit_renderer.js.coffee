@@ -129,8 +129,24 @@ class Tile
     @actor.addChild(@hpMeterContainer)
     @hpMeterContainer.setLocation(@actor.width / 2 - @hpMeterContainer.width / 2, @actor.height - @hpMeterContainer.height - 5)
 
+    selectedBehaviourPath = new CAAT.LinearPath().
+      setInitialPosition(unitActor.x,unitActor.y).
+      setFinalPosition(unitActor.x,unitActor.y - 8)
+
+    selectedBehaviour = new CAAT.PathBehavior().
+      setPath(selectedBehaviourPath).
+      setFrameTime(director.currentScene.time, 200).
+      setInterpolator(new CAAT.Interpolator().createExponentialOutInterpolator(4, true)).
+      addListener(
+        behaviorExpired: (behavior, time, actor) =>
+          if @unit.get('selected')
+            actor.addBehavior(behavior.setFrameTime(time+300, 200))
+      )
+    
+
     unit.bindProperty 'selected', (changedValues) =>
-      unitActor.setAlpha(if @unit.get('selected') then 0.5 else 1)
+      if @unit.get('selected')
+        unitActor.addBehavior(selectedBehaviour.setFrameTime(director.currentScene.time, 200))
 
     unit.bindProperty 'position', (changedValues) =>
       relocateUnit() unless changedValues.move
