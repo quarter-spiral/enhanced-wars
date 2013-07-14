@@ -1,3 +1,4 @@
+
 radio = require('radio')
 merge = require('merge')
 Module = require('Module')
@@ -48,8 +49,8 @@ class Unit extends Module
       newState = itIsMyTurn and !@get('selected')
 
     @set(selected: newState)
-    radio('ew/game/unit/selected').broadcast(@) if (newState and !oldState) or (!itIsMyTurn and stateToSet is undefined)
     radio('ew/game/unit/unselected').broadcast(@) if !newState and oldState
+    radio('ew/game/unit/selected').broadcast(@) if (newState and !oldState) or (!itIsMyTurn and stateToSet is undefined)
 
   moveTo: (mapTile) =>
     @select(false)
