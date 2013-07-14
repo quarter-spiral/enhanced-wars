@@ -109,16 +109,26 @@ class Tile
     if dropZone = @tile.get('dropZone')
       @container.addChild(new DropZoneLayer(@renderer, dropZone).actor)
 
-    @darkener = new CAAT.Foundation.Actor()
-        .setFillStyle('#000000')
-        .setAlpha(0.6)
-        .setSize(@container.width, @container.height-34)
-        .setPosition(0, 20)
+    @highLight = new CAAT.ShapeActor()
+        .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
+        .setStrokeStyle('#3366ff')
+        .setLineWidth('6')
+        .setSize(@container.width-18, @container.height-33-16)
+        .setPosition(0+8, 20+6)
         .setVisible(false)
-    @container.addChild(@darkener)
+
+    pulseBehaviour = new CAAT.AlphaBehavior().
+      setValues(1,0.7).
+      setFrameTime(@renderer.gameRenderer.director.currentScene.time, 1000).
+      setPingPong().
+      setCycle(true)
+
+    @highLight.addBehavior(pulseBehaviour)
+
+    @container.addChild(@highLight)
 
     radio('ew/game/unit/unselected').subscribe (unit) =>
-      @darkener.setVisible(false)
+      @highLight.setVisible(false)
       @renderer.cache()
 
 
@@ -173,7 +183,10 @@ exports class MapRenderer extends require('Renderer')
       @map.eachTile (mapTile) =>
         enemy = @map.unitAt(mapTile.position())
         rendererTile = @tiles[mapTile.position().y][mapTile.position().x]
-        rendererTile.darkener.setVisible(!mapTile.canBeReachedBy(unit) and (!unit.canAttack(enemy) or !unit.hasEnoughApToAttack()))
+        if mapTile.canBeReachedBy(unit)
+          rendererTile.highLight.setStrokeStyle('#ffffff').setVisible(true)
+        if unit.canAttack(enemy) and unit.hasEnoughApToAttack()
+          rendererTile.highLight.setStrokeStyle('#ff0000').setVisible(true)
       @cache()
 
     @TILE_OFFSET = TILE_OFFSET
