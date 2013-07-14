@@ -112,7 +112,8 @@ class Tile
     @darkener = new CAAT.Foundation.Actor()
         .setFillStyle('#000000')
         .setAlpha(0.6)
-        .setSize(@container.width + (TILE_OFFSET.x / TILE_SCALE.width), @container.height + (TILE_OFFSET.y / TILE_SCALE.height))
+        .setSize(@container.width, @container.height-34)
+        .setPosition(0, 20)
         .setVisible(false)
     @container.addChild(@darkener)
 
