@@ -19,6 +19,8 @@ exports class UIRenderer extends require('Renderer')
     "/assets/ui/sign.png"
     "/assets/ui/inspector_card.png"
     "/assets/ui/close_x.png"
+    "/assets/ui/fired_icon.png"
+    "/assets/ui/moved_icon.png"
   ]
 
   id: "ui"

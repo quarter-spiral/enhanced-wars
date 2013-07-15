@@ -129,6 +129,28 @@ class Tile
     @actor.addChild(@hpMeterContainer)
     @hpMeterContainer.setLocation(@actor.width / 2 - @hpMeterContainer.width / 2, @actor.height - @hpMeterContainer.height - 5)
 
+
+    @firedIndicator = new CAAT.Foundation.Actor()
+    @firedIndicator.
+        setLocation(29+0,45).
+        setSize(25,26).
+        setVisible(false).
+        setBackgroundImage(new CAAT.SpriteImage().initialize(director.getImage("ui/ui/fired_icon.png"), 1, 1))
+
+    @actor.addChild(@firedIndicator)
+
+    @movedIndicator = new CAAT.Foundation.Actor()
+    @movedIndicator.
+        setLocation(29+12,45).
+        setSize(25,26).
+        setVisible(false).
+        setBackgroundImage(new CAAT.SpriteImage().initialize(director.getImage("ui/ui/moved_icon.png"), 1, 1))
+
+    @actor.addChild(@movedIndicator)
+
+
+
+
     selectedBehaviourPath = new CAAT.LinearPath().
       setInitialPosition(unitActor.x,unitActor.y).
       setFinalPosition(unitActor.x,unitActor.y - 8)
@@ -159,6 +181,25 @@ class Tile
       newWidth = (@hpMeterContainer.width - 2) * percentage
       @hpMeter.setSize(newWidth, @hpMeter.height)
 
+    unit.bindProperty 'mp', (changedValues) =>
+      if  @unit.get('mp') < @unit.specs().mp
+         if @unit.get('fired')
+          @firedIndicator.setLocation(29,45)
+        @movedIndicator.setVisible(true)
+
+    unit.bindProperty 'fired', (changedValues) =>
+      if @unit.get('fired')
+        if @unit.get('mp') < @unit.specs().mp
+          @firedIndicator.setLocation(29,45)
+        else
+          @firedIndicator.setLocation(29+12,45)
+        @firedIndicator.setVisible(true)
+
+
+    radio('ew/game/next-turn').subscribe =>
+      @firedIndicator.setVisible(false)
+      @movedIndicator.setVisible(false)
+
     unit.fireProperty('hp')
 
     FlyingInfoQueue = require('FlyingInfoQueue')
@@ -172,6 +213,8 @@ class Tile
         @infoQueue.add("Critical!") if bullet.criticalStrike
       else
         @infoQueue.add("Miss")
+
+    
 
   remove: =>
     @actor.setDiscardable(true)
@@ -244,7 +287,7 @@ exports class UnitRenderer extends require('Renderer')
 
     @TILE_TYPES = TILE_TYPES
     @TILE_SCALE = TILE_SCALE
-
+      
   loadUnits: (units) =>
     @units = units
     return unless @ready
