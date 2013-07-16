@@ -41,12 +41,14 @@
     </ul>
 
     <div ng-controller="GamesController">
-      <div ng-hide="loaded()">
-        Loading...
-      </div>
+      <div class="row">
+        <div ng-hide="loaded()" class="span6 offset3">
+          <p>Loading...</p>
+        </div>
 
-      <div ng-show="loaded() && notLoggedIn()">
-        Please log in
+        <div ng-show="loaded() && notLoggedIn()" class="span6 offset3">
+          Please log in
+        </div>
       </div>
 
       <div id="action-control" ng-include="'/app/partials/_action-control.html'"></div>
