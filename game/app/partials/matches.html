@@ -1,7 +1,10 @@
 <div class="row">
+  <div class="span10 offset1">
+    <h2 class="section-header">Your Games</h2>
+  </div>
   <div class="span6 offset1">
     <div class="game-list-container" ng-hide="currentlyPlaying(playerMatches)|emptyObject">
-      <h2 class="section-header">Your Games</h2>
+      
       <ul class="game-list unstyled">
         <li ng-repeat="(matchUuid, immediateMatchData) in currentlyPlaying(playerMatches)" class="game-list-entry">
           <a ng-href="#/match/{{matchUuid}}" class="game-list-entry-link current-turn">
