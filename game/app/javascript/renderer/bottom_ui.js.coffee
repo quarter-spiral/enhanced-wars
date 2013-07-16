@@ -194,11 +194,19 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       currentAp = ->
         self.game.turnManager.currentPlayer().get('ap')
 
-      radio('ew/game/next-turn').subscribe ->
+      setVisiblity = =>
+        if window.player and window.player.uuid and window.player.uuid is @game.turnManager.currentPlayer().get('uuid')
+          @container.setVisible(true)
+        else
+          @container.setVisible(false)
+
+      radio('ew/game/next-turn').subscribe =>
         setAp(currentAp())
+        setVisiblity()
 
       @game.onready ->
         setAp(currentAp())
+        setVisiblity()
         for player in game.players
           player.bindProperty 'ap', (changedValues) ->
             if self.game.turnManager.currentPlayer() is this

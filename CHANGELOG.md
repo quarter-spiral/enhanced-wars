@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Prevents players from taking turns for other players
 * Adds match action persistence
 * makes matches rewindable
 * queues animated text overlays

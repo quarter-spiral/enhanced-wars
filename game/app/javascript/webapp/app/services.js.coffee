@@ -26,6 +26,7 @@ angular.module('enhancedWars.services', []).
         map: match.map || angular.fromJson(match.mapJson)
         players: {}
         type: match.type
+        currentPlayer: creatorUuid
       }
       matchToStore.players[creatorUuid] = true
       matchDataRef = service.firebaseRef.child('v2/matchData').push();
@@ -40,13 +41,16 @@ angular.module('enhancedWars.services', []).
             state: if uuid is creatorUuid then 'playing' else 'invited'
           service.firebaseRef.child("v2/matches").child(uuid).child(matchUuid).set(player)
 
-    service.matchData = (matchUuid) ->
-      return matches[matchUuid] if matches[matchUuid]
+    service.matchData = (matchUuid, callback) ->
+      if matches[matchUuid]
+        callback(matches[matchUuid]) if callback
+        return matches[matchUuid]
+
       match = {}
       matches[matchUuid] = match
 
       service.firebaseRef.child('v2/matchData').child(matchUuid).on('value', (snapshot) ->
-        retrievedMatch= snapshot.val()
+        retrievedMatch = snapshot.val()
         playerUuids = []
         playerUuids.push playerUuid for playerUuid, junk of retrievedMatch.players
         if playerUuids.length > 0 then playerUuids = "uuids[]=#{playerUuids.join('&uuids[]=')}" else ''
@@ -58,13 +62,28 @@ angular.module('enhancedWars.services', []).
             )
         overwrite(match, retrievedMatch)
         $rootScope.$safeApply()
+        callback(match) if callback
       )
       match
 
     service.joinMatch = (matchUuid) ->
       myUuid = service.firebaseUser.auth.uuid
-      service.firebaseRef.child('v2/matchData').child(matchUuid).child('players').child(myUuid).set(true)
-      service.firebaseRef.child('v2/matches').child(myUuid).child(matchUuid).child('state').set('playing')
+      match = service.matchData(matchUuid, (match) ->
+        matchDataRef = service.firebaseRef.child('v2/matchData').child(matchUuid)
+        matchDataRef.child('players').child(myUuid).set(true)
+        matchDataRef.child('currentPlayer').set(myUuid) if match.currentPlayer is 'open-invitation'
+        service.firebaseRef.child('v2/matches').child(myUuid).child(matchUuid).child('state').set('playing')
+      )
+
+    service.nextPlayer = (matchUuid) ->
+      match = service.matchData(matchUuid)
+      firstPlayer = null
+      for player, junk of match.players
+        firstPlayer ||= player
+        return player if nextExit
+        nextExit = true if player is match.currentPlayer
+      return firstPlayer if nextExit
+      undefined
 
     currentActionRef = null
     reactOnAction = (dataSnapshot) ->
@@ -79,9 +98,9 @@ angular.module('enhancedWars.services', []).
     service.openMatch = (match) ->
       Game = require('Game')
       if window.game and window.game.init isnt undefined
-        window.game.init(match.map)
+        window.game.init(match.map, match)
       else
-        window.game = new Game(map: match.map)
+        window.game = new Game(map: match.map, match: match)
 
       currentActionRef.off('child_added', reactOnAction) if currentActionRef
       currentActionRef = service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('actions')
@@ -92,12 +111,19 @@ angular.module('enhancedWars.services', []).
       $rootScope.$safeApply()
       $rootScope.actionStep = game.actions.length - 1
       $rootScope.$safeApply()
-      service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('actions').push(action: action.dump(), index: game.actions.indexOf(action)) if action
+      if action
+        service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('actions').push(action: action.dump(), index: game.actions.indexOf(action))
+
+        if action.actionClass is 'NextTurnAction'
+          nextPlayer = service.nextPlayer($rootScope.params.matchUuid)
+          nextPlayer ||= 'open-invitation'
+          service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('currentPlayer').set(nextPlayer)
 
     QS.setup().then((qs) ->
       service.qs = qs
       qs.retrievePlayerInfo().then((player) ->
         service.player = player
+        window.player = player
         findFriends(player)
 
         firebaseUrl = window.ENV.QS_FIREBASE_URL

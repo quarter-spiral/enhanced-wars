@@ -25,16 +25,18 @@ class Game
     radio('ew/input/map/clicked').subscribe @mapClicked
     radio('ew/input/actions/seek').subscribe @seekToAction
 
-    @init(options.map)
+    @init(options.map, options.match)
 
-  init: (mapData, @actions = []) =>
+  init: (mapData, match, @actions = []) =>
     Player = require('Player')
     MapEditMapImporter = require('MapEditMapImporter')
     TurnManager = require('TurnManager')
 
+    matchPlayers = []
+    matchPlayers.push(playerUuid) for playerUuid, junk of match.players
     @players = [
-      new Player(faction: 0, color: '#a2c88e', game: @)
-      new Player(faction: 1, color: '#aa7092', game: @)
+      new Player(faction: 0, color: '#a2c88e', game: @, uuid: matchPlayers.shift())
+      new Player(faction: 1, color: '#aa7092', game: @, uuid: matchPlayers.shift())
     ]
     @turnManager ||= new TurnManager()
     @turnManager.init(@players)
