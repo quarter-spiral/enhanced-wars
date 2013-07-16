@@ -280,7 +280,7 @@ exports class UnitRenderer extends require('Renderer')
       renderer.loadUnits(renderer.units) if renderer.units
 
     radio('ew/game/unit/added-to-player').subscribe (unit) =>
-      @loadUnit(unit)
+      @loadUnit(unit, true)
 
     @container.setParent(@gameRenderer.renderers.map.container)
 
@@ -304,12 +304,24 @@ exports class UnitRenderer extends require('Renderer')
 
     @tiles = []
 
-    @loadUnit(unit) for unit in units
+    @loadUnit(unit, false) for unit in units
 
     radio('ew/game/units/loaded').broadcast()
 
-  loadUnit: (unit) =>
+  loadUnit: (unit, dropped) =>
     tile = new Tile(@, unit)
+    if dropped
+      scene = CAAT.getCurrentScene()
+      dropBehaviour = new CAAT.PathBehavior().
+            setPath(new CAAT.Path().setLinear(tile.actor.x,tile.actor.y - 500, tile.actor.x,tile.actor.y)).
+            setInterpolator(new CAAT.Interpolator().createExponentialInInterpolator(2,false)).
+            setFrameTime(scene.time, 300)
+      scaleBehaviour = new CAAT.ScaleBehavior().
+            setValues(1,1,1,0.5).
+            setInterpolator(new CAAT.Interpolator().createExponentialInInterpolator(2,true)).
+            setFrameTime(scene.time+290, 150)
+      tile.actor.addBehavior(dropBehaviour)
+      tile.actor.addBehavior(scaleBehaviour)
     @container.addChild(tile.actor)
     @tiles.push(tile)
     @units.push(unit)
