@@ -17,7 +17,15 @@
       <p class="friends-list-tip">First come first serve basis. You will also be able to share the game's url to invite more people.</p>
     </div>
 
-    <h2 class="section-header">Ready?</h2>
+    <h2 class="section-header" ng-show="newMatch.type == 'anybody'" >Desired Game Pace</h2>
+
+    <div ng-show="newMatch.type == 'anybody'" class="pace-tabs" ng-init="pace = 'slow'">
+      <a ng-click="pace = 'slow'" class="pace-tab" ng-class="{active:pace == 'slow'}">Slow</a>
+      <a ng-click="pace = 'medium'" class="pace-tab" ng-class="{active:pace == 'medium'}">Medium</a>
+      <a ng-click="pace = 'fast'" class="pace-tab" ng-class="{active:pace == 'fast'}">Fast</a>
+    </div>
+
+    <h2 class="section-header">Ready</h2>
     <span class="create-game-link" ng-hide="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Select a map</span>
     <a href="#/matches" ng-click="createMatch(newMatch)" class="create-game-link" ng-show="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Play first turn</a>
 
@@ -29,7 +37,7 @@
     <h1 class="section-header">Map</h1>
 
     <div ng-init="useCustomMap = false;" class="map-tabs" ng-show="newMatch.type == 'friendsOnly'">
-      <a ng-click="useCustomMap = false;" class="map-tab" ng-class="{active:useCustomMap == false}">Default</a>
+      <a ng-click="useCustomMap = false;" class="map-tab" ng-class="{active:useCustomMap == false}">Default selection</a>
       <a ng-click="useCustomMap = true;" class="map-tab" ng-class="{active:useCustomMap == true}">Custom</a>
     </div>
 
