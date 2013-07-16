@@ -103,6 +103,7 @@ class Game
 
   unitClicked: (unit) =>
     return unless @isAtLastAction()
+    return unless @turnManager.currentPlayer().get('uuid') is window.player.uuid
     unit.select()
 
   mapClicked: (mapTile) =>
