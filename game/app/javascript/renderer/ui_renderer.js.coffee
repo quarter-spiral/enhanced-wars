@@ -43,6 +43,8 @@ exports class UIRenderer extends require('Renderer')
       result = originalFindActorAtPosition.apply(this, arguments)
       if result is container then null else result
 
+
+    ready = false
     self = @
     radio("ew/renderer/assets-loaded").subscribe ->
       self.bottomUI = new BottomUI(self, self.game, self.gameRenderer.director)
@@ -50,16 +52,20 @@ exports class UIRenderer extends require('Renderer')
       self.pointsUI = new PointsUI(self, self.game, self.gameRenderer.director)
       self.winUI = new WinUI(self, self.game, self.gameRenderer.director)
       self.streakUI = new StreakUI(self, self.game, self.gameRenderer.director)
-      self.textOverlayQueue = new TextOverlayQueue(self)
+      self.textOverlayQueue = new TextOverlayQueue(self, self.game)
+      ready = true
 
     radio('ew/input/unit/doubleClicked').subscribe (unit) =>
       self.inspectorUI = new InspectorUI(self,unit)
-      
 
     radio('ew/game/drope-zone-captured').subscribe () =>
+      return unless ready
+
       @textOverlayQueue.add("Drop Zone Captured!")
 
     radio('ew/game/streak').subscribe ({streakValue}) =>
+      return unless ready
+
       switch streakValue
         when 0
           label = "First Attack!"

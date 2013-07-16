@@ -28,6 +28,9 @@ exports class Fight extends Module
     @attack(attacker, enemy)
     @attack(enemy, attacker) if enemy.isAlive() and enemy.canReturnFire() and enemy.canAttack(attacker)
 
+    attacker.set(fired: true)
+    attacker.set(mp: 0) unless attacker.specs().movesAndFires
+
     player.deductAp(apCost)
     unless player.get('fired')
       player.scorePoints(game.ruleSet.rewards.attack)

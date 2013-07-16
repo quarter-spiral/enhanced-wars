@@ -1,8 +1,11 @@
 exports class FlyingInfoQueue
   constructor: (@options) ->
     @queue = []
+    @game = @options.game
+    delete @options.game
 
   add: (text) =>
+    return unless @game.isAtLastAction()
     @queue.push text
     @trigger()
 

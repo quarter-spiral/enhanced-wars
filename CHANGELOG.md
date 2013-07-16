@@ -1,5 +1,7 @@
 # 0.0.5 / Unreleased
 
+* Fixes problems when loading games (all actions load properly)
+* Prevents overlays etc when rewinding actions
 * Prevents players from taking turns for other players
 * Adds match action persistence
 * makes matches rewindable

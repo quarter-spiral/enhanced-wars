@@ -1,8 +1,9 @@
 exports class TextOverlayQueue
-  constructor: (@parent) ->
+  constructor: (@parent, @game) ->
     @queue = []
 
   add: (text) =>
+    return unless @game.isAtLastAction()
     @queue.push text
     @trigger()
 

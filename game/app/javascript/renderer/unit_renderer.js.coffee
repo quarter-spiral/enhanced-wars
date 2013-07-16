@@ -164,7 +164,7 @@ class Tile
           if @unit.get('selected')
             actor.addBehavior(behavior.setFrameTime(time+300, 200))
       )
-    
+
 
     unit.bindProperty 'selected', (changedValues) =>
       if @unit.get('selected')
@@ -182,6 +182,7 @@ class Tile
       @hpMeter.setSize(newWidth, @hpMeter.height)
 
     unit.bindProperty 'mp', (changedValues) =>
+      return if @unit.get('faction') isnt @unit.game().turnManager.currentPlayer().get('faction')
       if  @unit.get('mp') < @unit.specs().mp
          if @unit.get('fired')
           @firedIndicator.setLocation(29,45)
@@ -203,7 +204,7 @@ class Tile
     unit.fireProperty('hp')
 
     FlyingInfoQueue = require('FlyingInfoQueue')
-    @infoQueue = new FlyingInfoQueue(parent: @actor)
+    @infoQueue = new FlyingInfoQueue(parent: @actor, game: @renderer.game)
     radio('ew/game/attack').subscribe ({attacker, enemy, bullet}) =>
       return unless enemy is @unit
 
@@ -213,8 +214,6 @@ class Tile
         @infoQueue.add("Critical!") if bullet.criticalStrike
       else
         @infoQueue.add("Miss")
-
-    
 
   remove: =>
     @actor.setDiscardable(true)
@@ -287,7 +286,7 @@ exports class UnitRenderer extends require('Renderer')
 
     @TILE_TYPES = TILE_TYPES
     @TILE_SCALE = TILE_SCALE
-      
+
   loadUnits: (units) =>
     @units = units
     return unless @ready
@@ -307,6 +306,8 @@ exports class UnitRenderer extends require('Renderer')
 
     @loadUnit(unit) for unit in units
 
+    radio('ew/game/units/loaded').broadcast()
+
   loadUnit: (unit) =>
     tile = new Tile(@, unit)
     @container.addChild(tile.actor)
@@ -316,6 +317,9 @@ exports class UnitRenderer extends require('Renderer')
     self = @
     unit.bindProperty 'dead', (changedValues) ->
       self.removeUnit(this) unless this.isAlive()
+
+  updateUnits: () ->
+    unit.propertyWildfire() for unit in @units
 
   click: (e) =>
     for unit in @units

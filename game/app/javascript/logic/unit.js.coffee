@@ -108,9 +108,6 @@ class Unit extends Module
     Fight = require('Fight')
     fight = new Fight(attacker: @, enemy: enemy)
 
-    @set(fired: true)
-    @set(mp: 0) unless @specs().movesAndFires
-
   die: =>
     @set(hp: 0, dead: true)
 

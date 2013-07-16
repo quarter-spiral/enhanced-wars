@@ -29,6 +29,9 @@ class EventedObject
         result[property] = @.get(property) for property in @dumpableProperties
         result
 
+    propertyWildfire: () ->
+      @fireProperty(property) for property, junk of @properties
+
     fireProperty: (property) ->
       changes = {}
       value = @get(property)

@@ -86,14 +86,37 @@ angular.module('enhancedWars.services', []).
       undefined
 
     currentActionRef = null
+    rendererReady = false
     reactOnAction = (dataSnapshot) ->
       {action, index} = dataSnapshot.val()
       unless window.game.actions[index]
-        Action = require('Action')
-        action = Action.load(action)
-        window.game.actions.push(action)
-        window.game.seekToAction(window.game.actions.length - 1)
-        radio('ew/game/actions/updated').broadcast(game)
+        window.game.onready =>
+          Action = require('Action')
+          action = Action.load(action)
+          window.game.actions.push(action)
+          if rendererReady
+            window.game.seekToAction(window.game.actions.length - 1)
+            radio('ew/game/actions/updated').broadcast(game)
+
+    mapReady = false
+    unitsReady = false
+
+    kickOff = ->
+      return unless mapReady and unitsReady
+      return if window.game.actions.length < 1
+      window.game.seekToAction(window.game.actions.length - 1)
+      rendererReady = true
+      radio('ew/game/actions/updated').broadcast(game)
+      setTimeout(window.game.gameRenderer.update, 200)
+      setTimeout(window.game.gameRenderer.update, 1000)
+
+    radio('ew/game/map/loaded').subscribe ->
+      mapReady = true
+      kickOff()
+
+    radio('ew/game/units/loaded').subscribe ->
+      unitsReady = true
+      kickOff()
 
     service.openMatch = (match) ->
       Game = require('Game')
