@@ -248,7 +248,7 @@ exports class MapRenderer extends require('Renderer')
 
   click: (e) ->
     tile = null
-    tile = @tiles[e.tile.y][e.tile.x] if e.tile.x >= 0 and e.tile.y >= 0
+    tile = @tiles[e.tile.y][e.tile.x] if e.tile.x >= 0 and e.tile.y >= 0 and @tiles[e.tile.y]
     unless tile
       @game.toggleDebug() if e.tile.x is -1 and e.tile.y is -1
       return true

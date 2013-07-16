@@ -47,4 +47,5 @@ exports class FlyingInfo
     @container.addBehavior(pathBehaviour)
     @container.addBehavior(fadeBehaviour)
 
-    @parent.parent.addChild(@container)
+    @superParent ||= @parent.parent
+    @superParent.addChild(@container)
