@@ -317,7 +317,7 @@ exports class UnitRenderer extends require('Renderer')
             setInterpolator(new CAAT.Interpolator().createExponentialInInterpolator(2,false)).
             setFrameTime(scene.time, 300)
       scaleBehaviour = new CAAT.ScaleBehavior().
-            setValues(1,1,1,0.5).
+            setValues(1,1,1,0.7,0,0.8).
             setInterpolator(new CAAT.Interpolator().createExponentialInInterpolator(2,true)).
             setFrameTime(scene.time+290, 150)
       tile.actor.addBehavior(dropBehaviour)
