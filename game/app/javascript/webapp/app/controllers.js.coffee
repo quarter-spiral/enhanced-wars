@@ -78,4 +78,13 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
       result = {}
       result[uuid] = match for uuid, match of matches when match.state is 'invited'
       result
+
+    $scope.login = () ->
+      urlData = QSService.qs.info.url.match(/^(http.*:\/\/)([^\/]*)(.*)$/)
+      scheme = urlData[1]
+      hostAndPort = urlData[2]
+      path = urlData[3]
+
+      loginUrl = "#{scheme}#{hostAndPort}/auth/auth_backend?origin=#{encodeURIComponent(QSService.qs.info.url)}"
+      window.parent.location.href = loginUrl
   ])

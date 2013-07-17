@@ -47,7 +47,7 @@
         </div>
 
         <div ng-show="loaded() && notLoggedIn()" class="span6 offset3">
-          Please log in
+          Please <a href="#" ng-click="login();$event.preventDefault();">log in</a>
         </div>
       </div>
 

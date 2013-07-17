@@ -170,6 +170,7 @@ angular.module('enhancedWars.services', []).
       )
     , (error) ->
       if error.message is 'Not logged in'
+        service.qs = error.data
         service.notLoggedIn = true
         $rootScope.$apply()
       else
