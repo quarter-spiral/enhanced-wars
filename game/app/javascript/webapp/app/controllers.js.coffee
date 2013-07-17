@@ -73,6 +73,23 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
       result[uuid] = match for uuid, match of matches when match.state is 'playing'
       result
 
+    $scope.myTurn = (matches) ->
+      return unless matches
+      result = {}
+      for uuid, match of $scope.currentlyPlaying(matches)
+        QSService.matchData uuid, (match) ->
+          result[uuid] = match if match.currentPlayer is QSService.myUuid()
+      result
+
+    $scope.notMyTurn = (matches) ->
+      return unless matches
+      result = {}
+      for uuid, match of $scope.currentlyPlaying(matches)
+        QSService.matchData uuid, (match) ->
+          result[uuid] = match if match.currentPlayer isnt QSService.myUuid()
+
+      result
+
     $scope.pendingInvitations = (matches) ->
       return unless matches
       result = {}

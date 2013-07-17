@@ -146,6 +146,9 @@ angular.module('enhancedWars.services', []).
           nextPlayer ||= 'open-invitation'
           service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('currentPlayer').set(nextPlayer)
 
+    service.myUuid = ->
+      service.firebaseUser.auth.uuid
+
     QS.setup().then((qs) ->
       service.qs = qs
       qs.retrievePlayerInfo().then((player) ->

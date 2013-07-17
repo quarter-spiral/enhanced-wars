@@ -1,0 +1,10 @@
+<a ng-href="#/match/{{matchUuid}}" class="game-list-entry-link current-turn">
+  <i class="action icon-chevron-right icon-white pull-right"></i>
+  <span class="pace-label">
+    <span ng-include="'/app/partials/_playerlist.html'" ng-hide="matchData(matchUuid).players|nKeys:1"></span>
+    <span ng-show="matchData(matchUuid).players|nKeys:1">
+      Just you
+    </span>
+    on {{matchData(matchUuid).map.name}}
+  </span>
+</a>

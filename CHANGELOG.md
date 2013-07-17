@@ -1,6 +1,7 @@
 # 0.0.5 / Unreleased
 
-* Removes invites when games become full
+* Splits list in matches where it's your turn and those where it's another player's turn
+* Removes invites when matches become full
 * Adds a link to directly log in when not logged in
 * Fixes problems when loading games (all actions load properly)
 * Prevents overlays etc when rewinding actions
