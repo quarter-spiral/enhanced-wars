@@ -1,5 +1,7 @@
 # 0.0.5 / Unreleased
 
+* Preselects the first default map in the custom match creation screen
+* Makes the pace UI real
 * Splits list in matches where it's your turn and those where it's another player's turn
 * Removes invites when matches become full
 * Adds a link to directly log in when not logged in
