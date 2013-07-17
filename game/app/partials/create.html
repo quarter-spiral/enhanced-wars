@@ -1,4 +1,4 @@
-<div class="row" ng-init="newMatch = {invitations: {}};newMatch.invitations[player().uuid] = '1'">
+<div class="row" ng-init="newMatch = {invitations: {}, pace: 'slow'};newMatch.invitations[player().uuid] = '1'">
 
   <div class="span3 offset1">
 
@@ -19,10 +19,10 @@
 
     <h2 class="section-header" ng-show="newMatch.type == 'anybody'" >Desired Game Pace</h2>
 
-    <div ng-show="newMatch.type == 'anybody'" class="pace-tabs" ng-init="pace = 'slow'">
-      <a ng-click="pace = 'slow'" class="pace-tab" ng-class="{active:pace == 'slow'}">Slow</a>
-      <a ng-click="pace = 'medium'" class="pace-tab" ng-class="{active:pace == 'medium'}">Medium</a>
-      <a ng-click="pace = 'fast'" class="pace-tab" ng-class="{active:pace == 'fast'}">Fast</a>
+    <div ng-show="newMatch.type == 'anybody'" class="pace-tabs">
+      <a ng-click="newMatch.pace = 'slow'" class="pace-tab" ng-class="{active:newMatch.pace == 'slow'}">Slow</a>
+      <a ng-click="newMatch.pace = 'medium'" class="pace-tab" ng-class="{active:newMatch.pace == 'medium'}">Medium</a>
+      <a ng-click="newMatch.pace = 'fast'" class="pace-tab" ng-class="{active:newMatch.pace == 'fast'}">Fast</a>
     </div>
 
     <h2 class="section-header">Ready</h2>

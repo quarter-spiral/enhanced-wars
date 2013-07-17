@@ -17,7 +17,9 @@
         <li ng-repeat="(matchUuid, immediateMatchData) in pendingInvitations(playerMatches)" class="game-list-entry">
           <a href="#" ng-click="joinMatch(matchUuid)" class="game-list-entry-link current-turn">
             <i class="action icon-chevron-right icon-white pull-right"></i>
-            <span class="pace-label">Join
+            <span class="pace-label">
+              <span ng-include="'/app/partials/_pace.html'"></span>
+              Join
               <span ng-include="'/app/partials/_playerlist.html'"></span>
               on {{matchData(matchUuid).map.name}}</span>
           </a>

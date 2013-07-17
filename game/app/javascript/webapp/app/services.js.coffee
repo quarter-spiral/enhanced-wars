@@ -26,6 +26,7 @@ angular.module('enhancedWars.services', []).
         map: match.map || angular.fromJson(match.mapJson)
         players: {}
         type: match.type
+        pace: match.pace
         maxPlayers: 2
         currentPlayer: creatorUuid
       }
