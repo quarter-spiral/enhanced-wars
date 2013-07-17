@@ -1,11 +1,11 @@
-<div class="row" ng-init="newMatch = {invitations: {}, pace: 'slow', map: cloneMap(defaultMaps[0])};newMatch.invitations[player().uuid] = '1'">
+<div class="row" ng-init="newMatch = {invitations: {}, pace: 'slow', type: 'public', map: cloneMap(defaultMaps[0])};newMatch.invitations[player().uuid] = '1'">
 
   <div class="span3 offset1">
 
     <h2 class="section-header">Opponents</h2>
 
-    <div ng-init="newMatch.type = 'anybody'" class="game-type-tabs">
-      <a ng-click="newMatch.type = 'anybody'; useCustomMap = false;" class="game-type-tab" ng-class="{active:newMatch.type == 'anybody'}">Random</a>
+    <div class="game-type-tabs">
+      <a ng-click="newMatch.type = 'public'; useCustomMap = false;" class="game-type-tab" ng-class="{active:newMatch.type == 'public'}">Random</a>
       <a ng-click="newMatch.type = 'friendsOnly'" class="game-type-tab" ng-class="{active:newMatch.type == 'friendsOnly'}">Friends</a>
     </div>
 
@@ -19,7 +19,7 @@
 
     <h2 class="section-header" ng-show="newMatch.type == 'anybody'" >Desired Game Pace</h2>
 
-    <div ng-show="newMatch.type == 'anybody'" class="pace-tabs">
+    <div class="pace-tabs">
       <a ng-click="newMatch.pace = 'slow'" class="pace-tab" ng-class="{active:newMatch.pace == 'slow'}">Slow</a>
       <a ng-click="newMatch.pace = 'medium'" class="pace-tab" ng-class="{active:newMatch.pace == 'medium'}">Medium</a>
       <a ng-click="newMatch.pace = 'fast'" class="pace-tab" ng-class="{active:newMatch.pace == 'fast'}">Fast</a>

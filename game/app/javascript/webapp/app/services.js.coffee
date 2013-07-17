@@ -35,6 +35,8 @@ angular.module('enhancedWars.services', []).
       matchDataRef.set(matchToStore)
       matchUuid = matchDataRef.name()
 
+      service.firebaseRef.child('v2/publicMatches').child(matchUuid).set('open') if matchToStore.type is 'public'
+
       for uuid, value of match.invitations
         if value is '1'
           friend = service.friends[uuid][service.qs.data.info.venue]
@@ -71,11 +73,18 @@ angular.module('enhancedWars.services', []).
     service.joinMatch = (matchUuid) ->
       myUuid = service.firebaseUser.auth.uuid
       match = service.matchData(matchUuid, (match) ->
+        if match.type == 'public'
+          service.firebaseRef.child('v2/matches').child(myUuid).child(matchUuid).set(state: 'invited', uuid: myUuid)
+
         matchDataRef = service.firebaseRef.child('v2/matchData').child(matchUuid)
         matchDataRef.child('players').child(myUuid).set(true)
         numberOfPlayers = 0
         numberOfPlayers += 1 for junk, junk2 of match.players
-        matchDataRef.child('full').set(true) if match.maxPlayers <= numberOfPlayers
+
+        if match.maxPlayers <= numberOfPlayers
+          matchDataRef.child('full').set(true)
+          service.firebaseRef.child('v2/publicMatches').child(matchUuid).set('in-progress') if match.type == 'public'
+
         matchDataRef.child('currentPlayer').set(myUuid) if match.currentPlayer is 'open-invitation'
         service.firebaseRef.child('v2/matches').child(myUuid).child(matchUuid).child('state').set('playing')
       )
@@ -167,6 +176,9 @@ angular.module('enhancedWars.services', []).
             service.firebaseUser = user
             resourceUrl = firebaseUrl + "/v2/matches/#{user.auth.uuid}"
             angularFire(resourceUrl, $rootScope, "playerMatches", {})
+
+            resourceUrl = firebaseUrl + "/v2/publicMatches"
+            angularFire(resourceUrl, $rootScope, "publicMatches", {})
 
             # Delete full matches
             $rootScope.$watch 'playerMatches', ->

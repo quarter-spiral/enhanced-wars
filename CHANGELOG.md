@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Makes it possible to start public matches
 * Preselects the first default map in the custom match creation screen
 * Makes the pace UI real
 * Splits list in matches where it's your turn and those where it's another player's turn

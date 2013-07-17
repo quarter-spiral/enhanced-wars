@@ -10,8 +10,8 @@
         <a ng-click="selectedPace = 'slow'" class="pace-tab" ng-class="{active:selectedPace == 'slow'}">Slow</a>
       </div>
       <ul class="game-list unstyled">
-        <li ng-repeat="game in availableGames | filter:{pace: selectedPace}" class="game-list-entry">
-          <a href="#/game" class="game-list-entry-link">{{game.pace}} game {{$index+1}} <i class="icon-ok icon-white pull-right"></i></a>
+        <li ng-repeat="matchUuid in publicMatches()" class="game-list-entry">
+          <div ng-include="'/app/partials/_join-match-list-entry.html'" ng-show="matchData(matchUuid).pace == selectedPace"></div>
         </li>
       </ul>
     </div>

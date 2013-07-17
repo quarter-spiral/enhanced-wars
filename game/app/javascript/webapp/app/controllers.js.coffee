@@ -67,6 +67,9 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
     $scope.joinMatch = (matchUuid) ->
       QSService.joinMatch(matchUuid)
 
+    $scope.publicMatches = () ->
+      uuid for uuid, state of $rootScope.publicMatches when state is 'open'
+
     $scope.currentlyPlaying = (matches) ->
       return unless matches
       result = {}
