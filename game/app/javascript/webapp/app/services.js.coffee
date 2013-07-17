@@ -26,6 +26,7 @@ angular.module('enhancedWars.services', []).
         map: match.map || angular.fromJson(match.mapJson)
         players: {}
         type: match.type
+        maxPlayers: 2
         currentPlayer: creatorUuid
       }
       matchToStore.players[creatorUuid] = true
@@ -71,6 +72,9 @@ angular.module('enhancedWars.services', []).
       match = service.matchData(matchUuid, (match) ->
         matchDataRef = service.firebaseRef.child('v2/matchData').child(matchUuid)
         matchDataRef.child('players').child(myUuid).set(true)
+        numberOfPlayers = 0
+        numberOfPlayers += 1 for junk, junk2 of match.players
+        matchDataRef.child('full').set(true) if match.maxPlayers <= numberOfPlayers
         matchDataRef.child('currentPlayer').set(myUuid) if match.currentPlayer is 'open-invitation'
         service.firebaseRef.child('v2/matches').child(myUuid).child(matchUuid).child('state').set('playing')
       )
@@ -159,6 +163,14 @@ angular.module('enhancedWars.services', []).
             service.firebaseUser = user
             resourceUrl = firebaseUrl + "/v2/matches/#{user.auth.uuid}"
             angularFire(resourceUrl, $rootScope, "playerMatches", {})
+
+            # Delete full matches
+            $rootScope.$watch 'playerMatches', ->
+              for matchUuid, inviteData of $rootScope.playerMatches
+                service.matchData matchUuid, (match) ->
+                  if match.full and !match.players[service.firebaseUser.auth.uuid]
+                    delete $rootScope.playerMatches[matchUuid]
+                    $rootScope.$safeApply()
 
             $rootScope.$apply()
         )

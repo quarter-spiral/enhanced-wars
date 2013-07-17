@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Removes invites when games become full
 * Adds a link to directly log in when not logged in
 * Fixes problems when loading games (all actions load properly)
 * Prevents overlays etc when rewinding actions
