@@ -92,11 +92,12 @@ angular.module('enhancedWars.services', []).
     service.nextPlayer = (matchUuid) ->
       match = service.matchData(matchUuid)
       firstPlayer = null
+      currentPlayer = match.currentPlayer
       for player, junk of match.players
         firstPlayer ||= player
         return player if nextExit
         nextExit = true if player is match.currentPlayer
-      return firstPlayer if nextExit
+      return firstPlayer if nextExit and currentPlayer isnt firstPlayer
       undefined
 
     currentActionRef = null
@@ -150,7 +151,6 @@ angular.module('enhancedWars.services', []).
       $rootScope.$safeApply()
       if action
         service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('actions').push(action: action.dump(), index: game.actions.indexOf(action))
-
         if action.actionClass is 'NextTurnAction'
           nextPlayer = service.nextPlayer($rootScope.params.matchUuid)
           nextPlayer ||= 'open-invitation'
