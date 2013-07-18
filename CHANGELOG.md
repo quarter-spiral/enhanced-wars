@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Removes Basic Auth
 * Swaps the default maps to real ones
 * Adds a chat
 * Directly jumps into games when creating them
