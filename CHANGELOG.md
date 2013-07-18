@@ -1,4 +1,4 @@
-# 0.0.5 / Unreleased
+# 0.0.5 / 2013-07-18
 
 * Removes Basic Auth
 * Swaps the default maps to real ones
