@@ -1,5 +1,6 @@
 # 0.0.5 / Unreleased
 
+* Adds a chat
 * Directly jumps into games when creating them
 * Makes it possible to start public matches
 * Preselects the first default map in the custom match creation screen
