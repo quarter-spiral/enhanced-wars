@@ -121,8 +121,7 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
 
     $scope.chatMessage = ""
 
-    $scope.addChatMessage = (user, message) ->
-      $scope.chatMessages.push({author:user,messageText:message}) unless message == ""
+    $scope.addChatMessage = (message) ->
+      QSService.addChatMessage(message)
       $scope.chatMessage = ""
-
   ])
