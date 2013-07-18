@@ -73,6 +73,13 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
     $scope.publicMatches = () ->
       uuid for uuid, state of $rootScope.publicMatches when state is 'open'
 
+    $scope.countPublicMatches = (paceSetting) ->
+      i = 0
+      for uuid, state of $rootScope.publicMatches when state is 'open'
+        if $scope.matchData(uuid).pace == paceSetting
+          i++
+      i
+
     $scope.currentlyPlaying = (matches) ->
       return unless matches
       result = {}
