@@ -169,6 +169,11 @@ angular.module('enhancedWars.services', []).
           nextPlayer ||= 'open-invitation'
           service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('currentPlayer').set(nextPlayer)
 
+    service.addChatMessage = (message) ->
+      return if message.match(/^\s*$/)
+      newMessageRef = service.firebaseRef.child('v2/publicChatMessages').push()
+      newMessageRef.set(author: service.firebaseUser.auth.name, authorUuid: service.myUuid(), messageText: message, time: new Date().getTime())
+
     service.myUuid = ->
       service.firebaseUser.auth.uuid
 
@@ -192,6 +197,9 @@ angular.module('enhancedWars.services', []).
 
             resourceUrl = firebaseUrl + "/v2/publicMatches"
             angularFire(resourceUrl, $rootScope, "publicMatches", {})
+
+            resourceUrl = firebaseUrl + "/v2/publicChatMessages"
+            angularFire(resourceUrl, $rootScope, "publicChatMessages", {})
 
             # Delete full matches
             $rootScope.$watch 'playerMatches', ->

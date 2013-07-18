@@ -47,6 +47,11 @@
   padding-left:45px;
 }
 
+.chat-header {
+  background:transparent url('../images/ui-icons/chat-icon.png') no-repeat left 65%;
+  padding-left:45px;
+}
+
 
 .create-game-link-block {
   margin-top:50px;
@@ -105,7 +110,7 @@ a {
 .new-game-button, .create-custom-game-link, .create-game-link {
   display:block;
   background-color: #8FBE00;
-  padding:25px 20px;
+  padding:15px 20px;
   color:#FFF;
   font-weight: bold;
   &:hover {
@@ -249,4 +254,27 @@ a {
   font-size: 0.9em;
   color:#666;
   margin-top: 15px;
+}
+
+
+
+.chat-message-author {
+  display:block;
+  color:#999;
+}
+
+.chat-message-text {
+  display:block;
+  margin-left:10px;
+}
+
+.chat-messages-list {
+  height:300px;
+  overflow:scroll;
+  border:1px solid #DDD;
+  padding:0 10px;
+}
+
+.chat-message {
+  margin:10px 0;
 }
