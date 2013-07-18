@@ -1,6 +1,6 @@
 <div class="row">
   <div class="span10 offset1" ng-hide="myTurn(playerMatches)|emptyObject">
-    <h2 class="section-header">Your Games</h2>
+    <h2 class="section-header games-header">Your Turn</h2>
   </div>
   <div class="span6 offset1">
     <div class="game-list-container" ng-hide="myTurn(playerMatches)|emptyObject">
@@ -12,7 +12,7 @@
     </div>
 
     <div class="game-list-container" ng-hide="pendingInvitations(playerMatches)|emptyObject">
-      <h2 class="section-header">Invited to:</h2>
+      <h2 class="section-header invited-header">Invited</h2>
       <ul class="game-list unstyled">
         <li ng-repeat="(matchUuid, immediateMatchData) in pendingInvitations(playerMatches)" class="game-list-entry">
           <div ng-include="'/app/partials/_join-match-list-entry.html'"></div>
@@ -21,7 +21,7 @@
     </div>
 
     <div class="game-list-container" ng-hide="notMyTurn(playerMatches)|emptyObject">
-      <h2 class="section-header">Waiting for other players</h2>
+      <h2 class="section-header waiting-header">Waiting</h2>
       <ul class="game-list unstyled">
         <li ng-repeat="(matchUuid, immediateMatchData) in notMyTurn(playerMatches)" class="game-list-entry">
           <div ng-include="'/app/partials/_match-list-entry.html'"></div>
@@ -31,7 +31,7 @@
 
   </div>
 
-  <div class="span3 offset1">
-    <a href="#/join" class="new-game-button"><i class="icon-plus icon-white pull-right"></i> New game</a>
+  <div class="span4 offset1 join-block">
+    <a href="#/join" class="new-game-button"><i class="icon-chevron-right icon-white pull-right"></i> New game </a>
   </div>
 </div>

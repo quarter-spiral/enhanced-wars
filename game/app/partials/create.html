@@ -2,7 +2,7 @@
 
   <div class="span3 offset1">
 
-    <h2 class="section-header">Opponents</h2>
+    <h2 class="section-header opponents-header">Opponents</h2>
 
     <div class="game-type-tabs">
       <a ng-click="newMatch.type = 'public'; useCustomMap = false;" class="game-type-tab" ng-class="{active:newMatch.type == 'public'}">Random</a>
@@ -14,10 +14,10 @@
       <label class="checkbox friends-list-entry" ng-repeat="(friendUuid, friendIdentities) in friends()">
         <input type="checkbox" id="inlineCheckbox1" ng-model="newMatch.invitations[friendUuid]" ng-true-value="1" ng-false-value="" ng-disabled="friendUuid == player().uuid"> {{friendIdentities[qsData().info.venue].name}}
       </label>
-      <p class="friends-list-tip">First come first serve basis. You will also be able to share the game's url to invite more people.</p>
+      <p class="friends-list-tip">First come first serve basis.</p>
     </div>
 
-    <h2 class="section-header" ng-show="newMatch.type == 'anybody'" >Desired Game Pace</h2>
+    <h2 class="section-header pace-header" ng-show="newMatch.type == 'anybody'" >Pace</h2>
 
     <div class="pace-tabs">
       <a ng-click="newMatch.pace = 'slow'" class="pace-tab" ng-class="{active:newMatch.pace == 'slow'}">Slow</a>
@@ -25,29 +25,29 @@
       <a ng-click="newMatch.pace = 'fast'" class="pace-tab" ng-class="{active:newMatch.pace == 'fast'}">Fast</a>
     </div>
 
-    <h2 class="section-header">Ready</h2>
-    <span class="create-game-link" ng-hide="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Select a map</span>
-    <a href="#/matches" ng-click="createMatch(newMatch)" class="create-game-link" ng-show="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Play first turn</a>
+    <div class="create-game-link-block">
+      <span class="create-game-link" ng-hide="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Select a map</span>
+      <a href="#/matches" ng-click="createMatch(newMatch)" class="create-game-link" ng-show="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white"></i> Play first turn</a>
+    </div>
 
   </div>
 
 
-  <div class="span6 offset1">
+  <div class="span7 offset1">
 
-    <h1 class="section-header">Map</h1>
+    <h1 class="section-header maps-header">Maps</h1>
 
     <div ng-init="useCustomMap = false;" class="map-tabs" ng-show="newMatch.type == 'friendsOnly'">
       <a ng-click="useCustomMap = false;" class="map-tab" ng-class="{active:useCustomMap == false}">Default selection</a>
       <a ng-click="useCustomMap = true;" class="map-tab" ng-class="{active:useCustomMap == true}">Custom</a>
     </div>
 
-    <div class="row">
-      <ul ng-hide="useCustomMap" class="map-list unstyled">
-        <li ng-repeat="map in defaultMaps" class="span2 map-list-entry" ng-class="{active: newMatch.map.name == map.name}">
-          <a ng-click="newMatch.map = cloneMap(map)" class="map-list-entry-link">{{map.name}} map</a>
-        </li>
-      </ul>
-    </div>
+
+    <ul ng-hide="useCustomMap" class="map-list unstyled">
+      <li ng-repeat="map in defaultMaps" class="map-list-entry" ng-class="{active: newMatch.map.name == map.name}">
+        <a ng-click="newMatch.map = cloneMap(map)" class="map-list-entry-link">{{map.name}}</a>
+      </li>
+    </ul>
 
     <div ng-show="useCustomMap" class="custom-map-form">
       <label>Map JSON</label>

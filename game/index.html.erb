@@ -42,11 +42,11 @@
 
     <div ng-controller="GamesController">
       <div class="row">
-        <div ng-hide="loaded()" class="span6 offset3">
+        <div ng-hide="loaded()" class="span6 offset1">
           <p>Loading...</p>
         </div>
 
-        <div ng-show="loaded() && notLoggedIn()" class="span6 offset3">
+        <div ng-show="loaded() && notLoggedIn()" class="span6 offset1">
           Please <a href="#" ng-click="login();$event.preventDefault();">log in</a>
         </div>
       </div>

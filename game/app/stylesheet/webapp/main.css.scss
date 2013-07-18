@@ -6,10 +6,55 @@
 
 .section-header {
   font-size: 1.2em;
-  margin-bottom: 20px;
+  margin: 20px 0;
   font-weight: normal;
+  color:#999;
 }
 
+.games-header {
+  background:transparent url('../images/ui-icons/games-icon.png') no-repeat left 45%;
+  padding-left:45px;
+}
+
+.invited-header, .join-header {
+  background:transparent url('../images/ui-icons/join-icon.png') no-repeat left 50%;
+  padding-left:45px;
+}
+
+
+.waiting-header {
+  background:transparent url('../images/ui-icons/waiting-icon.png') no-repeat left 45%;
+  padding-left:45px;
+}
+
+.add-header {
+  background:transparent url('../images/ui-icons/add-icon.png') no-repeat left 50%;
+  padding-left:45px;
+}
+
+.opponents-header {
+  background:transparent url('../images/ui-icons/users-icon.png') no-repeat left 30%;
+  padding-left:45px;
+}
+
+.pace-header {
+  background:transparent url('../images/ui-icons/pace-icon.png') no-repeat left 50%;
+  padding-left:45px;
+}
+
+.maps-header {
+  background:transparent url('../images/ui-icons/maps-icon.png') no-repeat left 50%;
+  padding-left:45px;
+}
+
+
+.create-game-link-block {
+  margin-top:50px;
+}
+
+.join-block {
+  margin-top:50px;
+}
 
 
 .main-navigation {
@@ -97,7 +142,7 @@ a {
     display:none;
   }
   &:hover {
-    background-color: #76BBD6;
+    background-color: #00B2DE;
     color:#FFF;
     .action {
       display:block;
@@ -134,7 +179,7 @@ a {
   margin:0;
 }
 
-.map-tabs, .game-type-tabs {
+.game-type-tabs {
   margin-bottom: 20px;
 }
 
@@ -148,40 +193,40 @@ a {
 }
 
 .pace-tab.active, .map-tab.active, .game-type-tab.active {
-  background-color: #76BBD6;
+  background-color: #00B2DE;
   color:#FFF;
 }
 
 .map-list {
+  background-color:#F6F6F6;
+  padding:10px;
 }
 
 .map-list-entry {
-  display: block;
+  display: inline-block;
   height:100px;
+  width:150px;
   line-height: 100px;
-  margin-bottom: 20px;
-  background-color: #EEE;
+  margin: 10px;
+  background-color: #FFF;
   text-align: center;
-
+  .map-list-entry-link {
+    display:block;
+    height:100px;
+  }
   &.active {
-    background-color: #0088cc;
+    background-color: #00B2DE;
     font-weight: bold;
-    text-decoration: underline;
-
+    text-decoration: none;
     a {
       color: #eeeeee;
     }
   }
 }
 
-.map-list-entry-link {
-
-}
-
 .custom-map-form {
   background-color: #F6F6F6;
   padding:30px;
-  margin-top: -20px;
 }
 
 .friends-list {
