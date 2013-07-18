@@ -1,5 +1,5 @@
 angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWars.defaultMaps']).
-  controller('GamesController', ['$rootScope', '$scope', '$routeParams', 'angularFire', 'QSService', 'DefaultMaps', ($rootScope, $scope, $routeParams, angularFire, QSService, DefaultMaps) ->
+  controller('GamesController', ['$rootScope', '$scope', '$routeParams', '$location', 'angularFire', 'QSService', 'DefaultMaps', ($rootScope, $scope, $routeParams, $location, angularFire, QSService, DefaultMaps) ->
     unless $rootScope.params
       jQuery = require('jquery')
       $rootScope.params = $routeParams
@@ -8,7 +8,9 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
           if jQuery('#game').length < 1
             setTimeout(openMatch, 100)
             return
-          QSService.openMatch(QSService.matchData(matchUuid))
+
+          QSService.matchData matchUuid, (match) ->
+            QSService.openMatch(match)
         openMatch()
 
       $rootScope.$watch 'params.matchUuid', ->
@@ -62,7 +64,8 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
       QSService.qs.data
 
     $scope.createMatch = (match) ->
-      QSService.createMatch(match)
+      matchUuid = QSService.createMatch(match)
+      $location.path("/match/#{matchUuid}")
 
     $scope.joinMatch = (matchUuid) ->
       QSService.joinMatch(matchUuid)

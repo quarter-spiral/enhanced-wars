@@ -45,13 +45,25 @@ angular.module('enhancedWars.services', []).
             state: if uuid is creatorUuid then 'playing' else 'invited'
           service.firebaseRef.child("v2/matches").child(uuid).child(matchUuid).set(player)
 
+      matchUuid
+
+    loadedMatchData = {}
+    matchDataCallbacks = {}
     service.matchData = (matchUuid, callback) ->
+      matchDataCallbacks[matchUuid] ||= []
+
       if matches[matchUuid]
-        callback(matches[matchUuid]) if callback
+        if callback
+          if loadedMatchData[matchUuid]
+            callback(matches[matchUuid])
+          else
+            matchDataCallbacks[matchUuid].push(callback)
         return matches[matchUuid]
 
       match = {}
       matches[matchUuid] = match
+
+      matchDataCallbacks[matchUuid].push(callback) if callback
 
       service.firebaseRef.child('v2/matchData').child(matchUuid).on('value', (snapshot) ->
         retrievedMatch = snapshot.val()
@@ -66,7 +78,8 @@ angular.module('enhancedWars.services', []).
             )
         overwrite(match, retrievedMatch)
         $rootScope.$safeApply()
-        callback(match) if callback
+        callback(match) for callback in matchDataCallbacks[matchUuid]
+        loadedMatchData[matchUuid] = true
       )
       match
 

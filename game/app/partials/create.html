@@ -27,7 +27,7 @@
 
     <div class="create-game-link-block">
       <span class="create-game-link" ng-hide="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Select a map</span>
-      <a href="#/matches" ng-click="createMatch(newMatch)" class="create-game-link" ng-show="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white"></i> Play first turn</a>
+      <a href="#" ng-click="createMatch(newMatch);$event.preventDefault()" class="create-game-link" ng-show="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white"></i> Play first turn</a>
     </div>
 
   </div>
