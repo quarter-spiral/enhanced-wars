@@ -110,4 +110,19 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
 
       loginUrl = "#{scheme}#{hostAndPort}/auth/auth_backend?origin=#{encodeURIComponent(QSService.qs.info.url)}"
       window.parent.location.href = loginUrl
+
+    $scope.chatMessages = [
+      {author:"Alex", messageText:'Hello'}
+      {author:"John", messageText:'Hello, this is a longe message for you enjoyment!'}
+      {author:"Mike", messageText:'Stop sayng hello you idiots.'}
+      {author:"Alice", messageText:'Hello'}
+      {author:"Jane", messageText:'LOL'}
+    ]
+
+    $scope.chatMessage = ""
+
+    $scope.addChatMessage = (user, message) ->
+      $scope.chatMessages.push({author:user,messageText:message}) unless message == ""
+      $scope.chatMessage = ""
+
   ])
