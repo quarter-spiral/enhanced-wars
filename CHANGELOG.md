@@ -1,3 +1,8 @@
+# 0.0.6 / 2013-07-18
+
+* hides the navigation until games do not longer require full reload
+* shows warning when there are no public games of a certain pace
+
 # 0.0.5 / 2013-07-18
 
 * Removes Basic Auth
