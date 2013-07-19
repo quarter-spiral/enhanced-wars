@@ -1,8 +1,15 @@
 overwrite = require('overwrite')
 radio = require('radio')
 
+parseParams = (url) ->
+  regex = /[?&]([^=#]+)=([^&#]*)/g
+  params = {}
+  match = undefined
+  params[match[1]] = match[2]  while match = regex.exec(url)
+  params
+
 angular.module('enhancedWars.services', []).
-  factory('QSService', ['$rootScope', '$http', 'angularFire', ($rootScope, $http, angularFire) ->
+  factory('QSService', ['$rootScope', '$http', '$location', 'angularFire', ($rootScope, $http, $location, angularFire) ->
     $rootScope.$safeApply = (fn) ->
       phase = @$root.$$phase
       if phase is "$apply" or phase is "$digest"
@@ -175,6 +182,10 @@ angular.module('enhancedWars.services', []).
       newMessageRef = service.firebaseRef.child('v2/publicChatMessages').push()
       newMessageRef.set(author: service.firebaseUser.auth.name, authorUuid: service.myUuid(), messageText: message, time: new Date().getTime())
 
+    service.matchCanvasUrl = (uuid) ->
+      url = service.qs.data.info.url
+      "#{url.replace(/\?.*?/, '')}?ew_match=#{uuid}"
+
     service.myUuid = ->
       service.firebaseUser.auth.uuid
 
@@ -211,6 +222,8 @@ angular.module('enhancedWars.services', []).
                     $rootScope.$safeApply()
 
             $rootScope.$apply()
+            if paramMatchUuidToLoad = parseParams(qs.data.info.url).ew_match
+              $location.path("/match/#{paramMatchUuidToLoad}")
         )
 
         $rootScope.$apply()

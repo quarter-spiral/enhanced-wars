@@ -1,5 +1,6 @@
 angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWars.defaultMaps']).
   controller('GamesController', ['$rootScope', '$scope', '$routeParams', '$location', 'angularFire', 'QSService', 'DefaultMaps', ($rootScope, $scope, $routeParams, $location, angularFire, QSService, DefaultMaps) ->
+
     unless $rootScope.params
       jQuery = require('jquery')
       $rootScope.params = $routeParams
@@ -108,6 +109,10 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
       result = {}
       result[uuid] = match for uuid, match of matches when match.state is 'invited'
       result
+
+    $scope.goToMatch = (uuid) ->
+      url = QSService.matchCanvasUrl(uuid)
+      window.parent.location.href = url
 
     $scope.login = () ->
       urlData = QSService.qs.info.url.match(/^(http.*:\/\/)([^\/]*)(.*)$/)
