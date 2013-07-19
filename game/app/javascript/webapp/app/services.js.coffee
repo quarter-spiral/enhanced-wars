@@ -124,9 +124,8 @@ angular.module('enhancedWars.services', []).
           Action = require('Action')
           action = Action.load(action)
           window.game.actions.push(action)
-          if rendererReady
-            window.game.seekToAction(window.game.actions.length - 1)
-            radio('ew/game/actions/updated').broadcast(game)
+          window.game.seekToAction(window.game.actions.length - 1)
+          radio('ew/game/actions/updated').broadcast(game)
 
     mapReady = false
     unitsReady = false
