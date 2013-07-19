@@ -183,8 +183,8 @@ angular.module('enhancedWars.services', []).
       newMessageRef.set(author: service.firebaseUser.auth.name, authorUuid: service.myUuid(), messageText: message, time: new Date().getTime())
 
     service.matchCanvasUrl = (uuid) ->
-      url = service.qs.data.info.url
-      url.replace(/\?.*?/, '') + '?ew_match=' + uuid
+      url = '' + service.qs.data.info.url
+      url.replace(/\?.*$/, '') + '?ew_match=' + uuid
 
     service.myUuid = ->
       service.firebaseUser.auth.uuid
