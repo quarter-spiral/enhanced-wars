@@ -78,7 +78,9 @@ angular.module('enhancedWars.services', []).
             )
         overwrite(match, retrievedMatch)
         $rootScope.$safeApply()
-        callback(match) for callback in matchDataCallbacks[matchUuid]
+        while callback = matchDataCallbacks[matchUuid].shift()
+          callback(match)
+
         loadedMatchData[matchUuid] = true
       )
       match
