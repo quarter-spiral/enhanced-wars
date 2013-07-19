@@ -184,7 +184,7 @@ angular.module('enhancedWars.services', []).
 
     service.matchCanvasUrl = (uuid) ->
       url = service.qs.data.info.url
-      "#{url.replace(/\?.*?/, '')}?ew_match=#{uuid}"
+      url.replace(/\?.*?/, '') + '?ew_match=' + uuid
 
     service.myUuid = ->
       service.firebaseUser.auth.uuid

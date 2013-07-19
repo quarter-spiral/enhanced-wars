@@ -70,6 +70,8 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
 
     $scope.joinMatch = (matchUuid) ->
       QSService.joinMatch(matchUuid)
+      url = QSService.matchCanvasUrl(matchUuid)
+      window.parent.location.href = url
 
     $scope.publicMatches = () ->
       uuid for uuid, state of $rootScope.publicMatches when state is 'open'
