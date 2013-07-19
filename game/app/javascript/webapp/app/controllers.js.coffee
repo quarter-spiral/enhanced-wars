@@ -116,6 +116,9 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
       url = QSService.matchCanvasUrl(uuid)
       window.parent.location.href = url
 
+    $scope.parentMatchUrl = (uuid) ->
+      QSService.matchCanvasUrl(uuid)
+
     $scope.login = () ->
       urlData = QSService.qs.info.url.match(/^(http.*:\/\/)([^\/]*)(.*)$/)
       scheme = urlData[1]
