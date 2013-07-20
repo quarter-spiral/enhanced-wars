@@ -1,5 +1,6 @@
 # 0.0.6 / Unreleased
 
+* Fixes player order in firebase
 * Makes it possible to switch games again
 * Fixes "first turn and nothing happens" bug
 * hides the navigation until games do not longer require full reload

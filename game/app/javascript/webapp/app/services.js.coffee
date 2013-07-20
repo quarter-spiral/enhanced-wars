@@ -50,7 +50,15 @@ angular.module('enhancedWars.services', []).
           player =
             uuid: uuid
             state: if uuid is creatorUuid then 'playing' else 'invited'
-          service.firebaseRef.child("v2/matches").child(uuid).child(matchUuid).set(player)
+
+          callback = ->
+          if uuid is creatorUuid
+            callback = (error) ->
+              # set again with priority to get sorting right
+              matchDataRef.child('players').child(creatorUuid).setWithPriority(true, 0) unless error
+
+          service.firebaseRef.child("v2/matches").child(uuid).child(matchUuid).set(player, callback)
+
 
       matchUuid
 
@@ -98,8 +106,10 @@ angular.module('enhancedWars.services', []).
         if match.type == 'public'
           service.firebaseRef.child('v2/matches').child(myUuid).child(matchUuid).set(state: 'invited', uuid: myUuid)
 
+        numberOfExistingPlayers = 0
+        numberOfExistingPlayers += 1 for playerUuid, junk in match.players
         matchDataRef = service.firebaseRef.child('v2/matchData').child(matchUuid)
-        matchDataRef.child('players').child(myUuid).set(true)
+        matchDataRef.child('players').child(myUuid).setWithPriority(true, numberOfExistingPlayers + 1)
         numberOfPlayers = 0
         numberOfPlayers += 1 for junk, junk2 of match.players
 
