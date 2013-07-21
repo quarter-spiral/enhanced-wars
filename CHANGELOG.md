@@ -1,5 +1,6 @@
 # 0.0.6 / Unreleased
 
+* Prevents dropzone selection of other players
 * Fixes player order in firebase
 * Makes it possible to switch games again
 * Fixes "first turn and nothing happens" bug

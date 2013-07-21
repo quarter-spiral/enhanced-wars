@@ -107,6 +107,7 @@ class Game
     unit.select()
 
   mapClicked: (mapTile) =>
+    return unless @turnManager.currentPlayer().get('uuid') is window.player.uuid
     radio('ew/game/map/clicked').broadcast(mapTile)
 
   toggleDebug: =>
