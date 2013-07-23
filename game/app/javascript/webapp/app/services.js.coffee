@@ -84,13 +84,12 @@ angular.module('enhancedWars.services', []).
         retrievedMatch = snapshot.val()
         playerUuids = []
         playerUuids.push playerUuid for playerUuid, junk of retrievedMatch.players
-        if playerUuids.length > 0 then playerUuids = "uuids[]=#{playerUuids.join('&uuids[]=')}" else ''
 
-        $http(method: 'GET', url: "#{window.ENV.QS_PLAYERCENTER_BACKEND_URL}/v1/public/players?oauth_token=#{service.qs.data.tokens.qs}&#{playerUuids}").
-            success((data, status, headers, config) ->
-              for uuid, venueData of data
-                retrievedMatch.players[uuid] = venueData.venues[service.qs.data.info.venue]
-            )
+        service.qs.retrievePlayerInfo(playerUuids).then (data) ->
+          for uuid in playerUuids
+            retrievedMatch.players[uuid] = data[uuid].venues[service.qs.data.info.venue]
+          $rootScope.$safeApply()
+
         overwrite(match, retrievedMatch)
         $rootScope.$safeApply()
         while callback = matchDataCallbacks[matchUuid].shift()
