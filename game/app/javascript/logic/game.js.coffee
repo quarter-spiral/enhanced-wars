@@ -95,7 +95,11 @@ class Game
     player.get('streak') for player in @players
 
   setPoints: (points) =>
-    player.set(points: points.shift()) for player in @players
+    for player in @players
+      newPoints = points.shift()
+      oldPoints = player.get('points')
+      pointsDelta = newPoints - oldPoints
+      player.scorePoints(pointsDelta)
 
   onready: (callback) =>
      return callback.apply(@) if @ready

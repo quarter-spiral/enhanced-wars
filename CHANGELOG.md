@@ -1,5 +1,6 @@
 # 0.0.6 / Unreleased
 
+* Fixes points UI on game load
 * Fixes not shown movement highlights for units sometimes when selecting them
 * Prevents dropzone selection of other players
 * Fixes player order in firebase

@@ -32,43 +32,50 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       super
 
       i = 0
-      bars = []
+      @bars = []
 
       @game.onready =>
-        bar.bar.container.setExpired(0) for bar in bars
-        bars.splice(0, bars.length)
+        bar.bar.container.setExpired(0) for bar in @bars
+        @bars.splice(0, @bars.length)
         for player in @game.players
           bar = new PointBar(@, player)
           bar.container.setLocation(i * (1 - bar.widthFactor) * @container.width, @container.height)
-          bars.push bar: bar, player: player
+          @bars.push bar: bar, player: player
           i++
 
 
-      radio('ew/game/next-turn').subscribe =>
+      @adjustTurn = =>
         currentPlayer = @game.turnManager.currentPlayer()
+        return null unless currentPlayer
 
         i = 0
-        for bar in bars
-          @container.setZOrder(bar.bar.container, if bar.player is currentPlayer then i else (bars.length * -1 + i))
+        for bar in @bars
+          @container.setZOrder(bar.bar.container, if bar.player is currentPlayer then i else (@bars.length * -1 + i))
           i++
 
+      radio('ew/game/next-turn').subscribe(@adjustTurn)
 
-      radio('ew/game/pointsScored').subscribe =>
+      @adjustLocations = =>
         maxScore = -1
         maxScorePlayer = null
-        for bar in bars
-          if bar.player.get('points') > maxScore
+        for bar in @bars
+          if bar.player and bar.player.get('points') and bar.player.get('points') > maxScore
             maxScore = bar.player.get('points')
             maxScorePlayer = bar.player
           bar.bar.label.container.setLocation(bar.bar.label.container.x,0)
           bar.bar.label.line.setLocation(0,0)
 
-        for bar in bars
+        for bar in @bars
           if bar.player is maxScorePlayer
             bar.bar.label.container.setLocation(bar.bar.label.container.x,-1 * bar.bar.label.container.height)
             bar.bar.label.line.setLocation(0,bar.bar.label.container.height)
 
+      radio('ew/game/pointsScored').subscribe(@adjustLocations)
 
+    adjust: =>
+      bar.player.propertyWildfire() for bar in @bars
+      @adjustTurn()
+      @adjustLocations()
 
   class PointBarLabel extends UIElement
     DIMENSIONS =
@@ -105,7 +112,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @line.setLocation(0, @container.height)
 
       @parent.player.bindProperty 'points', (changedValues) =>
-        @label.setText(changedValues.points.new)
+        @label.setText('' + changedValues.points.new)
 
 
   class PointBar extends UIElement
@@ -147,5 +154,8 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       barContainer.container.
           setSize(@container.width, @container.height - @topHint.container.height).
           setLocation(0, @topHint.container.height)
+
+      @game.onready =>
+        barContainer.adjust()
 
   exports PointsUI
