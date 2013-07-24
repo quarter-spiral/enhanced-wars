@@ -1,7 +1,8 @@
 <a ng-href="{{parentMatchUrl(matchUuid)}}" target="_parent" class="game-list-entry-link current-turn">
   <i class="action icon-chevron-right icon-white pull-right"></i>
   <span class="pace-label">
-    <span ng-include="'/app/partials/_pace.html'"></span>
+    <span ng-include="'/app/partials/_pace.html'" ng-hide="matchData(matchUuid).winner.name"></span>
+    <span ng-show="matchData(matchUuid).winner.name">Winner: {{matchData(matchUuid).winner.name}}. </span>
     <span ng-include="'/app/partials/_playerlist.html'" ng-hide="matchData(matchUuid).players|nKeys:1"></span>
     <span ng-show="matchData(matchUuid).players|nKeys:1">
       Just you

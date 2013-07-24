@@ -82,12 +82,17 @@ angular.module('enhancedWars.services', []).
 
       service.firebaseRef.child('v2/matchData').child(matchUuid).on('value', (snapshot) ->
         retrievedMatch = snapshot.val()
+        retrievedMatch.winner = {}
         playerUuids = []
         playerUuids.push playerUuid for playerUuid, junk of retrievedMatch.players
 
         service.qs.retrievePlayerInfo(playerUuids).then (data) ->
           for uuid in playerUuids
-            retrievedMatch.players[uuid] = data[uuid].venues[service.qs.data.info.venue]
+            playerData = data[uuid].venues[service.qs.data.info.venue]
+            retrievedMatch.players[uuid] = playerData
+
+            overwrite(retrievedMatch.winner, playerData) if $rootScope.playerMatches[matchUuid].winner is uuid
+
           $rootScope.$safeApply()
 
         overwrite(match, retrievedMatch)
@@ -162,6 +167,13 @@ angular.module('enhancedWars.services', []).
     radio('ew/game/units/loaded').subscribe ->
       unitsReady = true
       kickOff()
+
+    radio('ew/game/won').subscribe ->
+      winner = window.game.winner()
+      return unless winner
+      matchDataRef = service.firebaseRef.child('v2/matches').child(service.myUuid()).child($rootScope.params.matchUuid)
+      matchDataRef.child("state").set("ended")
+      matchDataRef.child("winner").set(winner.get('uuid'))
 
     service.openMatch = (match) ->
       Game = require('Game')

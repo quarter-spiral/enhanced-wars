@@ -106,6 +106,12 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
 
       result
 
+    $scope.endedMatches = (matches) ->
+      return unless matches
+      result = {}
+      result[uuid] = match for uuid, match of matches when match.state is 'ended'
+      result
+
     $scope.pendingInvitations = (matches) ->
       return unless matches
       result = {}

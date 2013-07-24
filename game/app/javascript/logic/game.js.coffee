@@ -94,6 +94,11 @@ class Game
   dumpStreaks: =>
     player.get('streak') for player in @players
 
+  winner: =>
+    winner = null
+    winner = player for player in @players when player.won()
+    winner
+
   setPoints: (points) =>
     for player in @players
       newPoints = points.shift()
