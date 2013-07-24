@@ -1,5 +1,6 @@
 # 0.0.6 / Unreleased
 
+* Lets ended games show up as "your turn" when you have not seen the result yet
 * Adds ended games
 * Always shows winning UI now if there is a winner already
 * Fixes chat scrolling to bottom

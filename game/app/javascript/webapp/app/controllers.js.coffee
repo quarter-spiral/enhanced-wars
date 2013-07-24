@@ -94,7 +94,7 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
       result = {}
       for uuid, match of $scope.currentlyPlaying(matches)
         QSService.matchData uuid, (match) ->
-          result[uuid] = match if match.currentPlayer is QSService.myUuid()
+          result[uuid] = match if match.currentPlayer is QSService.myUuid() or match.currentPlayer is 'ended'
       result
 
     $scope.notMyTurn = (matches) ->

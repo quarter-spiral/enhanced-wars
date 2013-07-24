@@ -171,9 +171,13 @@ angular.module('enhancedWars.services', []).
     radio('ew/game/won').subscribe ->
       winner = window.game.winner()
       return unless winner
-      matchDataRef = service.firebaseRef.child('v2/matches').child(service.myUuid()).child($rootScope.params.matchUuid)
-      matchDataRef.child("state").set("ended")
-      matchDataRef.child("winner").set(winner.get('uuid'))
+      matchUuid = $rootScope.params.matchUuid
+      matchRef = service.firebaseRef.child('v2/matches').child(service.myUuid()).child(matchUuid)
+      matchRef.child("state").set("ended")
+      matchRef.child("winner").set(winner.get('uuid'))
+
+      if service.matchData(matchUuid).currentPlayer is service.myUuid()
+        service.firebaseRef.child('v2/matchData').child(matchUuid).child('currentPlayer').set('ended')
 
     service.openMatch = (match) ->
       Game = require('Game')
