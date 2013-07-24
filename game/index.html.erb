@@ -44,6 +44,7 @@
       <div class="row">
         <div ng-hide="loaded()" class="span6 offset1">
           <p>Loading...</p>
+          <span ng-show="loadTimedOut"> (We might have a problem here. <a target="_parent" ng-href="{{reloadUrl()}}">Try to reload to fix this</a>.)</span>
         </div>
 
         <div ng-show="loaded() && notLoggedIn()" class="span6 offset1">

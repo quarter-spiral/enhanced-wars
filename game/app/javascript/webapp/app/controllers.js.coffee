@@ -26,8 +26,10 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
 
     $scope.notLoggedIn = ->
       QSService.notLoggedIn
+
     $scope.player = ->
       QSService.player
+
     $scope.loaded = ->
       QSService.player or QSService.notLoggedIn
 
@@ -121,6 +123,10 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
     $scope.goToMatch = (uuid) ->
       url = QSService.matchCanvasUrl(uuid)
       window.parent.location.href = url
+
+    $scope.reloadUrl = ->
+      return unless QSService.qs and QSService.qs.data and QSService.qs.data.info
+      QSService.qs.data.info.url
 
     $scope.parentMatchUrl = (uuid) ->
       QSService.matchCanvasUrl(uuid)

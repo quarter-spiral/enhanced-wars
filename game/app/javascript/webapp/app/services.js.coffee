@@ -214,8 +214,15 @@ angular.module('enhancedWars.services', []).
     service.myUuid = ->
       service.firebaseUser.auth.uuid
 
+    setTimeout(->
+      return if service.player or service.notLoggedIn
+      $rootScope.loadTimedOut = true
+      $rootScope.$safeApply()
+    , 10000)
+
     QS.setup().then((qs) ->
       service.qs = qs
+
       qs.retrievePlayerInfo().then((player) ->
         service.player = player
         window.player = player
