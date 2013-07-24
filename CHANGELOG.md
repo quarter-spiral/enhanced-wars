@@ -1,5 +1,6 @@
 # 0.0.6 / Unreleased
 
+* Always shows winning UI now if there is a winner already
 * Fixes chat scrolling to bottom
 * Retrieves player info in a better way
 * Fixes points UI on game load

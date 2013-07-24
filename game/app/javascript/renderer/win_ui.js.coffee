@@ -20,7 +20,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
       @container.addChild(@background)
 
-      radio('ew/game/won').subscribe (player) =>
+      showOrHideWinUi = (player) =>
         setTimeout(=>
           return unless player.won()
 
@@ -36,5 +36,10 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
           @container.setVisible(true)
           hideAgain()
         , 50)
+
+      @game.onready =>
+        showOrHideWinUi(player) for player in @game.players when player.won()
+
+      radio('ew/game/won').subscribe showOrHideWinUi
 
   exports WinUI
