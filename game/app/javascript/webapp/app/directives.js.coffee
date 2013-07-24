@@ -19,20 +19,29 @@ angular.module('enhancedWars.directives', []).directive("actionRangeChange", ($r
 
   link: linker
 ).directive "scrollGlue", ->
-  # By Luegg / https://github.com/Luegg/angularjs-scroll-glue/blob/master/src/scrollglue.js
+    # By Luegg / https://github.com/Luegg/angularjs-scroll-glue/blob/master/src/scrollglue.js
+  scrollingDoneByUs = false
+  alreadyScrolled = false
+
   priority: 1
   require: ["?ngModel"]
   restrict: "A"
   link: (scope, $el, attrs, ctrls) ->
+    jqEl = $(el)
+
     scrollToBottom = ->
-      el.scrollTop = el.scrollHeight
+      scrollingDoneByUs = true
+      setTimeout((-> el.scrollTop = el.scrollHeight), 200)
+
     shouldActivateAutoScroll = ->
-      el.scrollTop + el.clientHeight is el.scrollHeight
+      !alreadyScrolled || (el.scrollTop + el.clientHeight is el.scrollHeight)
     el = $el[0]
     ngModel = ctrls[0] || fakeNgModel(true)
     scope.$watch(attrs.scrollGlue, ->
       scrollToBottom() if ngModel.$viewValue
     )
 
-    $el.bind "scroll", ->
+    $el.bind "scroll", (e) ->
+      alreadyScrolled = true unless scrollingDoneByUs
+      scrollingDoneByUs = false
       scope.$apply ngModel.$setViewValue.bind(ngModel, shouldActivateAutoScroll())

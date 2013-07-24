@@ -1,5 +1,6 @@
 # 0.0.6 / Unreleased
 
+* Fixes chat scrolling to bottom
 * Retrieves player info in a better way
 * Fixes points UI on game load
 * Fixes not shown movement highlights for units sometimes when selecting them
