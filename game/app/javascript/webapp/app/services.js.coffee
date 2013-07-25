@@ -176,8 +176,7 @@ angular.module('enhancedWars.services', []).
       matchRef.child("state").set("ended")
       matchRef.child("winner").set(winner.get('uuid'))
 
-      if service.matchData(matchUuid).currentPlayer is service.myUuid()
-        service.firebaseRef.child('v2/matchData').child(matchUuid).child('currentPlayer').set('ended')
+      service.firebaseRef.child('v2/matchData').child(matchUuid).child('currentPlayer').set('ended')
 
     service.openMatch = (match) ->
       Game = require('Game')
