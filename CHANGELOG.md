@@ -1,3 +1,9 @@
+# 0.0.7 / Unreleased
+
+* Adds links to forum and feedback
+* Adds user voice widget
+* Resolved game progress slider layout
+
 # 0.0.6 / Unreleased
 
 * Adds a shady workaround for the "Loading... shown forever" bug
