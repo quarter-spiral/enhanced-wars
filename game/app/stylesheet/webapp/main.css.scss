@@ -162,30 +162,29 @@ a {
   }
 }
 
-#action-control {
-  position: absolute;
-  width: 400px;
-  height: 25px;
-  top: 0px;
-  left: 50%;
-  margin-left: -200px;
-  background: white;
-  z-index: 500;
-  text-align: center;
+.action-control {
+  position:absolute;
+  top:70px;
+  left:10px;
+  z-index: 499;
   overflow: hidden;
-
-  h4 {
-    margin: 0;
-  }
-
+  padding:15px 20px;
+  background-color: rgba(180,180,180,0.8);
   input {
-    width: 90%;
+    width: 300px;
   }
-
+  .action-control-slider {
+    display:none;
+    margin-left: 20px;
+  }
   &:hover {
-    height: 50px;
+    background-color: rgba(180,180,180,1);
+    .action-control-slider {
+      display:inline-block;
+    }
   }
 }
+
 
 .pace-tabs, .map-tabs, .game-type-tabs {
   margin:0;
@@ -284,4 +283,15 @@ a {
 
 .chat-message {
   margin:10px 0;
+}
+
+
+
+
+.alpha-message {
+  margin:20px 0;
+  padding:10px;
+  font-size:1.2em;
+  color:#999;
+  background-color:#FFD;
 }

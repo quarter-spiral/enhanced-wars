@@ -1,4 +1,8 @@
-<div ng-show="params.matchUuid">
-  <h4>Game Progress</h4>
-  <input type="range" min="0" max="{{maxActionSteps}}" step="1" action-range-change>
+<div ng-show="params.matchUuid" class="action-control">
+  <span class="action-control-icon">
+    <i class="icon-fast-backward icon-white"></i>
+  </span>
+  <span class="action-control-slider">
+    <input type="range" min="0" max="{{maxActionSteps}}" step="1" action-range-change>
+  </span>
 </div>
