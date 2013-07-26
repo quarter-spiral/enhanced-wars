@@ -46,12 +46,9 @@
       </li>
     </ul>
 
-    <div ng-controller="GamesController">
-     
+    <div ng-include="'/app/partials/_action-control.html'"></div>
 
-      <!--
-      <div id="action-control" ng-include="'/app/partials/_action-control.html'"></div>
-      -->
+    <div ng-controller="GamesController">
 
       <canvas id="game"></canvas>
       <div id="ew-debug-panel" ng-include="'/app/partials/ew-debug.html'"></div>
