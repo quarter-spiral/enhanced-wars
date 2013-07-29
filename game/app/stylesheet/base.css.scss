@@ -6,10 +6,8 @@ $gameWidth: 940px;
 $gameHeight: 640px;
 #game {
    position: absolute;
-   left: 50%;
-   top: 50%;
-   margin-left: -0.5 * $gameWidth;
-   margin-top: -0.5 * $gameHeight;
+   left: 0;
+   top: 0;
    display: none;
 }
 
