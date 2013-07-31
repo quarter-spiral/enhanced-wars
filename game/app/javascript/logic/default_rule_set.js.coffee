@@ -200,3 +200,27 @@ exports class DefaultRuleSet
         description: "Spider Bot Yay"
         weakVs: "weak weak"
         strongVs: "strong strong"
+
+
+    scrapper:
+      costs:
+        create: 25
+        fire: 1
+
+      hp: 5
+      mp: 8
+      attackRange:
+        min: 1
+        max: 1
+
+      bullets: ->
+        ["default"]
+
+      tags: ["land", "heavy"]
+      returnsFire: false
+      movesAndFires: true
+      labels:
+        name: "Scrapper"
+        description: "Retires Units for a living"
+        weakVs: "weak weak"
+        strongVs: "strong strong"

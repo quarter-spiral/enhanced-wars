@@ -32,6 +32,7 @@ TILE_TYPES =
   mediumartillery: ['ma']
   mediumtank: ['mt']
   spiderbot: ['sb']
+  scrapper: ['sc']
 
 ORIENTATION_TYPES =
   right: 'r'
@@ -241,6 +242,10 @@ exports class UnitRenderer extends require('Renderer')
     '/assets/unit/0/sb_l.png'
     '/assets/unit/0/sb_r.png'
     '/assets/unit/0/sb_u.png'
+    '/assets/unit/0/sc_d.png'
+    '/assets/unit/0/sc_l.png'
+    '/assets/unit/0/sc_r.png'
+    '/assets/unit/0/sc_u.png'
     '/assets/unit/1/ht_d.png'
     '/assets/unit/1/ht_l.png'
     '/assets/unit/1/ht_r.png'
@@ -261,6 +266,10 @@ exports class UnitRenderer extends require('Renderer')
     '/assets/unit/1/sb_l.png'
     '/assets/unit/1/sb_r.png'
     '/assets/unit/1/sb_u.png'
+    '/assets/unit/1/sc_d.png'
+    '/assets/unit/1/sc_l.png'
+    '/assets/unit/1/sc_r.png'
+    '/assets/unit/1/sc_u.png'
   ]
 
   id: "unit"
