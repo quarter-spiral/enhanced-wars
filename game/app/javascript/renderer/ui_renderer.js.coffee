@@ -21,6 +21,7 @@ exports class UIRenderer extends require('Renderer')
     "/assets/ui/close_x.png"
     "/assets/ui/fired_icon.png"
     "/assets/ui/moved_icon.png"
+    "/assets/ui/gradient.png"
   ]
 
   id: "ui"
@@ -34,8 +35,8 @@ exports class UIRenderer extends require('Renderer')
     WinUI = require('WinUI')
     StreakUI = require('StreakUI')
     InspectorUI = require('InspectorUI')
-
     TextOverlayQueue = require('TextOverlayQueue')
+    Vignette = require('Vignette')
 
     originalFindActorAtPosition = @container.findActorAtPosition
     container = @container
@@ -47,6 +48,7 @@ exports class UIRenderer extends require('Renderer')
     ready = false
     self = @
     radio("ew/renderer/assets-loaded").subscribe ->
+      self.vignette = new Vignette(self, self.game)
       self.bottomUI = new BottomUI(self, self.game, self.gameRenderer.director)
       self.shopUI = new ShopUI(self, self.game, self.gameRenderer.director)
       self.pointsUI = new PointsUI(self, self.game, self.gameRenderer.director)
