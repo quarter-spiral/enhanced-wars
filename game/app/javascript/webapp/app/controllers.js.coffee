@@ -153,4 +153,14 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
     $scope.addChatMessage = (message) ->
       QSService.addChatMessage(message)
       $scope.chatMessage = ""
+
+    $scope.actionRequiredCount = () ->
+      i = 0
+      myTurn = $scope.myTurn($scope.playerMatches)
+      myInvited = $scope.pendingInvitations($scope.playerMatches)
+      for item of myTurn
+        i++
+      for item of myInvited
+        i++ 
+      return i
   ])
