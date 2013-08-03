@@ -305,7 +305,6 @@ exports class UnitRenderer extends require('Renderer')
     @tiles = []
 
     @loadUnit(unit, false) for unit in units
-
     radio('ew/game/units/loaded').broadcast()
 
   loadUnit: (unit, dropped) =>
