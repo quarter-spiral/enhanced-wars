@@ -231,6 +231,10 @@ a {
   }
 }
 
+.chat-type-tab.disabled {
+  color: #DDD;
+}
+
 
 .map-list {
   background-color:#F6F6F6;
@@ -296,6 +300,10 @@ a {
 .chat-message-text {
   display:block;
   margin-left:10px;
+
+  img {
+    max-width: 200px;
+  }
 }
 
 .chat-messages-list {
@@ -327,5 +335,5 @@ a {
 
 
 #game {
-   background:#000 url('../images/splash.jpg') no-repeat center top; 
+   background:#000 url('../images/splash.jpg') no-repeat center top;
 }

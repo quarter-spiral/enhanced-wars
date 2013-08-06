@@ -46,30 +46,29 @@
       </li>
     </ul>
 
-    <a class="in-game-chat-toggle un-read-messages" ng-init="showChat = false;" ng-click="showChat = !showChat;"><i class="icon-white icon-comment"></i></a>
-
-    <div class="chat in-game-chat" ng-show="showChat">
-      <div class="chat-type-tabs">
-        <a class="chat-type-tab active">Game</a>
-        <a class="chat-type-tab">Global</a>
-      </div>
-      <ul class="chat-messages-list unstyled" scroll-glue="publicChatMessages">
-        <li class="chat-message" ng-repeat="(messageUuid, message) in publicChatMessages">
-          <span class="chat-message-author">{{message.author}}:</span><span class="chat-message-text">{{message.messageText}}</span>
-        </li>
-      </ul>
-      <form ng-submit="addChatMessage(chatMessage)" class="chat-input-block">
-        <div class="input-append">
-          <input type="text" ng-model="chatMessage" class="span2" placeholder="Enter your message" />
-          <button class="btn" type="submit">Send</button>
-        </div>
-      </form>
-    </div>
-
-
-    <div ng-include="'/app/partials/_action-control.html'"></div>
-
     <div ng-controller="GamesController">
+      <a class="in-game-chat-toggle un-read-messages" ng-click="showChat = !showChat;"><i class="icon-white icon-comment"></i></a>
+
+      <div class="chat in-game-chat" ng-show="showChat">
+        <div class="chat-type-tabs">
+          <a class="chat-type-tab disabled" disabled>Game</a>
+          <a class="chat-type-tab active">Global</a>
+        </div>
+        <ul class="chat-messages-list unstyled" scroll-glue="publicChatMessages">
+          <li class="chat-message" ng-repeat="(messageUuid, message) in publicChatMessages">
+            <span class="chat-message-author">{{message.author}}:</span><span class="chat-message-text" ng-bind-html-unsafe="message.messageText|autoLink"></span>
+          </li>
+        </ul>
+        <form ng-submit="addChatMessage(chatMessage)" class="chat-input-block">
+          <div class="input-append">
+            <input type="text" ng-model="chatMessage" class="span2" placeholder="Enter your message" />
+            <button class="btn" type="submit">Send</button>
+          </div>
+        </form>
+      </div>
+
+      <div ng-include="'/app/partials/_action-control.html'"></div>
+
 
       <canvas id="game"></canvas>
       <div id="ew-debug-panel" ng-include="'/app/partials/ew-debug.html'"></div>
@@ -77,7 +76,7 @@
       <div class="row">
         <div class="span9 offset1">
           <p class="alpha-message">
-            This is a pre-alpha. <a href="https://forum.quarterspiral.com/discussion/17/how-to-play-enhanced-wars#Item_1" target="new">Read the guide</a>, <a href="https://forum.quarterspiral.com/discussions" target="new">join the discussion</a> and give <a href="http://feedback.quarterspiral.com/forums/208101-enhanced-wars" target="new">plenty of feedback</a>. 
+            This is a pre-alpha. <a href="https://forum.quarterspiral.com/discussion/17/how-to-play-enhanced-wars#Item_1" target="new">Read the guide</a>, <a href="https://forum.quarterspiral.com/discussions" target="new">join the discussion</a> and give <a href="http://feedback.quarterspiral.com/forums/208101-enhanced-wars" target="new">plenty of feedback</a>.
           </p>
         </div>
         <div class="span2">
