@@ -21,6 +21,8 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
         jQuery('#game').show()
         $rootScope.openMatch($rootScope.params.matchUuid)
 
+    $rootScope.showChat = true
+
     $scope.matchData = (matchUuid) ->
       QSService.matchData(matchUuid)
 

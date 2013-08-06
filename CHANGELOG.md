@@ -1,5 +1,8 @@
 # 0.0.7 / Unreleased
 
+* Shows images from chat messages
+* Auto-links URLs in chat messages
+* Adds in universal chat UI
 * Fixes creation of matches with custom maps
 * Adds links to forum and feedback
 * Adds user voice widget
