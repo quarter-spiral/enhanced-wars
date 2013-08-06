@@ -137,14 +137,14 @@ exports class DefaultRuleSet
         create: 14
         fire: 1
 
-      hp: 13
+      hp: 9
       mp: 6
       attackRange:
         min: 2
-        max: 4
+        max: 5
 
       bullets: ->
-        ["default", "default", "default", "default"]
+        ["default", "default"]
 
       tags: ["land", "light", "artillery"]
       returnsFire: false
