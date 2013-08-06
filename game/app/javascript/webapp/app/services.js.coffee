@@ -181,7 +181,7 @@ angular.module('enhancedWars.services', []).
 
     service.openMatch = (match) ->
       Game = require('Game')
-      $rootScope.showChat = false
+
       if window.game and window.game.init isnt undefined
         window.game.init(match.map, match)
       else

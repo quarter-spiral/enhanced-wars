@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Adds lobby chat again
 * Shows images from chat messages
 * Auto-links URLs in chat messages
 * Adds in universal chat UI

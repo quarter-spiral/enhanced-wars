@@ -21,7 +21,13 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
         jQuery('#game').show()
         $rootScope.openMatch($rootScope.params.matchUuid)
 
-    $rootScope.showChat = true
+    $rootScope.showChat = false if $rootScope.showChat is undefined
+    $rootScope.showChatIcon = false if $rootScope.showChatIcon is undefined
+
+    $rootScope.$on('$routeChangeStart', (scope, next, current) ->
+      $rootScope.showChatIcon = !!next.pathParams.matchUuid
+      $rootScope.showChat = false
+    )
 
     $scope.matchData = (matchUuid) ->
       QSService.matchData(matchUuid)
@@ -142,17 +148,16 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
       loginUrl = "#{scheme}#{hostAndPort}/auth/auth_backend?origin=#{encodeURIComponent(QSService.qs.info.url)}"
       window.parent.location.href = loginUrl
 
-    $scope.chatMessages = [
-      {author:"Alex", messageText:'Hello'}
-      {author:"John", messageText:'Hello, this is a longe message for you enjoyment!'}
-      {author:"Mike", messageText:'Stop sayng hello you idiots.'}
-      {author:"Alice", messageText:'Hello'}
-      {author:"Jane", messageText:'LOL'}
-    ]
-
     $scope.chatMessage = ""
 
     $scope.addChatMessage = (message) ->
       QSService.addChatMessage(message)
       $scope.chatMessage = ""
+
+    $scope.scrollChatDown = ->
+      $('.chat-messages-list').each ->
+        self = this
+        setTimeout(->
+          self.scrollTop = self.scrollHeight
+        , 200)
   ])
