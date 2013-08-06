@@ -186,7 +186,31 @@ a {
 }
 
 
-.pace-tabs, .map-tabs, .game-type-tabs {
+.in-game-chat-toggle {
+  position:absolute;
+  top:130px;
+  left:10px;
+  z-index: 499;
+  overflow: hidden;
+  padding:15px 20px;
+  background-color: rgba(180,180,180,0.8);
+  &:hover {
+    background-color: rgba(180,180,180,1);
+  }
+  &.un-read-messages {
+    background-color: rgba(250,120,180,1);
+  }
+}
+
+.in-game-chat {
+  position:absolute;
+  top:130px;
+  left:70px;
+  width:250px;
+  z-index: 450;
+}
+
+.pace-tabs, .map-tabs, .game-type-tabs, .chat-type-tabs {
   margin:0;
 }
 
@@ -194,19 +218,23 @@ a {
   margin-bottom: 20px;
 }
 
-.pace-tab, .map-tab, .game-type-tab {
+.pace-tab, .map-tab, .game-type-tab , .chat-type-tab {
   display: inline-block;
   padding:10px 20px;
   background-color: #FFF;
   margin:0px;
   background-color:#F6F6F6;
   cursor:pointer;
+  &.active {
+    background-color: #00B2DE;
+    color:#FFF;
+  }
 }
 
-.pace-tab.active, .map-tab.active, .game-type-tab.active {
-  background-color: #00B2DE;
-  color:#FFF;
+.chat-type-tab.disabled {
+  color: #DDD;
 }
+
 
 .map-list {
   background-color:#F6F6F6;
@@ -272,6 +300,10 @@ a {
 .chat-message-text {
   display:block;
   margin-left:10px;
+
+  img {
+    max-width: 200px;
+  }
 }
 
 .chat-messages-list {
@@ -279,6 +311,7 @@ a {
   overflow:scroll;
   border:1px solid #DDD;
   padding:0 10px;
+  background-color:rgba(255,255,255,0.9);
 }
 
 .chat-message {
@@ -302,5 +335,5 @@ a {
 
 
 #game {
-   background:#000 url('../images/splash.jpg') no-repeat center top; 
+   background:#000 url('../images/splash.jpg') no-repeat center top;
 }
