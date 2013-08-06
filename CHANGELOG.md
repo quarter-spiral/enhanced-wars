@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Fixes creation of matches with custom maps
 * Adds links to forum and feedback
 * Adds user voice widget
 * Resolved game progress slider layout

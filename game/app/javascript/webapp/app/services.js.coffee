@@ -30,7 +30,7 @@ angular.module('enhancedWars.services', []).
     service.createMatch = (match) ->
       creatorUuid = service.firebaseUser.auth.uuid
       matchToStore = {
-        map: match.map || angular.fromJson(match.mapJson)
+        map: if match.mapJson then angular.fromJson(match.mapJson) else  match.map
         players: {}
         type: match.type
         pace: match.pace
