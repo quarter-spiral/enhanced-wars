@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Fixes a problem with games with friends
 * Removes "Ended Games" list
 * Adds an option to forfeit a game
 * Adds lobby chat again

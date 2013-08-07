@@ -263,7 +263,7 @@ angular.module('enhancedWars.services', []).
                   matchIsEndedAndIAmInvited = match.currentPlayer is 'ended' and inviteData.state is 'invited'
                   matchIsFull = match.full and !match.players[service.firebaseUser.auth.uuid]
                   if matchIsFull or matchIsEndedAndIAmInvited
-                    delete $rootScope.playerMatches[matchUuid]
+                    delete $rootScope.playerMatches[match.uuid]
                     $rootScope.$safeApply()
 
             $rootScope.$apply()
