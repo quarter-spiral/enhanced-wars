@@ -4,7 +4,7 @@ exports class DefaultRuleSet
   apPerTurn: 20
   pointsForWin: 30
   rewards:
-    captureDropZone: 3
+    captureDropZone: 6
     attack: 1
     streak: (streak) ->
       switch streak
@@ -65,9 +65,9 @@ exports class DefaultRuleSet
 
   bulletSpecs:
     default:
-      accuracy: 0.7
+      accuracy: 0.95
       damage:
-        min: 1
+        min: 2
         max: 4
 
       critical: 0.05
@@ -135,16 +135,16 @@ exports class DefaultRuleSet
     mediumartillery:
       costs:
         create: 14
-        fire: 1
+        fire: 2
 
-      hp: 9
+      hp: 8
       mp: 6
       attackRange:
         min: 2
         max: 5
 
       bullets: ->
-        ["default", "default"]
+        ["default"]
 
       tags: ["land", "light", "artillery"]
       returnsFire: false
@@ -180,7 +180,7 @@ exports class DefaultRuleSet
 
     spiderbot:
       costs:
-        create: 3
+        create: 25
         fire: 1
 
       hp: 7
@@ -196,7 +196,7 @@ exports class DefaultRuleSet
       returnsFire: true
       movesAndFires: true
       labels:
-        name: "Scout"
+        name: "Spider bomb"
         description: "Spider Bot Yay"
         weakVs: "weak weak"
         strongVs: "strong strong"
