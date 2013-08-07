@@ -29,16 +29,6 @@
         </li>
       </ul>
     </div>
-
-    <div class="game-list-container" ng-hide="endedMatches(playerMatches)|emptyObject">
-      <h2 class="section-header waiting-header">Ended games</h2>
-      <ul class="game-list unstyled">
-        <li ng-repeat="(matchUuid, immediateMatchData) in endedMatches(playerMatches)" class="game-list-entry">
-          <div ng-include="'/app/partials/_match-list-entry.html'"></div>
-        </li>
-      </ul>
-    </div>
-
   </div>
 
 
