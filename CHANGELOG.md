@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Adds an option to forfeit a game
 * Adds lobby chat again
 * Shows images from chat messages
 * Auto-links URLs in chat messages

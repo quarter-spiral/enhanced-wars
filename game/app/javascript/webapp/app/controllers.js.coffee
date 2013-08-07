@@ -160,4 +160,7 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
         setTimeout(->
           self.scrollTop = self.scrollHeight
         , 200)
+
+    $scope.forfeitMatch = ->
+      QSService.forfeitMatch()
   ])

@@ -29,7 +29,7 @@
   </script>
 
 </head>
-<body ng-app="enhancedWars">
+<body ng-app="enhancedWars" ng-controller="GamesController">
   <div class="container">
     <ul class="unstyled main-navigation">
       <li class="main-navigation-entry">
@@ -37,6 +37,9 @@
       </li>
       <li class="main-navigation-entry">
         <a href="#/join" class="main-navigation-entry-link"><i class="icon-plus icon-white"></i><span class="main-navigation-entry-label">New Game</span></a>
+      </li>
+      <li class="main-navigation-entry" ng-show="params.matchUuid">
+        <a href="#" class="main-navigation-entry-link" ng-click="forfeitMatch();$event.preventDefault()"><i class="icon-flag icon-white"></i><span class="main-navigation-entry-label">Forfeit</span></a>
       </li>
       <li class="main-navigation-entry">
         <a href="https://forum.quarterspiral.com/discussions" target="new" class="main-navigation-entry-link"><i class="icon-white icon-comment"></i><span class="main-navigation-entry-label">Forum</span></a>
@@ -47,12 +50,12 @@
       <li class="main-navigation-entry">
         <a href="https://www.youtube.com/watch?v=ihbnx-1LzPE" target="new" class="main-navigation-entry-link"><i class="icon-white icon-play"></i><span class="main-navigation-entry-label">Video Guide</span></a>
       </li>
-      
+
     </ul>
 
     <div ng-include="'/app/partials/_action-control.html'"></div>
 
-    <div ng-controller="GamesController">
+    <div>
 
       <canvas id="game"></canvas>
       <div id="ew-debug-panel" ng-include="'/app/partials/ew-debug.html'"></div>
@@ -61,7 +64,7 @@
         <div class="span9 offset1">
           <p ng-show="loaded() && notLoggedIn()" class="alpha-message">Please <a href="#" ng-click="login();$event.preventDefault();">sign up or log in</a> to play Enhanced Wars</p>
           <p class="alpha-message" ng-hide="notLoggedIn()">
-            This is a pre-alpha Demo. <a href="https://forum.quarterspiral.com/discussion/17/how-to-play-enhanced-wars#Item_1" target="new">Read the guide</a>, <a href="https://forum.quarterspiral.com/discussions" target="new">join the discussion</a> and give <a href="http://feedback.quarterspiral.com/forums/208101-enhanced-wars" target="new">plenty of feedback</a>. 
+            This is a pre-alpha Demo. <a href="https://forum.quarterspiral.com/discussion/17/how-to-play-enhanced-wars#Item_1" target="new">Read the guide</a>, <a href="https://forum.quarterspiral.com/discussions" target="new">join the discussion</a> and give <a href="http://feedback.quarterspiral.com/forums/208101-enhanced-wars" target="new">plenty of feedback</a>.
           </p>
         </div>
         <div class="span2">

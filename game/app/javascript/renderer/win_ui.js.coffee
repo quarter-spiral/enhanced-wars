@@ -22,7 +22,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
       showOrHideWinUi = (player) =>
         setTimeout(=>
-          return unless player.won()
+          return if !player.won()
 
           hideAgain = =>
             if player.won()

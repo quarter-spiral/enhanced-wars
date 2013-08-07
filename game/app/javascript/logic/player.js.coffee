@@ -52,7 +52,16 @@ exports class Player extends Module
   apToCreateUnit: (unitType) =>
     @get('game').ruleSet.unitSpecs[unitType].costs.create
 
+  forfeit: =>
+    @set(forfeit: true)
+    radio('ew/game/forfeit').broadcast(@)
+    ForfeitAction = require('ForfeitAction')
+    @get('game').addAction new ForfeitAction(playerUuid: @get('uuid'))
+    radio('ew/game/won').broadcast(@get('game').winner())
+
   won: =>
+    return true if @get('game').players.length < 3 and @get('game').players.filter((e) => e.get('forfeit') and e isnt @).length > 0
+
     pointsForWin = @get('game').ruleSet.pointsForWin
     @get('points') >= pointsForWin
 

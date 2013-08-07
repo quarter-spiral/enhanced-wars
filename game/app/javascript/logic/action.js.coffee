@@ -138,3 +138,22 @@ class FightAction extends Action
     radio('ew/time-control/adjust-score').broadcast(game, @pointsAfter)
 
 exports FightAction
+
+class ForfeitAction extends Action
+  actionClass: 'ForfeitAction'
+  constructor: ({@playerUuid}) ->
+    super
+
+  perform: (game) =>
+    player = (game.players.detect (e) => e.get('uuid') is @playerUuid)
+    return unless player
+    player.set(forfeit: true)
+    radio('ew/game/forfeit').broadcast(player)
+    radio('ew/game/won').broadcast(player.get('game').winner())
+
+  reverse: (game) =>
+    player = (game.players.detect (e) => e.get('uuid') is @playerUuid)
+    return unless player
+    player.set(forfeit: false)
+
+exports ForfeitAction

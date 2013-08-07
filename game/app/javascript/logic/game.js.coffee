@@ -24,6 +24,7 @@ class Game
     radio('ew/input/unit/clicked').subscribe @unitClicked
     radio('ew/input/map/clicked').subscribe @mapClicked
     radio('ew/input/actions/seek').subscribe @seekToAction
+    radio('ew/input/forfeit/clicked').subscribe @forfeitGame
 
     @init(options.map, options.match)
 
@@ -32,6 +33,7 @@ class Game
     MapEditMapImporter = require('MapEditMapImporter')
     TurnManager = require('TurnManager')
 
+    @match = match
     matchPlayers = []
     matchPlayers.push(playerUuid) for playerUuid, junk of match.players
     @players = [
@@ -71,6 +73,11 @@ class Game
     unit.bindProperty 'dead', (changedValues) =>
       @units = @units.filter (u) -> u.isAlive()
     radio('ew/game/unit/added').broadcast(unit)
+
+  forfeit: (playerUuid) =>
+    player = @players.detect (e) => e.get('uuid') is playerUuid
+    return unless player
+    player.forfeit()
 
   addAction: (action) =>
     @actions.push action

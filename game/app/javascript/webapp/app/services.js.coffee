@@ -82,6 +82,7 @@ angular.module('enhancedWars.services', []).
 
       service.firebaseRef.child('v2/matchData').child(matchUuid).on('value', (snapshot) ->
         retrievedMatch = snapshot.val()
+        retrievedMatch.uuid = matchUuid
         retrievedMatch.winner = {}
         playerUuids = []
         playerUuids.push playerUuid for playerUuid, junk of retrievedMatch.players
@@ -136,6 +137,9 @@ angular.module('enhancedWars.services', []).
       return firstPlayer if nextExit and currentPlayer isnt firstPlayer
       undefined
 
+    service.forfeitMatch = ->
+      window.game.forfeit(service.myUuid())
+
     currentActionRef = null
     rendererReady = false
     reactOnAction = (dataSnapshot) ->
@@ -169,15 +173,21 @@ angular.module('enhancedWars.services', []).
       unitsReady = true
       kickOff()
 
-    radio('ew/game/won').subscribe ->
-      winner = window.game.winner()
+    radio('ew/game/won').subscribe (player) ->
+      game = player.get('game')
+      winner = game.winner()
       return unless winner
-      matchUuid = $rootScope.params.matchUuid
+      matchUuid = game.match.uuid
       matchRef = service.firebaseRef.child('v2/matches').child(service.myUuid()).child(matchUuid)
       matchRef.child("state").set("ended")
-      matchRef.child("winner").set(winner.get('uuid'))
+      winnerUuid = if (winner and winner.get('uuid')) then winner.get('uuid') else 'none'
+      matchRef.child("winner").set(winnerUuid)
 
       service.firebaseRef.child('v2/matchData').child(matchUuid).child('currentPlayer').set('ended')
+
+      if winnerUuid is 'none'
+        service.firebaseRef.child('v2/publicMatches').child(matchUuid).set('in-progress') if $rootScope.publicMatches[matchUuid]
+        $location.path("/matches")
 
     service.openMatch = (match) ->
       Game = require('Game')
@@ -250,7 +260,9 @@ angular.module('enhancedWars.services', []).
             $rootScope.$watch 'playerMatches', ->
               for matchUuid, inviteData of $rootScope.playerMatches
                 service.matchData matchUuid, (match) ->
-                  if match.full and !match.players[service.firebaseUser.auth.uuid]
+                  matchIsEndedAndIAmInvited = match.currentPlayer is 'ended' and inviteData.state is 'invited'
+                  matchIsFull = match.full and !match.players[service.firebaseUser.auth.uuid]
+                  if matchIsFull or matchIsEndedAndIAmInvited
                     delete $rootScope.playerMatches[matchUuid]
                     $rootScope.$safeApply()
 
