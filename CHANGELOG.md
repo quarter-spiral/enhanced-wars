@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Adds chat back in after it has been accidentially removed from the UI
 * Fixes a problem with games with friends
 * Removes "Ended Games" list
 * Adds an option to forfeit a game
