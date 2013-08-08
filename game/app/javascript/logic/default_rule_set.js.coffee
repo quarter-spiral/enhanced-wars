@@ -4,7 +4,7 @@ exports class DefaultRuleSet
   apPerTurn: 20
   pointsForWin: 30
   rewards:
-    captureDropZone: 6
+    captureDropZone: 5
     attack: 1
     streak: (streak) ->
       switch streak
