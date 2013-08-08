@@ -72,7 +72,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
     constructor: ->
       super
 
-      @container.setBounds(0, 0, @parent.container.width * 0.66, @parent.container.height)
+      @container.setBounds(0, 0, @parent.container.width * 0.70, @parent.container.height)
       @container.setFillStyle('#9c9c9c')
 
       @actionPointsIndicatorDotContainer = new APIndicatorDotContainer(@)
@@ -162,7 +162,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
   exports class BottomUI extends UIElement
     DIMENSIONS = {
-      width: 620
+      width: 555
       height: 50
     }
 
@@ -176,14 +176,13 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
       @actionPointsIndicator = new APIndicator(@)
 
-      @revertTurnControll = new RevertTurnControll(@)
-      @revertTurnControll.container.setLocation(@actionPointsIndicator.container.width - 1, 0)
-
       @endTurnButton = new EndTurnButton(@)
+
+
       @endTurnButton.container.setBounds(
-          @revertTurnControll.container.x + @revertTurnControll.container.width - 1
+          @actionPointsIndicator.container.x + @actionPointsIndicator.container.width - 1
           0
-          @container.width - @revertTurnControll.container.x + @revertTurnControll.container.width
+          @container.width - @actionPointsIndicator.container.x + @actionPointsIndicator.container.width
           @container.height
       )
 
