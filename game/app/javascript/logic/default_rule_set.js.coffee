@@ -1,8 +1,8 @@
 infinity = 1 / 0
 
 exports class DefaultRuleSet
-  apPerTurn: 20
-  pointsForWin: 30
+  apPerTurn: 25
+  pointsForWin: 35
   rewards:
     captureDropZone: 5
     attack: 1
@@ -137,7 +137,7 @@ exports class DefaultRuleSet
         create: 14
         fire: 2
 
-      hp: 8
+      hp: 6
       mp: 6
       attackRange:
         min: 2
