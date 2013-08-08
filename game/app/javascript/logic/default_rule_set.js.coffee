@@ -1,8 +1,8 @@
 infinity = 1 / 0
 
 exports class DefaultRuleSet
-  apPerTurn: 25
-  pointsForWin: 35
+  apPerTurn: 20
+  pointsForWin: 40
   rewards:
     captureDropZone: 5
     attack: 1
@@ -135,16 +135,16 @@ exports class DefaultRuleSet
     mediumartillery:
       costs:
         create: 14
-        fire: 2
+        fire: 3
 
-      hp: 6
+      hp: 7
       mp: 6
       attackRange:
         min: 2
-        max: 5
+        max: 3
 
       bullets: ->
-        ["default"]
+        ["default","default","default"]
 
       tags: ["land", "light", "artillery"]
       returnsFire: false
