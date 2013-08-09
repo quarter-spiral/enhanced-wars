@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Movement does not longer cost AP based on the travelled distance
 * Adds some debugging information to check listed matches' IDs
 * Makes default maps easier updatable by moving from CoffeeScript to vanilla JS
 * Adds chat back in after it has been accidentially removed from the UI

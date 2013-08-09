@@ -61,7 +61,7 @@ class Unit extends Module
 
     currentPlayer = @game().turnManager.currentPlayer()
     remainingAp = currentPlayer.get('ap')
-    apCost = @distanceTo(mapTile)
+    apCost = @specs().costs.move
     return if remainingAp < apCost
 
     map = @get('map')

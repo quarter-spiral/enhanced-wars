@@ -90,6 +90,7 @@ exports class DefaultRuleSet
       costs:
         create: 12
         fire: 1
+        move: 1
 
       hp: 20
       mp: 8
@@ -113,6 +114,7 @@ exports class DefaultRuleSet
       costs:
         create: 5
         fire: 1
+        move: 1
 
       hp: 10
       mp: 12
@@ -136,6 +138,7 @@ exports class DefaultRuleSet
       costs:
         create: 14
         fire: 3
+        move: 1
 
       hp: 7
       mp: 6
@@ -159,6 +162,7 @@ exports class DefaultRuleSet
       costs:
         create: 8
         fire: 1
+        move: 1
 
       hp: 12
       mp: 10
@@ -182,6 +186,7 @@ exports class DefaultRuleSet
       costs:
         create: 25
         fire: 1
+        move: 1
 
       hp: 7
       mp: 15
