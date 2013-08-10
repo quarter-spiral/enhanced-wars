@@ -4,7 +4,7 @@ exports class DefaultRuleSet
   apPerTurn: 20
   pointsForWin: 40
   rewards:
-    captureDropZone: 5
+    captureDropZone: 4
     attack: 1
     streak: (streak) ->
       switch streak
@@ -117,7 +117,7 @@ exports class DefaultRuleSet
         move: 1
 
       hp: 10
-      mp: 12
+      mp: 15
       attackRange:
         min: 1
         max: 1
@@ -136,8 +136,8 @@ exports class DefaultRuleSet
 
     mediumartillery:
       costs:
-        create: 14
-        fire: 3
+        create: 16
+        fire: 2
         move: 1
 
       hp: 7
