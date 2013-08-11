@@ -72,8 +72,8 @@ exports class DefaultRuleSet
 
       critical: 0.05
       modifiers:
-        light: 0.8
-        heavy: .4
+        light: 1.2
+        heavy: .6
 
     artilleryShell:
       accuracy: 0.6
