@@ -24,7 +24,7 @@ exports class MoveableTiles
 
     @unit = unit
     @position = clone unit.position()
-    @tiles =  @costs.filter (e) -> e.cost < unit.get('mp') and e.cost < infinity
+    @tiles =  @costs.filter (e) -> e.cost <= unit.get('mp') and e.cost < infinity
 
 
   cheapestNeighbor: (mapTile, path) ->
