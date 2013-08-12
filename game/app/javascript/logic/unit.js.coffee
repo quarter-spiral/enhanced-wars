@@ -153,4 +153,7 @@ class Unit extends Module
   hasEnoughApToAttack: =>
     @player().get('ap') >= @specs().costs.fire
 
+  hasEnoughApToMove: =>
+    @player().get('ap') >= @specs().costs.move
+
 exports Unit
