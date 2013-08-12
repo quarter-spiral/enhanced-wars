@@ -7,7 +7,7 @@ exports class MoveableTiles
 
     remainingAp = @map.get('game').turnManager.currentPlayer().get('ap')
 
-    while @currentTile and @currentTile.cost <= @unit.get('mp') and @unit.distanceTo(@currentTile.tile) < remainingAp and @currentTile.cost isnt infinity
+    while @currentTile and @currentTile.cost <= @unit.get('mp') and @unit.hasEnoughApToMove() and @currentTile.cost isnt infinity
       for tile in @currentTile.tile.neighbors()
         costOfCurrentTile = @costFor(@currentTile.tile)
         if @visitedTiles.indexOf(tile) < 0
