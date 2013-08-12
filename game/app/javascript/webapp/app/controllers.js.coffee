@@ -163,4 +163,8 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
 
     $scope.forfeitMatch = ->
       QSService.forfeitMatch()
+
+    DefaultRuleSet = require("DefaultRuleSet")
+    $scope.currentRuleSet = new DefaultRuleSet()
+
   ])
