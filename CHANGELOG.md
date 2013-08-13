@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Improved the specs page
 * Movement does not longer cost AP based on the travelled distance
 * Adds some debugging information to check listed matches' IDs
 * Makes default maps easier updatable by moving from CoffeeScript to vanilla JS

@@ -84,10 +84,8 @@
           <td>{{value.hp}}</td>
           <td>{{value.attackRange.min}} - {{value.attackRange.max}}</td>
           <td>
-            comming soon...
-            <div ng-repeat="bullet in value.bullets">
-              {{bullet}}
-            </div>
+            <strong>{{value.bullets().length}}pc:</strong>
+            {{value.bullets().join(', ')}}
           </td>
           <td><i class="icon-ok" ng-show="value.returnsFire"></i></td>
           <td><i class="icon-ok" ng-show="value.movesAndFires"></i></td>
@@ -112,15 +110,15 @@
         <tr ng-repeat="(key,value) in currentRuleSet.terrainCosts">
           <td>{{key}}</td>
           <td>
-            <div>default: {{value.default}}</div>
-            <div>light: {{value.light}}</div>
-            <div>heavy: {{value.heavy}}</div>
+            <div ng-repeat="(unitType, cost) in value">
+              {{unitType}}: <span ng-hide="cost == (1/0.0)">{{cost}}</span><span ng-show="cost == (1/0.0)">Cannot cross</span>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
 
-    
+
 
 
   </div>
