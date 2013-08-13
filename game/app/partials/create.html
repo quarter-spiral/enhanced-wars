@@ -17,14 +17,6 @@
       <p class="friends-list-tip">First come first serve basis.</p>
     </div>
 
-    <h2 class="section-header pace-header">Pace</h2>
-
-    <div class="pace-tabs">
-      <a ng-click="newMatch.pace = 'slow'" class="pace-tab" ng-class="{active:newMatch.pace == 'slow'}">Slow</a>
-      <a ng-click="newMatch.pace = 'medium'" class="pace-tab" ng-class="{active:newMatch.pace == 'medium'}">Medium</a>
-      <a ng-click="newMatch.pace = 'fast'" class="pace-tab" ng-class="{active:newMatch.pace == 'fast'}">Fast</a>
-    </div>
-
     <div class="create-game-link-block">
       <span class="create-game-link" ng-hide="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Select a map</span>
       <a href="#" ng-click="createMatch(newMatch);$event.preventDefault()" class="create-game-link" ng-show="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white"></i> Play first turn</a>
