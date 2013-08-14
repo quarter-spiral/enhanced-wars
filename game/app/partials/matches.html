@@ -1,33 +1,44 @@
 <div class="row">
   <div class="span6 offset1">
-    <h2 class="section-header games-header">Your Turn</h2>
-    <div class="game-list-container">
-      <ul class="game-list unstyled">
-        <li ng-repeat="(matchUuid, immediateMatchData) in myTurn(playerMatches)" class="game-list-entry">
-          <div ng-include="'/app/partials/_match-list-entry.html'"></div>
-        </li>
-        <li>
-          <a href="#/join" class="new-game-button"><i class="icon-chevron-right icon-white pull-right"></i> Join or create a new game </a>
-        <li>
-      </ul>
+
+    <div ng-hide="playerMatches" class="game-list-loading">
+      <span class="spinner"></span> Loading Your Games
     </div>
 
-    <div class="game-list-container" ng-hide="pendingInvitations(playerMatches)|emptyObject">
-      <h2 class="section-header invited-header">Invitations</h2>
-      <ul class="game-list unstyled">
-        <li ng-repeat="(matchUuid, immediateMatchData) in pendingInvitations(playerMatches)" class="game-list-entry">
-          <div ng-include="'/app/partials/_join-match-list-entry.html'"></div>
-        </li>
-      </ul>
-    </div>
+    <div ng-show="playerMatches">
 
-    <div class="game-list-container" ng-hide="notMyTurn(playerMatches)|emptyObject">
-      <h2 class="section-header waiting-header">Opponent's Turn</h2>
-      <ul class="game-list unstyled">
-        <li ng-repeat="(matchUuid, immediateMatchData) in notMyTurn(playerMatches)" class="game-list-entry">
-          <div ng-include="'/app/partials/_match-list-entry.html'"></div>
-        </li>
-      </ul>
+      <h2 class="section-header games-header">Your Turn</h2>
+      <div class="game-list-container">
+        <ul class="game-list unstyled">
+          <li ng-repeat="(matchUuid, immediateMatchData) in myTurn(playerMatches)" class="game-list-entry">
+            <div ng-include="'/app/partials/_match-list-entry.html'"></div>
+          </li>
+          <li>
+            <a href="#/join" class="new-game-button"><i class="icon-chevron-right icon-white pull-right"></i> Join or create a new game </a>
+          <li>
+        </ul>
+      </div>
+
+
+
+      <div class="game-list-container" ng-hide="pendingInvitations(playerMatches)|emptyObject">
+        <h2 class="section-header invited-header">Invitations</h2>
+        <ul class="game-list unstyled">
+          <li ng-repeat="(matchUuid, immediateMatchData) in pendingInvitations(playerMatches)" class="game-list-entry">
+            <div ng-include="'/app/partials/_join-match-list-entry.html'"></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="game-list-container" ng-hide="notMyTurn(playerMatches)|emptyObject">
+        <h2 class="section-header waiting-header">Opponent's Turn</h2>
+        <ul class="game-list unstyled">
+          <li ng-repeat="(matchUuid, immediateMatchData) in notMyTurn(playerMatches)" class="game-list-entry">
+            <div ng-include="'/app/partials/_match-list-entry.html'"></div>
+          </li>
+        </ul>
+      </div>
+
     </div>
   </div>
 

@@ -136,6 +136,16 @@ a {
   background-color: #F6F6F6;
 }
 
+.game-list-loading {
+  color:#666;
+  text-align:center;
+  padding:25px 0;
+  .spinner {
+    margin-right:0.5em;
+    vertical-align:-25%;
+  }
+}
+
 .no-games-warning {
   background-color: #F6F6F6;
   padding:55px 20px;
@@ -328,6 +338,8 @@ a {
     vertical-align:-25%;
   }
 }
+
+
 
 
 
