@@ -151,7 +151,7 @@ angular.module('enhancedWars.services', []).
           window.game.actions.push(action)
           window.game.seekToAction(window.game.actions.length - 1)
           radio('ew/game/actions/updated').broadcast(game)
-          radio('ew/game/won').broadcast(window.game) if window.game and window.game.winner()
+          radio('ew/game/won').broadcast(window.game.winner()) if window.game and window.game.winner()
 
     mapReady = false
     unitsReady = false
