@@ -310,7 +310,7 @@ a {
 .chat-message-text {
   display:block;
   margin-left:10px;
-
+  word-wrap:break-word;
   img {
     max-width: 200px;
   }
