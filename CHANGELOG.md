@@ -1,5 +1,7 @@
 # 0.0.7 / Unreleased
 
+* Fixes ending scenarios. State is now set correctly.
+* Does not load ended games anymore
 * Fixes win condition propagation on action arrival
 * Limits public chat messages to 150
 * Fixes unit movement highlights. Should now be always shown in the first place

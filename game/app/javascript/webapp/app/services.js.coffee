@@ -173,10 +173,11 @@ angular.module('enhancedWars.services', []).
       unitsReady = true
       kickOff()
 
-    radio('ew/game/won').subscribe (player) ->
-      game = player.get('game')
-      winner = game.winner()
-      return unless winner
+    winGame = (winner, game) ->
+      unless game.hasEndingAction()
+        setTimeout((-> winGame(winner, game)), 200)
+        return
+
       matchUuid = game.match.uuid
       matchRef = service.firebaseRef.child('v2/matches').child(service.myUuid()).child(matchUuid)
       matchRef.child("state").set("ended")
@@ -188,6 +189,12 @@ angular.module('enhancedWars.services', []).
       if winnerUuid is 'none'
         service.firebaseRef.child('v2/publicMatches').child(matchUuid).set('in-progress') if $rootScope.publicMatches[matchUuid]
         $location.path("/matches")
+
+    radio('ew/game/won').subscribe (player) ->
+      game = player.get('game')
+      winner = game.winner()
+      return unless winner
+      winGame(winner, game)
 
     service.openMatch = (match) ->
       Game = require('Game')
@@ -257,14 +264,18 @@ angular.module('enhancedWars.services', []).
             publicChatRef = new Firebase(resourceUrl).limit(150)
             angularFire(publicChatRef, $rootScope, "publicChatMessages", {})
 
-            # Delete full matches
+
             $rootScope.$watch 'playerMatches', ->
-              for matchUuid, inviteData of $rootScope.playerMatches
+              resourceUrl = firebaseUrl + "/v2/matches"
+              deleterRef = new Firebase(resourceUrl).child(user.auth.uuid)
+
+              for matchUuid, inviteData of $rootScope.playerMatches when inviteData.state isnt 'ended'
+                # Delete full matches
                 service.matchData matchUuid, (match) ->
                   matchIsEndedAndIAmInvited = match.currentPlayer is 'ended' and inviteData.state is 'invited'
                   matchIsFull = match.full and !match.players[service.firebaseUser.auth.uuid]
                   if matchIsFull or matchIsEndedAndIAmInvited
-                    delete $rootScope.playerMatches[match.uuid]
+                    deleterRef.child(match.uuid).remove()
                     $rootScope.$safeApply()
 
             $rootScope.$apply()

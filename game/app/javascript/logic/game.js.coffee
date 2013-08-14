@@ -106,6 +106,18 @@ class Game
     winner = player for player in @players when player.won()
     winner
 
+  hasEndingAction: =>
+    lastAction = @actions[@actions.length - 1]
+    return false unless lastAction
+
+    return true if lastAction.actionClass is 'ForfeitAction'
+
+    if lastAction.pointsAfter
+      for points in lastAction.pointsAfter
+        return true if points >= @ruleSet.pointsForWin
+
+    return false
+
   setPoints: (points) =>
     for player in @players
       newPoints = points.shift()

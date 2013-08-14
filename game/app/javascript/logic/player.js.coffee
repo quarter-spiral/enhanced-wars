@@ -68,9 +68,10 @@ exports class Player extends Module
   scorePoints: (points) =>
     newPoints = @get('points') + points
     pointsForWin = @get('game').ruleSet.pointsForWin
+    @set(points: newPoints)
+
     if newPoints >= pointsForWin
       newPoints = pointsForWin
       radio('ew/game/won').broadcast(@)
 
-    @set(points: newPoints)
     radio('ew/game/pointsScored').broadcast()
