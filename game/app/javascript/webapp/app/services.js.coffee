@@ -254,7 +254,8 @@ angular.module('enhancedWars.services', []).
             angularFire(resourceUrl, $rootScope, "publicMatches", {})
 
             resourceUrl = firebaseUrl + "/v2/publicChatMessages"
-            angularFire(resourceUrl, $rootScope, "publicChatMessages", {})
+            publicChatRef = new Firebase(resourceUrl).limit(150)
+            angularFire(publicChatRef, $rootScope, "publicChatMessages", {})
 
             # Delete full matches
             $rootScope.$watch 'playerMatches', ->

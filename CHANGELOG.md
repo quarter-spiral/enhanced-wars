@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Limits public chat messages to 150
 * Fixes unit movement highlights. Should now be always shown in the first place
 * Improved the specs page
 * Movement does not longer cost AP based on the travelled distance
