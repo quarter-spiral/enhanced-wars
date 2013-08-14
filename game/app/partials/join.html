@@ -4,16 +4,8 @@
     <h1 class="section-header join-header">Join a game</h1>
 
     <div class="game-list-container">
-      <div ng-init="selectedPace = 'fast'" class="pace-tabs">
-        <a ng-click="selectedPace = 'fast'" class="pace-tab" ng-class="{active:selectedPace == 'fast'}">Fast</a>
-        <a ng-click="selectedPace = 'medium'" class="pace-tab" ng-class="{active:selectedPace == 'medium'}">Medium</a>
-        <a ng-click="selectedPace = 'slow'" class="pace-tab" ng-class="{active:selectedPace == 'slow'}">Slow</a>
-      </div>
-      <div class="no-games-warning" ng-hide="countPublicMatches(selectedPace) > 0">
-        There are currently no {{selectedPace}} games. You can <a href="#/create">create one.</a>
-      </div>
       <ul class="game-list unstyled">
-        <li ng-repeat="matchUuid in publicMatches()" class="game-list-entry" ng-show="matchData(matchUuid).pace == selectedPace">
+        <li ng-repeat="matchUuid in publicMatches()" class="game-list-entry">
           <div ng-include="'/app/partials/_join-match-list-entry.html'"></div>
         </li>
       </ul>
