@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Fixes unit movement highlights. Should now be always shown in the first place
 * Improved the specs page
 * Movement does not longer cost AP based on the travelled distance
 * Adds some debugging information to check listed matches' IDs

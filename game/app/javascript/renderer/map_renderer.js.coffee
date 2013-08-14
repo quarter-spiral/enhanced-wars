@@ -128,8 +128,9 @@ class Tile
     @container.addChild(@highLight)
 
     radio('ew/game/unit/unselected').subscribe (unit) =>
-      @highLight.setVisible(false)
-      @renderer.cache()
+      if @highLight.unit is unit
+        @highLight.setVisible(false)
+        @renderer.cache()
 
 
 exports class MapRenderer extends require('Renderer')
@@ -185,8 +186,11 @@ exports class MapRenderer extends require('Renderer')
         rendererTile = @tiles[mapTile.position().y][mapTile.position().x]
         if mapTile.canBeReachedBy(unit)
           rendererTile.highLight.setStrokeStyle('#ffffff').setVisible(true)
+          rendererTile.highLight.unit = unit
         if unit.canAttack(enemy) and unit.hasEnoughApToAttack()
           rendererTile.highLight.setStrokeStyle('#ff0000').setVisible(true)
+          rendererTile.highLight.unit = unit
+
       @cache()
 
     @TILE_OFFSET = TILE_OFFSET

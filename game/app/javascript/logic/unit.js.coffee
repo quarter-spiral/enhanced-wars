@@ -52,9 +52,7 @@ class Unit extends Module
     radio('ew/game/unit/unselected').broadcast(@) if !newState and oldState
 
     if (newState and !oldState) or (!itIsMyTurn and stateToSet is undefined)
-      setTimeout(=>
-        radio('ew/game/unit/selected').broadcast(@)
-      , 5)
+      radio('ew/game/unit/selected').broadcast(@)
 
   moveTo: (mapTile) =>
     @select(false)
