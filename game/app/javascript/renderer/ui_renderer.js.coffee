@@ -76,6 +76,6 @@ exports class UIRenderer extends require('Renderer')
         when 2
           label = "Double Down!"
         when 3
-          label = "Tripple Threat!"
+          label = "Triple Threat!"
 
       @textOverlayQueue.add(label)
