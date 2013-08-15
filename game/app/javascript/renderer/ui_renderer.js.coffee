@@ -22,6 +22,7 @@ exports class UIRenderer extends require('Renderer')
     "/assets/ui/fired_icon.png"
     "/assets/ui/moved_icon.png"
     "/assets/ui/gradient.png"
+    "/assets/ui/playerindicator.png"
   ]
 
   id: "ui"
@@ -37,6 +38,7 @@ exports class UIRenderer extends require('Renderer')
     InspectorUI = require('InspectorUI')
     TextOverlayQueue = require('TextOverlayQueue')
     Vignette = require('Vignette')
+    PlayerListUI = require('PlayerListUI')
 
     originalFindActorAtPosition = @container.findActorAtPosition
     container = @container
@@ -55,6 +57,7 @@ exports class UIRenderer extends require('Renderer')
       self.winUI = new WinUI(self, self.game, self.gameRenderer.director)
       self.streakUI = new StreakUI(self, self.game, self.gameRenderer.director)
       self.textOverlayQueue = new TextOverlayQueue(self, self.game)
+      self.playerListUI = new PlayerListUI(self, self.game, self.gameRenderer.director)
       ready = true
 
     radio('ew/input/unit/doubleClicked').subscribe (unit) =>
