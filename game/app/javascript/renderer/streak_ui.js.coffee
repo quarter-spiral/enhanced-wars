@@ -96,18 +96,38 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @tripleThreatLabel.container.setLocation(@doubleDownLabel.container.x + @doubleDownLabel.container.width + @doubleDownLabel.arrow.width, 0)
 
       self = @
-      @game.onready =>
+
+      reset = =>
+        @aggressionLabel.deactivate()
+        @knockOutLabel.deactivate()
+        @doubleDownLabel.deactivate()
+        @tripleThreatLabel.deactivate()
+        @container.setVisible(false)
         for player in @game.players
-          player.bindProperty 'fired', (changedValues) ->
-            if this is self.game.turnManager.currentPlayer()
-              self.container.setVisible(true)
-              self.aggressionLabel.activate()
+          player.fireProperty('fired')
+          player.fireProperty('streak')
+
+      setFiredUi = (player) =>
+          return unless player is self.game.turnManager.currentPlayer()
+          if player.get('fired')
+            @container.setVisible(true)
+            @aggressionLabel.activate()
+          else
+            @container.setVisible(false)
+            @aggressionLabel.deactivate()
+
+      radio('ew/game/map/load').subscribe =>
+        for player in @game.players
+          player.bindProperty 'fired', (changedValues) -> setFiredUi(this)
 
           player.bindProperty 'streak', (changedValues) ->
             if this is self.game.turnManager.currentPlayer()
               switch changedValues.streak.new
+                when undefined, null
+                  # do nothing as this is just a borked streak
+                  false
                 when 0
-                  # nothing
+                  self.knockOutLabel.deactivate()
                   false
                 when 1
                   self.knockOutLabel.activate()
@@ -118,13 +138,10 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
                   self.knockOutLabel.activate()
                   self.doubleDownLabel.activate()
                   self.tripleThreatLabel.activate()
+        reset()
 
-      radio('ew/game/next-turn').subscribe =>
-        @aggressionLabel.deactivate()
-        @knockOutLabel.deactivate()
-        @doubleDownLabel.deactivate()
-        @tripleThreatLabel.deactivate()
-        @container.setVisible(false)
+      radio('ew/game/reset').subscribe reset
+      radio('ew/game/next-turn').subscribe reset
 
       @container.mouseEnter = =>
         @container.setSize(EXPANDED_DIMENSIONS.width, EXPANDED_DIMENSIONS.height).

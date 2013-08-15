@@ -88,7 +88,7 @@ angular.module('enhancedWars.services', []).
         playerUuids.push playerUuid for playerUuid, junk of retrievedMatch.players
 
         service.qs.retrievePlayerInfo(playerUuids).then (data) ->
-          for uuid in playerUuids
+          for uuid in playerUuids when data[uuid]
             playerData = data[uuid].venues[service.qs.data.info.venue]
             retrievedMatch.players[uuid] = playerData
 
@@ -105,7 +105,7 @@ angular.module('enhancedWars.services', []).
       )
       match
 
-    service.joinMatch = (matchUuid) ->
+    service.joinMatch = (matchUuid, callback) ->
       myUuid = service.firebaseUser.auth.uuid
       match = service.matchData(matchUuid, (match) ->
         if match.type == 'public'
@@ -123,7 +123,10 @@ angular.module('enhancedWars.services', []).
           service.firebaseRef.child('v2/publicMatches').child(matchUuid).set('in-progress') if match.type == 'public'
 
         matchDataRef.child('currentPlayer').set(myUuid) if match.currentPlayer is 'open-invitation'
-        service.firebaseRef.child('v2/matches').child(myUuid).child(matchUuid).child('state').set('playing')
+        service.firebaseRef.child('v2/matches').child(myUuid).child(matchUuid).child('state').set('playing', (error) ->
+          throw(error) if error
+          callback()
+        )
       )
 
     service.nextPlayer = (matchUuid) ->
@@ -142,16 +145,28 @@ angular.module('enhancedWars.services', []).
 
     currentActionRef = null
     rendererReady = false
+
+    isAtLastActionFinalizeTimeout = null
+    isAtLastActionFinalizer = ->
+      radio('ew/game/actions/initially-loaded').broadcast()
+      matchActionsLoaded = true
+
     reactOnAction = (dataSnapshot) ->
       {action, index} = dataSnapshot.val()
+
       unless window.game.actions[index]
-        window.game.onready =>
+        applier = =>
           Action = require('Action')
           action = Action.load(action)
           window.game.actions.push(action)
           window.game.seekToAction(window.game.actions.length - 1)
           radio('ew/game/actions/updated').broadcast(game)
           radio('ew/game/won').broadcast(window.game.winner()) if window.game and window.game.winner()
+        applier.limit = 1
+        window.game.onready(applier)
+      if window.game.isAtLastAction() and !matchActionsLoaded
+        clearTimeout(isAtLastActionFinalizeTimeout) if isAtLastActionFinalizeTimeout
+        isAtLastActionFinalizeTimeout = setTimeout(isAtLastActionFinalizer, 500)
 
     mapReady = false
     unitsReady = false
@@ -196,6 +211,7 @@ angular.module('enhancedWars.services', []).
       return unless winner
       winGame(winner, game)
 
+    matchActionsLoaded = false
     service.openMatch = (match) ->
       Game = require('Game')
 
@@ -203,9 +219,9 @@ angular.module('enhancedWars.services', []).
         window.game.init(match.map, match)
       else
         window.game = new Game(map: match.map, match: match)
-
       currentActionRef.off('child_added', reactOnAction) if currentActionRef
-      currentActionRef = service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('actions')
+      matchActionsLoaded = false
+      currentActionRef = service.firebaseRef.child('v2/matchData').child(match.uuid).child('actions')
       currentActionRef.on('child_added', reactOnAction)
 
     radio('ew/game/actions/updated').subscribe (game, action) ->

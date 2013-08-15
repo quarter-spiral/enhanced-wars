@@ -29,6 +29,8 @@ class Game
     @init(options.map, options.match)
 
   init: (mapData, match, @actions = []) =>
+    radio('ew/game/reset').broadcast(@)
+
     Player = require('Player')
     MapEditMapImporter = require('MapEditMapImporter')
     TurnManager = require('TurnManager')
@@ -59,7 +61,11 @@ class Game
 
     @turnManager.setTurn(0)
 
-    callback.apply(@) for callback in @loadQueue
+    for callback in @loadQueue
+      if !callback.limit || !callback.called || callback.limit < callback.called
+        callback.apply(@)
+        callback.called ||= 0
+        callback.called += 1
     @ready = true
 
     @currentAction = -1

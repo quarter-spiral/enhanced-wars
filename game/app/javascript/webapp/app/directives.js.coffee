@@ -12,6 +12,12 @@ angular.module('enhancedWars.directives', []).directive("actionRangeChange", ($r
       radio('ew/input/actions/seek').broadcast(element.val())
 
     $rootScope.$watch 'actionStep', ->
+      if parseInt(element.attr('max'), 10) < $rootScope.actionStep
+        element.attr('max', $rootScope.actionStep)
+
+      if parseInt(element.attr('min'), 10) > $rootScope.actionStep
+        element.attr('min', $rootScope.actionStep)
+
       element.val($rootScope.actionStep)
 
     element.bind "change", updateScope

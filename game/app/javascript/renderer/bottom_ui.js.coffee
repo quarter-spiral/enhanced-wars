@@ -155,10 +155,13 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @container.enableEvents(true)
       @container.mouseClick = (e) ->
         if game.isAtLastAction()
-          apBefore = game.turnManager.currentPlayer().get('ap')
+          player = game.turnManager.currentPlayer()
+          apBefore = player.get('ap')
+          firedBefore = player.get('fired')
+          streakBefore = player.get('streak')
           game.turnManager.nextTurn()
           NextTurnAction = require('NextTurnAction')
-          game.addAction new NextTurnAction(apBefore: apBefore)
+          game.addAction new NextTurnAction(apBefore: apBefore, streakBefore: streakBefore, firedBefore: firedBefore)
 
   exports class BottomUI extends UIElement
     DIMENSIONS = {
@@ -203,7 +206,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
         setAp(currentAp())
         setVisiblity()
 
-      @game.onready ->
+      radio('ew/game/map/load').subscribe =>
         setAp(currentAp())
         setVisiblity()
         for player in game.players

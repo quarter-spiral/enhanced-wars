@@ -282,6 +282,9 @@ exports class UnitRenderer extends require('Renderer')
     radio('ew/game/unit/added-to-player').subscribe (unit) =>
       @loadUnit(unit, true)
 
+    radio('ew/game/actions/initially-loaded').subscribe =>
+      @updateUnits()
+
     @container.setParent(@gameRenderer.renderers.map.container)
 
     @TILE_TYPES = TILE_TYPES
@@ -330,6 +333,7 @@ exports class UnitRenderer extends require('Renderer')
       self.removeUnit(this) unless this.isAlive()
 
   updateUnits: () ->
+    return unless @units
     unit.propertyWildfire() for unit in @units
 
   click: (e) =>

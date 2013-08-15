@@ -73,7 +73,7 @@ exports BuyUnitAction
 
 class NextTurnAction extends Action
   actionClass: 'NextTurnAction'
-  constructor: ({@apBefore}) ->
+  constructor: ({@apBefore, @firedBefore, @streakBefore}) ->
     super
 
   perform: (game) =>
@@ -81,6 +81,14 @@ class NextTurnAction extends Action
 
   reverse: (game) =>
     game.turnManager.previousTurn()
+    player = game.turnManager.currentPlayer()
+    player.set(ap: @apBefore)
+    if @firedBefore
+      player.set(fired: @firedBefore)
+    if @streakBefore
+      player.set(streak: @streakBefore)
+      radio('ew/game/streak').broadcast(streakValue: @streakBefore)
+
     game.turnManager.currentPlayer().set(ap: @apBefore)
 
 exports NextTurnAction
@@ -93,8 +101,8 @@ class FightAction extends Action
   perform: (game) =>
     game.turnManager.currentPlayer().deductAp(@apCost)
 
-    playersFired = @playersFiredAfter.splice(0)
-    streaks = @streakAfter.splice(0)
+    playersFired = @playersFiredAfter.slice(0)
+    streaks = @streakAfter.slice(0)
     broadcastStreak = null
     for player in game.players
       streak = streaks.shift()
@@ -114,8 +122,8 @@ class FightAction extends Action
     game.turnManager.currentPlayer().deductAp(@apCost * -1)
 
     clone = require('clone')
-    playersFired = @playersFiredBefore.splice(0)
-    streaks = @streakBefore.splice(0)
+    playersFired = @playersFiredBefore.slice(0)
+    streaks = @streakBefore.slice(0)
     broadcastStreak = null
     for player in game.players
       streak = streaks.shift()

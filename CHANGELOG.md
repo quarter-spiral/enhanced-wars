@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Games now load without page reloads
 * Fixes ending scenarios. State is now set correctly.
 * Does not load ended games anymore
 * Fixes win condition propagation on action arrival

@@ -16,6 +16,9 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
           setTextFillStyle('#ffffff').
           setTextAlign("center")
 
+      radio('ew/game/map/load').subscribe =>
+        @pointsLabel.setText(@game.ruleSet.pointsForWin)
+
       @container.addChild(@pointsLabel)
       @pointsLabel.centerAt(@container.width / 2, @pointsLabel.height / 1.8)
 
@@ -31,17 +34,21 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
     constructor: ->
       super
 
-      i = 0
       @bars = []
 
-      @game.onready =>
-        bar.bar.container.setExpired(0) for bar in @bars
+      radio('ew/game/map/load').subscribe =>
+        i = 0
+        for bar in @bars
+          bar.bar.container.setExpired(0)
         @bars.splice(0, @bars.length)
         for player in @game.players
           bar = new PointBar(@, player)
           bar.container.setLocation(i * (1 - bar.widthFactor) * @container.width, @container.height)
           @bars.push bar: bar, player: player
+          player.fireProperty('points')
           i++
+        @adjustTurn()
+
 
 
       @adjustTurn = =>
@@ -111,8 +118,8 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @container.addChild(@line)
       @line.setLocation(0, @container.height)
 
-      @parent.player.bindProperty 'points', (changedValues) =>
-        @label.setText('' + changedValues.points.new)
+    pointsChanged: (changedValues) =>
+      @label.setText('' + changedValues.points.new)
 
 
   class PointBar extends UIElement
@@ -124,11 +131,13 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @container.setFillStyle(@player.get('color')).
           setSize(@parent.container.width * @widthFactor)
 
-
       @label = new PointBarLabel(@)
 
-      @player.bindProperty 'points', @adoptSize
+      @player.bindProperty 'points', @pointsChanged
 
+    pointsChanged: (changedValues) =>
+      @label.pointsChanged(changedValues)
+      @adoptSize()
 
     adoptSize: =>
       @container.setSize(@container.width, @parent.container.height * (@player.get('points') * 1.0 / @game.ruleSet.pointsForWin)).

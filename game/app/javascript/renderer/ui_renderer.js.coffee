@@ -57,6 +57,12 @@ exports class UIRenderer extends require('Renderer')
       self.textOverlayQueue = new TextOverlayQueue(self, self.game)
       ready = true
 
+    radio('ew/game/reset').subscribe ->
+      ready = false
+
+    radio('ew/game/actions/initially-loaded').subscribe ->
+      ready = true
+
     radio('ew/input/unit/doubleClicked').subscribe (unit) =>
       self.inspectorUI = new InspectorUI(self,unit)
 

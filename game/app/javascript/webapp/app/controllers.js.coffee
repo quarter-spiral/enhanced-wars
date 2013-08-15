@@ -4,22 +4,20 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
     unless $rootScope.params
       jQuery = require('jquery')
       $rootScope.params = $routeParams
-      $rootScope.openMatch = (matchUuid) ->
-        openMatch = ->
-          if jQuery('#game').length < 1
-            setTimeout(openMatch, 100)
-            return
+      openMatch = (matchUuid) ->
+        if jQuery('#game').length < 1
+          setTimeout((-> openMatch(matchUuid)), 100)
+          return
 
-          QSService.matchData matchUuid, (match) ->
-            QSService.openMatch(match)
-        openMatch()
+        QSService.matchData matchUuid, (match) ->
+          QSService.openMatch(match)
 
       $rootScope.$watch 'params.matchUuid', ->
         unless $rootScope.params.matchUuid
           jQuery('#game').hide()
           return
         jQuery('#game').show()
-        $rootScope.openMatch($rootScope.params.matchUuid)
+        openMatch($rootScope.params.matchUuid)
 
     $rootScope.showChat = false if $rootScope.showChat is undefined
     $rootScope.showChatIcon = false if $rootScope.showChatIcon is undefined
@@ -45,6 +43,9 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
 
     $scope.cloneMap = (map) ->
       angular.fromJson(angular.toJson(map))
+
+    $scope.openMatch = (matchUuid) ->
+      $location.path("/match/#{matchUuid}")
 
     $scope.playerGames = [
       {currentTurn:true, pace:'fast'}
@@ -79,9 +80,7 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
       $location.path("/match/#{matchUuid}")
 
     $scope.joinMatch = (matchUuid) ->
-      QSService.joinMatch(matchUuid)
-      url = QSService.matchCanvasUrl(matchUuid)
-      window.parent.location.href = url
+      QSService.joinMatch(matchUuid, -> $scope.openMatch(matchUuid))
 
     $scope.publicMatches = () ->
       uuid for uuid, state of $rootScope.publicMatches when state is 'open'
