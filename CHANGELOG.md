@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Removes the bouncing when opening games
 * Fixes jumping units bug
 * Games now load without page reloads
 * Fixes ending scenarios. State is now set correctly.

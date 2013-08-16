@@ -26,14 +26,11 @@ exports class GameRenderer
       width: windowWidth
       height: windowHeight
 
-    CAAT.Module.Initialization.TemplateWithSplash.init(
+    CAAT.Module.Initialization.QSTemplate.init(
       CANVAS_DIMENSIONS.width, CANVAS_DIMENSIONS.height,
 
       # and will be added to the end of document. set an id of a canvas or div element
       'game',
-
-      # keep splash at least this 2000 milliseconds
-      <%= ENV['RACK_ENV'] == 'production' ? 2000 : 500 %>,
 
       # load these images and set them up for non splash scenes.
       # image elements must be of the form:
