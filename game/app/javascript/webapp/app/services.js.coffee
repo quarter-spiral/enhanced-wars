@@ -145,6 +145,7 @@ angular.module('enhancedWars.services', []).
 
     currentActionRef = null
     rendererReady = false
+    matchActionsLoaded = false
 
     isAtLastActionFinalizeTimeout = null
     isAtLastActionFinalizer = ->
@@ -211,7 +212,6 @@ angular.module('enhancedWars.services', []).
       return unless winner
       winGame(winner, game)
 
-    matchActionsLoaded = false
     service.openMatch = (match) ->
       Game = require('Game')
 
@@ -220,6 +220,7 @@ angular.module('enhancedWars.services', []).
       else
         window.game = new Game(map: match.map, match: match)
       currentActionRef.off('child_added', reactOnAction) if currentActionRef
+
       matchActionsLoaded = false
       currentActionRef = service.firebaseRef.child('v2/matchData').child(match.uuid).child('actions')
       currentActionRef.on('child_added', reactOnAction)
