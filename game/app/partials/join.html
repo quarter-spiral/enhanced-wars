@@ -5,13 +5,25 @@
 
     <div class="game-list-container">
       <ul class="game-list unstyled">
-        <li ng-repeat="matchUuid in publicMatches()" class="game-list-entry">
+        <li ng-repeat="matchUuid in publicMatches()" class="game-list-entry" ng-show="publicMatches().length > 0">
           <div ng-include="'/app/partials/_join-match-list-entry.html'"></div>
+        </li>
+
+        <li class="game-list-entry" ng-hide="publicMatches().length > 0">
+          <div>
+            <a href="#" ng-click="createRandomMatch();$event.preventDefault();" class="game-list-entry-link current-turn not-existing-match">
+              <i class="action icon-chevron-right icon-white pull-right"></i>
+              <span class="pace-label">
+                Play a match on
+                {{randomMatchMap.name}}
+              </span>
+            </a>
+          </div>
         </li>
       </ul>
     </div>
-
   </div>
+
   <div class="span3 offset1">
 
     <h1 class="section-header">Create your own game</h1>

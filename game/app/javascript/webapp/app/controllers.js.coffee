@@ -79,11 +79,25 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
       matchUuid = QSService.createMatch(match)
       $location.path("/match/#{matchUuid}")
 
+    $scope.randomMatchMap = $scope.defaultMaps[parseInt(Math.random() * $scope.defaultMaps.length, 10)]
+    $scope.createRandomMatch = () ->
+      match = {
+        invitations: {}
+        pace: 'slow'
+        type: 'public'
+        map: $scope.cloneMap($scope.randomMatchMap)
+        invitations: {}
+      }
+      match.invitations[$scope.player().uuid] = '1'
+
+      $scope.createMatch(match)
+
+
     $scope.joinMatch = (matchUuid) ->
       QSService.joinMatch(matchUuid, -> $scope.openMatch(matchUuid))
 
     $scope.publicMatches = () ->
-      uuid for uuid, state of $rootScope.publicMatches when state is 'open'
+      uuid for uuid, state of $rootScope.publicMatches when state is 'open' and !$rootScope.playerMatches[uuid]
 
     $scope.countPublicMatches = (paceSetting) ->
       i = 0
