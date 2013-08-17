@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Makes game resize
 * Removes the bouncing when opening games
 * Fixes jumping units bug
 * Games now load without page reloads

@@ -1,9 +1,8 @@
 body {
   background-color: #000;
+  overflow-x: none;
 }
 
-$gameWidth: 940px;
-$gameHeight: 640px;
 #game {
    position: absolute;
    left: 0;

@@ -98,6 +98,22 @@ exports class GameRenderer
           for renderer in inputEnabledRenderers
             return if renderer.doubleClick and !renderer.doubleClick(e)
 
+        originalRatio = CANVAS_DIMENSIONS.height / (1.0 * CANVAS_DIMENSIONS.width)
+        win.on('resize', ->
+          winWidth = win.width() * 1.0
+          winHeight = win.height() * 1.0
+
+          newWidth = winWidth
+          newHeight = winWidth * originalRatio
+          if newHeight > winHeight
+            newHeight = winHeight
+            newWidth = newHeight / originalRatio
+
+          xScale = newWidth / CANVAS_DIMENSIONS.width
+          yScale = newHeight / CANVAS_DIMENSIONS.height
+          director.setScale(xScale, yScale)
+        )
+
         CAAT.loop()
     )
 

@@ -257,6 +257,7 @@ angular.module('enhancedWars.services', []).
 
     QS.setup().then((qs) ->
       service.qs = qs
+      window.qs = qs.data
 
       qs.retrievePlayerInfo().then((player) ->
         service.player = player
