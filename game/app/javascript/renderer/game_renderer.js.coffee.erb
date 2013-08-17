@@ -8,19 +8,12 @@ exports class GameRenderer
     x: 0
     y: 0
 
-  CANVAS_DIMENSIONS =
-    minimum:
-      width: 960
-      height: 640
-
   constructor: (@game) ->
     self = @
 
     win = $(window)
     windowWidth = win.width()
-    windowWidth = CANVAS_DIMENSIONS.minimum.width if windowWidth < CANVAS_DIMENSIONS.minimum.width
-    windowHeight = win.height() - 50
-    windowHeight = CANVAS_DIMENSIONS.minimum.height if windowHeight < CANVAS_DIMENSIONS.minimum.height
+    windowHeight = win.height()
 
     CANVAS_DIMENSIONS =
       width: windowWidth
