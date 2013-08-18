@@ -4,6 +4,11 @@
    Author's custom styles
    ========================================================================== */
 
+body {
+  background-color:#FFF;
+}
+
+
 .section-header {
   font-size: 1.2em;
   margin: 20px 0;
@@ -113,10 +118,17 @@ a {
   padding:15px 20px;
   color:#FFF;
   font-weight: bold;
+  font-size:1.1em;
+  box-shadow:1px 1px 1px rgba(0,0,0,0.5);
   &:hover {
     background-color: #84ab00;
     color:#FFF;
   }
+}
+
+
+.call-to-action {
+  margin-bottom:20px;
 }
 
 .waiting-for-label {
@@ -387,6 +399,107 @@ a {
 }
 
 
+.fontpage-header {
+  background:transparent url('../images/headerbackground.png') repeat left top;
+  height:240px;
+}
+
+.logo-image {
+  width:380px;
+  height:230px;
+  text-indent:-600px;
+  overflow:hidden;
+  background:transparent url('../images/ewlogo3d.png') no-repeat left top;
+}
+
+.trailer {
+  background-color:#000;
+  padding:20px;
+  margin-top:-50px;
+  border-radius:5px;
+  margin-bottom:30px;
+  box-shadow:0px 1px 2px rgba(0,0,0,0.3);
+}
+
+
+.big-front-page-link-box {
+  &.explosion { 
+    background:transparent url('../images/explosion.png') no-repeat right top;
+  }
+  height:240px;
+  padding-top:75px;
+}
+
+.login-button, .kickstarter-link {
+  display:block;
+  background-color: #FF0;
+  padding:15px 5px;
+  color:#09F;
+  border-radius:3px;
+  text-align:center;
+  box-shadow:0px 1px 2px rgba(0,0,0,0.7);
+  border:2px solid #FFF;
+  strong {
+    color:#09D;
+    text-decoration:underline;
+    display:block;
+    font-size:1.2em;
+    font-weight: bold;
+  }
+  &.inacitve, &.inactive:hover {
+    opacity:0.5;
+    box-shadow:0px 1px 1px rgba(0,0,0,0);
+    background-color: #EEE !important;
+    color:#999 !important;
+    cursor:default;
+    strong {
+      color:#999;
+      text-decoration:none;
+    }
+  }
+  &:hover {
+    background-color: #FFF;
+    color:#09F;
+  }
+}
+
+
+.frontpage-teaser-text {
+  font-size:1.1em;
+  line-height:1.5em;
+  color:#999;
+  a {
+    font-weight:bold;
+    text-decoration:underline;
+  }
+}
+
+.login-prompt {
+  margin-top:30px;
+}
+
+.frontpage-links {
+  text-align:right;
+  margin-top:30px;
+  a {
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:3px;
+    margin-bottom:3px;
+    border:1px solid #FFF;
+    i {
+      margin-right:0.5em;
+    }
+    &:hover {
+      border:1px solid #EEE;
+    }
+  }
+}
+
+
+
+
+
 
 
 
@@ -492,4 +605,38 @@ a {
   text-indent: -9999px;
   width: 24px;
   height: 24px;
+}
+
+
+
+
+
+
+/* ==========================================================================
+   flexible video embeds
+   ========================================================================== */
+
+.flex-video {
+position: relative;
+padding-top: 25px;
+padding-bottom: 67.5%;
+height: 0;
+margin-bottom: 16px;
+overflow: hidden;
+}
+ 
+.flex-video.widescreen { padding-bottom: 57.25%; }
+.flex-video.vimeo { padding-top: 0; }
+ 
+.flex-video iframe,
+.flex-video object,
+.flex-video embed {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+@media only screen and (max-device-width: 800px), only screen and (device-width: 1024px) and (device-height: 600px), only screen and (width: 1280px) and (orientation: landscape), only screen and (device-width: 800px), only screen and (max-width: 767px) {
+.flex-video { padding-top: 0; }
 }
