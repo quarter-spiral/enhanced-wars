@@ -30,82 +30,172 @@
 
 </head>
 <body ng-app="enhancedWars" ng-controller="GamesController">
-  <div class="container">
-    <ul class="unstyled main-navigation" ng-hide="notLoggedIn()">
-      <li class="main-navigation-entry">
-        <a href="#/matches" class="main-navigation-entry-link"><i class="icon-align-justify icon-white"></i><span class="main-navigation-entry-label">Your Games</span></a>
-      </li>
-      <li class="main-navigation-entry">
-        <a href="#/join" class="main-navigation-entry-link"><i class="icon-plus icon-white"></i><span class="main-navigation-entry-label">New Game</span></a>
-      </li>
-      <li class="main-navigation-entry" ng-show="params.matchUuid">
-        <a href="#" class="main-navigation-entry-link" ng-click="forfeitMatch();$event.preventDefault()"><i class="icon-flag icon-white"></i><span class="main-navigation-entry-label">Forfeit</span></a>
-      </li>
-      <li class="main-navigation-entry">
-        <a href="https://forum.quarterspiral.com/discussions" target="new" class="main-navigation-entry-link"><i class="icon-white icon-comment"></i><span class="main-navigation-entry-label">Forum</span></a>
-      </li>
-      <li class="main-navigation-entry">
-        <a href="http://feedback.quarterspiral.com/forums/208101-enhanced-wars" target="new" class="main-navigation-entry-link"><i class="icon-white icon-inbox"></i><span class="main-navigation-entry-label">Feedback</span></a>
-      </li>
-      <li class="main-navigation-entry">
-        <a href="https://www.youtube.com/watch?v=ihbnx-1LzPE" target="new" class="main-navigation-entry-link"><i class="icon-white icon-play"></i><span class="main-navigation-entry-label">Video Guide</span></a>
-      </li>
-      <li class="main-navigation-entry">
-        <a href="#/specifications" class="main-navigation-entry-link"><i class="icon-tasks icon-white"></i><span class="main-navigation-entry-label">Specifications</span></a>
-      </li>
+  
+  <ul class="unstyled main-navigation" ng-hide="notLoggedIn()">
+    <li class="main-navigation-entry">
+      <a href="#/matches" class="main-navigation-entry-link"><i class="icon-align-justify icon-white"></i><span class="main-navigation-entry-label">Your Games</span></a>
+    </li>
+    <li class="main-navigation-entry">
+      <a href="#/join" class="main-navigation-entry-link"><i class="icon-plus icon-white"></i><span class="main-navigation-entry-label">New Game</span></a>
+    </li>
+    <li class="main-navigation-entry" ng-show="params.matchUuid">
+      <a href="#" class="main-navigation-entry-link" ng-click="forfeitMatch();$event.preventDefault()"><i class="icon-flag icon-white"></i><span class="main-navigation-entry-label">Forfeit</span></a>
+    </li>
+    <li class="main-navigation-entry">
+      <a href="https://forum.quarterspiral.com/discussions" target="new" class="main-navigation-entry-link"><i class="icon-white icon-comment"></i><span class="main-navigation-entry-label">Forum</span></a>
+    </li>
+    <li class="main-navigation-entry">
+      <a href="http://feedback.quarterspiral.com/forums/208101-enhanced-wars" target="new" class="main-navigation-entry-link"><i class="icon-white icon-inbox"></i><span class="main-navigation-entry-label">Feedback</span></a>
+    </li>
+    <li class="main-navigation-entry">
+      <a href="https://www.youtube.com/watch?v=ihbnx-1LzPE" target="new" class="main-navigation-entry-link"><i class="icon-white icon-play"></i><span class="main-navigation-entry-label">Video Guide</span></a>
+    </li>
+    <li class="main-navigation-entry">
+      <a href="#/specifications" class="main-navigation-entry-link"><i class="icon-tasks icon-white"></i><span class="main-navigation-entry-label">Specifications</span></a>
+    </li>
 
-      
+    
 
-    </ul>
+  </ul>
 
-    <div ng-controller="GamesController">
-      <a class="in-game-chat-toggle un-read-messages" ng-click="showChat = !showChat;scrollChatDown();" ng-show="showChatIcon"><i class="icon-white icon-comment"></i></a>
-      <div class="chat in-game-chat" ng-show="showChatIcon && showChat">
-        <!--
-        <div class="chat-type-tabs">
-          <a class="chat-type-tab disabled" disabled>Game</a>
-          <a class="chat-type-tab active">Global</a>
-        </div>
-        -->
-        <ul class="chat-messages-list unstyled" scroll-glue="publicChatMessages">
-          <li class="chat-message-loading" ng-hide="publicChatMessages">
-            <span class="spinner"></span> Loading Chat History
-          </li>
-          <li class="chat-message" ng-repeat="(messageUuid, message) in publicChatMessages">
-            <span class="chat-message-author">{{message.author}}:</span><span class="chat-message-text" ng-bind-html-unsafe="message.messageText|autoLink"></span>
-          </li>
-        </ul>
-        <form ng-submit="addChatMessage(chatMessage)" class="chat-input-block">
-          <div class="input-append">
-            <input type="text" ng-model="chatMessage" class="span2" placeholder="Enter your message" />
-            <button class="btn" type="submit">Send</button>
-          </div>
-        </form>
+  <div ng-controller="GamesController">
+    <a class="in-game-chat-toggle un-read-messages" ng-click="showChat = !showChat;scrollChatDown();" ng-show="showChatIcon"><i class="icon-white icon-comment"></i></a>
+    <div class="chat in-game-chat" ng-show="showChatIcon && showChat">
+      <!--
+      <div class="chat-type-tabs">
+        <a class="chat-type-tab disabled" disabled>Game</a>
+        <a class="chat-type-tab active">Global</a>
       </div>
+      -->
+      <ul class="chat-messages-list unstyled" scroll-glue="publicChatMessages">
+        <li class="chat-message-loading" ng-hide="publicChatMessages">
+          <span class="spinner"></span> Loading Chat History
+        </li>
+        <li class="chat-message" ng-repeat="(messageUuid, message) in publicChatMessages">
+          <span class="chat-message-author">{{message.author}}:</span><span class="chat-message-text" ng-bind-html-unsafe="message.messageText|autoLink"></span>
+        </li>
+      </ul>
+      <form ng-submit="addChatMessage(chatMessage)" class="chat-input-block">
+        <div class="input-append">
+          <input type="text" ng-model="chatMessage" class="span2" placeholder="Enter your message" />
+          <button class="btn" type="submit">Send</button>
+        </div>
+      </form>
+    </div>
 
     <div ng-include="'/app/partials/_action-control.html'"></div>
 
-    <div>
+    <canvas id="game"></canvas>
+    <div id="ew-debug-panel" ng-include="'/app/partials/ew-debug.html'"></div>
 
-      <canvas id="game"></canvas>
-      <div id="ew-debug-panel" ng-include="'/app/partials/ew-debug.html'"></div>
 
-      <div class="row">
-        <div class="span9 offset1">
-          <p ng-show="loaded() && notLoggedIn()" class="alpha-message">Please <a href="#" ng-click="login();$event.preventDefault();">sign up or log in</a> to play Enhanced Wars</p>
-          <p class="alpha-message" ng-hide="notLoggedIn()">
-            This is a pre-alpha Demo. <a href="https://forum.quarterspiral.com/discussion/17/how-to-play-enhanced-wars#Item_1" target="new">Read the guide</a>, <a href="https://forum.quarterspiral.com/discussions" target="new">join the discussion</a> and give <a href="http://feedback.quarterspiral.com/forums/208101-enhanced-wars" target="new">plenty of feedback</a>.
-          </p>
-        </div>
-        <div class="span2">
-          <img class="enhanced-wars-logo" src="/app/images/ewlogo.png" />
+    <!-- Show when not logged in -->
+    <div ng-show="notLoggedIn()">
+      <div class="fontpage-header">
+        <div class="container">
+          <div class="row">
+            <div class="span6">
+              <div class="logo-image">Enahced Wars Logo</div>
+            </div>
+            <div class="span3">
+              <div class="big-front-page-link-box">
+                <a href="#" class="login-button" ng-click="login();$event.preventDefault();">
+                  <strong>Play Now</strong>
+                  Login or Sign up for free
+                </a>
+              </div>
+            </div>
+            <div class="span3">
+              <div class="big-front-page-link-box explosion">
+                <a href="#" class="kickstarter-link inacitve">
+                  <strong>Kickstarter</strong>
+                  coming soon
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-       <div class="row">
+      <div class="container">
 
-        <div ng-show="loaded() && notLoggedIn()" class="span9 offset1 video">
-          <iframe width="560" height="315" src="//www.youtube.com/embed/ihbnx-1LzPE" frameborder="0" allowfullscreen></iframe>
+        <div class="row">
+
+          <div class="span3">
+            <ul class="unstyled frontpage-links">
+              <li><a href="https://twitter.com/QuarterSpiral" target="new"><i class="icon-comment"></i>Follow us on Twitter</a></li>
+              <li><a href="https://www.youtube.com/watch?v=ihbnx-1LzPE" target="new"><i class="icon-play"></i>Video Guide</a></li>
+              <li><a href="https://forum.quarterspiral.com" target="new"><i class="icon-align-left"></i>Forum</a></li>
+              <li><a href="http://blog.quarterspiral.com" target="new"><i class="icon-leaf"></i>Blog</a></li>
+              <li><a href="http://quarterspiral.com" target="new"><i class="icon-home"></i>Quarterspiral.com</a></li>
+            </ul>
+          </div>
+
+          <div class="span6">
+            <div class="trailer">
+              <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+                <iframe src="//www.youtube.com/embed/szrcyAyJcS8?rel=0" frameborder="0"></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div class="span3">
+            <div class="frontpage-teaser-text login-prompt">
+              <p>
+                While we still work on Enhanced Wars you can play the free demo right now in your browser.
+              </p>
+              <p>
+                Just <a ng-click="login();$event.preventDefault();">login or sign up for free</a>.
+              </p>
+            </div>
+          </div>
+
+          
+
+        </div>
+
+        <div class="row">
+          <div class="span12">
+            <hr />
+          </div>
+          <div class="span5 offset1">
+
+
+            <div class="frontpage-teaser-text">
+              <p>Enhanced Wars is a play-by-mail styled, turn based strategy game. Challenge your friends or make new ones in a tactical battle that unfolds at your pace.</p>
+            </div>
+
+          </div>
+
+          <div class="span5">
+
+
+            <div class="frontpage-teaser-text">
+              <p>This demo is just the beginning. Support our Kickstarter soon and help us make Enhanced Wars a great fully featured strategy game experience.
+              <p>
+            </div>
+
+          </div>
+
+        </div>
+        
+      </div>
+
+    </div>
+
+
+
+    <!-- Hide when not logged in -->
+    <div class="container">
+      <div class="row" ng-hide="notLoggedIn()">
+        <div class="span9 offset1">
+          <p class="alpha-message" >
+              This is a pre-alpha Demo. <a href="https://forum.quarterspiral.com/discussion/17/how-to-play-enhanced-wars#Item_1" target="new">Read the guide</a>, <a href="https://forum.quarterspiral.com/discussions" target="new">join the discussion</a> and give <a href="http://feedback.quarterspiral.com/forums/208101-enhanced-wars" target="new">plenty of feedback</a>.
+          </p>
+        </div>
+
+        <div class="span2">
+          <img class="enhanced-wars-logo" src="/app/images/ewlogo.png" />
         </div>
 
         <div ng-hide="loaded()" class="span6 offset1">
@@ -114,10 +204,11 @@
         </div>
 
       </div>
+    </div>
 
+    <div class="container">
       <div ng-show="player()" ng-view></div>
     </div>
-  </div> <!-- /container -->
 
 </body>
 </html>
