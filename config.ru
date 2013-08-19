@@ -7,6 +7,11 @@ if ENV['RACK_ENV'] == 'production' && ENV['QS_HTTP_AUTH_PASSWORD']
 #   end
 end
 
+if ENV['RACK_ENV'] == 'production'
+  require 'rack/ssl'
+  use Rack::SSL
+end
+
 class IndexHtmlServer
   def initialize(app)
     @app = app

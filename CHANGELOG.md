@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Forces HTTPS/SSL in production
 * Adds a fake random match if no public match exists yet
 * Makes game resize
 * Removes the bouncing when opening games
