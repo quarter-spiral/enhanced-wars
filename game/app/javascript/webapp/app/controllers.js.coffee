@@ -160,7 +160,7 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
       path = urlData[3]
 
       loginUrl = "#{scheme}#{hostAndPort}/auth/auth_backend?origin=#{encodeURIComponent(QSService.qs.info.url)}"
-      window.parent.location.href = loginUrl
+      window.top.location.href = loginUrl
 
     $scope.chatMessage = ""
 
