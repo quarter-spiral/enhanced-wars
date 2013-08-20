@@ -1,6 +1,7 @@
 angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWars.defaultMaps']).
-  controller('GamesController', ['$rootScope', '$scope', '$routeParams', '$location', 'angularFire', 'QSService', 'DefaultMaps', ($rootScope, $scope, $routeParams, $location, angularFire, QSService, DefaultMaps) ->
-
+  controller('AboutController', [() ->
+    # Nothing here yet
+  ]).controller('GamesController', ['$rootScope', '$scope', '$routeParams', '$location', 'angularFire', 'QSService', 'DefaultMaps', ($rootScope, $scope, $routeParams, $location, angularFire, QSService, DefaultMaps) ->
     unless $rootScope.params
       jQuery = require('jquery')
       $rootScope.params = $routeParams

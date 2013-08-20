@@ -30,7 +30,7 @@
 
 </head>
 <body ng-app="enhancedWars" ng-controller="GamesController">
-  
+
   <ul class="unstyled main-navigation" ng-hide="notLoggedIn()">
     <li class="main-navigation-entry">
       <a href="#/matches" class="main-navigation-entry-link"><i class="icon-align-justify icon-white"></i><span class="main-navigation-entry-label">Your Games</span></a>
@@ -54,7 +54,7 @@
       <a href="#/specifications" class="main-navigation-entry-link"><i class="icon-tasks icon-white"></i><span class="main-navigation-entry-label">Specifications</span></a>
     </li>
 
-    
+
 
   </ul>
 
@@ -89,102 +89,6 @@
     <div id="ew-debug-panel" ng-include="'/app/partials/ew-debug.html'"></div>
 
 
-    <!-- Show when not logged in -->
-    <div ng-show="notLoggedIn()">
-      <div class="fontpage-header">
-        <div class="container">
-          <div class="row">
-            <div class="span6">
-              <div class="logo-image">Enahced Wars Logo</div>
-            </div>
-            <div class="span3">
-              <div class="big-front-page-link-box">
-                <a href="#" class="login-button" ng-click="login();$event.preventDefault();">
-                  <strong>Play Now</strong>
-                  Login or Sign up for free
-                </a>
-              </div>
-            </div>
-            <div class="span3">
-              <div class="big-front-page-link-box explosion">
-                <a href="#" class="kickstarter-link inacitve">
-                  <strong>Kickstarter</strong>
-                  coming soon
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="container">
-
-        <div class="row">
-
-          <div class="span3">
-            <ul class="unstyled frontpage-links">
-              <li><a href="https://twitter.com/QuarterSpiral" target="new"><i class="icon-comment"></i>Follow us on Twitter</a></li>
-              <li><a href="https://www.youtube.com/watch?v=ihbnx-1LzPE" target="new"><i class="icon-play"></i>Video Guide</a></li>
-              <li><a href="https://forum.quarterspiral.com" target="new"><i class="icon-align-left"></i>Forum</a></li>
-              <li><a href="http://blog.quarterspiral.com" target="new"><i class="icon-leaf"></i>Blog</a></li>
-              <li><a href="http://quarterspiral.com" target="new"><i class="icon-home"></i>Quarterspiral.com</a></li>
-            </ul>
-          </div>
-
-          <div class="span6">
-            <div class="trailer">
-              <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
-                <iframe src="//www.youtube.com/embed/szrcyAyJcS8?rel=0" frameborder="0"></iframe>
-              </div>
-            </div>
-          </div>
-
-          <div class="span3">
-            <div class="frontpage-teaser-text login-prompt">
-              <p>
-                While we still work on Enhanced Wars you can play the free demo right now in your browser.
-              </p>
-              <p>
-                Just <a ng-click="login();$event.preventDefault();">login or sign up for free</a>.
-              </p>
-            </div>
-          </div>
-
-          
-
-        </div>
-
-        <div class="row">
-          <div class="span12">
-            <hr />
-          </div>
-          <div class="span5 offset1">
-
-
-            <div class="frontpage-teaser-text">
-              <p>Enhanced Wars is a play-by-mail styled, turn based strategy game. Challenge your friends or make new ones in a tactical battle that unfolds at your pace.</p>
-            </div>
-
-          </div>
-
-          <div class="span5">
-
-
-            <div class="frontpage-teaser-text">
-              <p>This demo is just the beginning. Support our Kickstarter soon and help us make Enhanced Wars a great fully featured strategy game experience.
-              <p>
-            </div>
-
-          </div>
-
-        </div>
-        
-      </div>
-
-    </div>
-
-
-
     <!-- Hide when not logged in -->
     <div class="container">
       <div class="row" ng-hide="notLoggedIn()">
@@ -207,7 +111,7 @@
     </div>
 
     <div class="container">
-      <div ng-show="player()" ng-view></div>
+      <div ng-view></div>
     </div>
 
 </body>

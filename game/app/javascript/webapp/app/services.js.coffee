@@ -262,6 +262,7 @@ angular.module('enhancedWars.services', []).
       qs.retrievePlayerInfo().then((player) ->
         service.player = player
         window.player = player
+        $rootScope.player = player
         findFriends(player)
 
         firebaseUrl = window.ENV.QS_FIREBASE_URL
