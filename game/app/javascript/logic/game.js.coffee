@@ -148,4 +148,4 @@ class Game
     jQuery = require('jquery')
     jQuery('body').toggleClass('ew-debug')
 
-exports Game
+exports 'Game', Game

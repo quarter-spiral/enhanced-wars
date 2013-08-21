@@ -8,7 +8,7 @@ angular.module('enhancedWars', ['enhancedWars.controllers', 'enhancedWars.servic
     when('/match/:matchUuid', templateUrl: '/app/partials/match.html', controller: 'GamesController').
     when('/about', templateUrl: '/app/partials/about.html', controller: 'AboutController').
     otherwise(redirectTo: '/matches')
-]).run ($rootScope, $location) ->
+]).run(['$rootScope', '$location', ($rootScope, $location) ->
   # register listener to watch route changes
   $rootScope.$watch('player', ->
     return unless $rootScope.player?
@@ -17,3 +17,4 @@ angular.module('enhancedWars', ['enhancedWars.controllers', 'enhancedWars.servic
 
   $rootScope.$on "$routeChangeStart", (event, next, current) ->
     $location.path "/about"  if next.templateUrl isnt "/app/partials/about.html" and !$rootScope.player?
+])

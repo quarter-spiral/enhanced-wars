@@ -1,6 +1,6 @@
 radio = require('radio')
 
-exports class Renderer
+class Renderer
   constructor: (@game, @gameRenderer, @parent) ->
     @parent ||= @gameRenderer.scene
     @container = new CAAT.Foundation.ActorContainer()
@@ -17,3 +17,5 @@ exports class Renderer
     self = @
     radio("ew/renderer/assets-loaded").subscribe (renderer, images) ->
       self.ready = true
+
+exports 'Renderer', Renderer

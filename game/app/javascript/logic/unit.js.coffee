@@ -154,4 +154,4 @@ class Unit extends Module
   hasEnoughApToMove: =>
     @player().get('ap') >= @specs().costs.move
 
-exports Unit
+exports 'Unit', Unit

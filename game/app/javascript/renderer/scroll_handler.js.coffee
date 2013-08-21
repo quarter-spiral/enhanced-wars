@@ -1,7 +1,7 @@
 radio = require('radio')
 clone = require('clone')
 
-exports class ScrollHandler
+class ScrollHandler
   constructor: (@mapRenderer) ->
     radio('ew/input/scrollMap').subscribe @scrollMap
     @reset()
@@ -34,3 +34,5 @@ exports class ScrollHandler
     position.y = @maximum.y if position.y > @maximum.y
 
     position
+
+exports 'ScrollHandler', ScrollHandler

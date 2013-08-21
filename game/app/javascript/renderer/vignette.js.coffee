@@ -1,6 +1,5 @@
 needs [], () ->
-
-  exports class Vignette
+  class Vignette
 
     constructor: (@parent, @game) ->
 
@@ -15,7 +14,7 @@ needs [], () ->
       @parent.container.addChild(@container)
 
 
-      gradientImage = new CAAT.SpriteImage().initialize(@director.getImage("ui/ui/gradient.png"), 1,1 ) 
+      gradientImage = new CAAT.SpriteImage().initialize(@director.getImage("ui/ui/gradient.png"), 1,1 )
 
       @bottomGradient = new CAAT.Foundation.Actor()
           .setSize(@container.width, 80)
@@ -32,6 +31,4 @@ needs [], () ->
           .setLocation(0,0)
       @container.addChild(@topGradient)
 
-
-
-
+  exports "Vignette", Vignette

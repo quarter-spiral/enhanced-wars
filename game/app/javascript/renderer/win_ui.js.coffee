@@ -42,4 +42,4 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
       radio('ew/game/won').subscribe showOrHideWinUi
 
-  exports WinUI
+  exports 'WinUI', WinUI

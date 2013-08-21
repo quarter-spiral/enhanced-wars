@@ -29,6 +29,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rack-ssl"
   spec.add_dependency 'newrelic_rpm'
   spec.add_dependency 'ping-middleware', '~> 0.0.2'
+  spec.add_dependency 'uglifier'
+  spec.add_dependency 'yui-compressor'
 
 
   spec.add_development_dependency "bundler", "~> 1.3"

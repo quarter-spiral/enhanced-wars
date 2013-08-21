@@ -1,7 +1,7 @@
 Module = require('Module')
 radio = require('radio')
 
-exports class Player extends Module
+class Player extends Module
   @include lazy: -> require('EventedObject')
 
   constructor: (options) ->
@@ -75,3 +75,5 @@ exports class Player extends Module
       radio('ew/game/won').broadcast(@)
 
     radio('ew/game/pointsScored').broadcast()
+
+exports 'Player', Player

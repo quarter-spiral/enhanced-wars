@@ -49,6 +49,7 @@ class Tile
     setImage = (orientation) =>
       orientation ||= @unit.get('orientation')
       image_id = "unit/unit/#{@unit.get('faction')}/#{TILE_TYPES[@unit.get('type')][@unit.get('variant') || 0]}_#{ORIENTATION_TYPES[@unit.get('orientation')]}.png"
+      image = director.getImage(image_id)
       @image = new CAAT.SpriteImage().initialize(director.getImage(image_id), 1, 1)
       unitActor.setBackgroundImage(@image)
 
@@ -219,7 +220,7 @@ class Tile
     @actor.setDiscardable(true)
     @actor.setExpired(true)
 
-exports class UnitRenderer extends require('Renderer')
+class UnitRenderer extends require('Renderer')
   assets: [
     '/assets/unit/0/ht_d.png'
     '/assets/unit/0/ht_l.png'
@@ -354,3 +355,5 @@ exports class UnitRenderer extends require('Renderer')
     @units = @units.filter (u) -> u.isAlive()
     for tile in @tiles
       return tile.remove() if tile.unit is unit
+
+exports 'UnitRenderer', UnitRenderer

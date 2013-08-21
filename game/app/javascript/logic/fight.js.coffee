@@ -1,7 +1,7 @@
 Module = require('Module')
 radio = require('radio')
 
-exports class Fight extends Module
+class Fight extends Module
   @include lazy: -> require('EventedObject')
 
 
@@ -60,3 +60,5 @@ exports class Fight extends Module
     if !enemy.isAlive()
       enemy.die()
       radio('ew/game/kill').broadcast(attacker: attacker, enemy: enemy, bullet: bullet)
+
+exports 'Fight', Fight

@@ -1,7 +1,7 @@
 clone = require('clone')
 infinity = 1 / 0
 
-exports class MoveableTiles
+class MoveableTiles
   constructor: (@map, @unit)->
     @initializeMarkers()
 
@@ -106,3 +106,5 @@ exports class MoveableTiles
       cost = @costFor(tile)
       nextTile = cost if !nextTile or cost.cost < nextTile.cost
     nextTile
+
+exports 'MoveableTiles', MoveableTiles

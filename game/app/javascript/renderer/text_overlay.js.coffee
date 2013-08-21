@@ -47,7 +47,7 @@ needs ['radio'], (radio) ->
       scale = new CAAT.ScaleBehavior().
             setFrameTime( scene.time, 200 ).
             setValues(6,1,6,1).
-            setInterpolator(new CAAT.Interpolator().createExponentialOutInterpolator(2, false))      
+            setInterpolator(new CAAT.Interpolator().createExponentialOutInterpolator(2, false))
 
       fadeOut = new CAAT.AlphaBehavior().
           setValues(1,0).
@@ -78,4 +78,4 @@ needs ['radio'], (radio) ->
       @container.addBehavior(rotate)
       @container.addBehavior(scale)
 
-  exports textOverlay
+  exports 'textOverlay', textOverlay

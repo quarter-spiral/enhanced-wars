@@ -1,6 +1,6 @@
 merge = require('merge')
 
-exports class FlyingInfo
+class FlyingInfo
   defaultOptions =
     fontSize: 22
     color: '#FF0000'
@@ -50,3 +50,5 @@ exports class FlyingInfo
     @superParent ||= @parent.parent
     @superParent ||= @parent
     @superParent.addChild(@container) if @superParent
+
+exports 'FlyingInfo', FlyingInfo

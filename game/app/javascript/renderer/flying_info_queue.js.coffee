@@ -1,4 +1,4 @@
-exports class FlyingInfoQueue
+class FlyingInfoQueue
   constructor: (@options) ->
     @queue = []
     @game = @options.game
@@ -19,3 +19,5 @@ exports class FlyingInfoQueue
   timeout: =>
     delete @triggerTimeout
     @trigger()
+
+exports 'FlyingInfoQueue', FlyingInfoQueue

@@ -167,4 +167,4 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       @game.onready =>
         barContainer.adjust()
 
-  exports PointsUI
+  exports 'PointsUI', PointsUI

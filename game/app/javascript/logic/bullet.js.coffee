@@ -1,4 +1,4 @@
-exports class Bullet
+class Bullet
   constructor: ({@game, @type}) ->
     @specs = @game.ruleSet.bulletSpecs[@type]
 
@@ -19,3 +19,5 @@ exports class Bullet
       @damage = Math.floor(@damage)
 
     @hit
+
+exports 'Bullet', Bullet

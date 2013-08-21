@@ -13,7 +13,7 @@ Action.load = (dump) ->
   actionClass = require(dump.actionClass)
   new actionClass(dump.arguments[0])
 
-exports Action
+exports 'Action', Action
 
 class MoveAction extends Action
   actionClass: 'MoveAction'
@@ -49,7 +49,7 @@ class MoveAction extends Action
         dropZone.capturedBy(capture.oldFaction || null)
       radio('ew/time-control/adjust-score').broadcast(game, @pointsBefore)
 
-exports MoveAction
+exports 'MoveAction', MoveAction
 
 class BuyUnitAction extends Action
   actionClass: 'BuyUnitAction'
@@ -69,7 +69,7 @@ class BuyUnitAction extends Action
     game.turnManager.currentPlayer().deductAp(@apCost * -1)
     game.map.unitAt(@position.x, @position.y, onlyAlive: true).die()
 
-exports BuyUnitAction
+exports 'BuyUnitAction', BuyUnitAction
 
 class NextTurnAction extends Action
   actionClass: 'NextTurnAction'
@@ -91,7 +91,7 @@ class NextTurnAction extends Action
 
     game.turnManager.currentPlayer().set(ap: @apBefore)
 
-exports NextTurnAction
+exports 'NextTurnAction', NextTurnAction
 
 class FightAction extends Action
   actionClass: 'FightAction'
@@ -145,7 +145,7 @@ class FightAction extends Action
 
     radio('ew/time-control/adjust-score').broadcast(game, @pointsAfter)
 
-exports FightAction
+exports 'FightAction', FightAction
 
 class ForfeitAction extends Action
   actionClass: 'ForfeitAction'
@@ -164,4 +164,4 @@ class ForfeitAction extends Action
     return unless player
     player.set(forfeit: false)
 
-exports ForfeitAction
+exports 'ForfeitAction', ForfeitAction

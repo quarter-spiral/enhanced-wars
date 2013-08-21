@@ -3,7 +3,7 @@ $ = require('jquery')
 
 @CAAT.DEBUG = false
 
-exports class GameRenderer
+class GameRenderer
   SCENE_OFFSET:
     x: 0
     y: 0
@@ -77,6 +77,7 @@ exports class GameRenderer
         self.preloader.load (images) ->
           director.setImagesCache(images)
           radio("ew/renderer/assets-loaded").broadcast(self, images)
+          self.ready = true
 
         inputEnabledRenderers = [
           self.renderers.unit
@@ -112,3 +113,5 @@ exports class GameRenderer
 
   update: =>
     @renderers.unit.updateUnits()
+
+exports 'GameRenderer', GameRenderer

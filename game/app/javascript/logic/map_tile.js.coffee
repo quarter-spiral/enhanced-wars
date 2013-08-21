@@ -1,7 +1,7 @@
 radio = require('radio')
 Module = require('Module')
 
-exports class MapTile extends Module
+class MapTile extends Module
   @include lazy: -> require('EventedObject')
   @include lazy: -> require('ObjectWithPosition')
 
@@ -37,3 +37,5 @@ exports class MapTile extends Module
 
   canBeReachedBy: (unit) =>
     @get('map').unitCanReach(unit, @)
+
+exports 'MapTile', MapTile

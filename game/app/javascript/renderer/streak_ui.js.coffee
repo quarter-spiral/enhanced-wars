@@ -158,4 +158,4 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
         if @game.turnManager.currentPlayer().get("fired")
           @container.setVisible(true)
 
-  exports StreakUI
+  exports 'StreakUI', StreakUI

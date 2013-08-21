@@ -70,7 +70,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
       radio('ew/game/shop/open').subscribe =>
         button.setFaction(@game.turnManager.currentPlayer().get('faction')) for button in buttons
 
-  exports class ShopUI extends UIElement
+  class ShopUI extends UIElement
     constructor: ->
       super
       @container.setSize(@parent.container.width, @parent.container.height)
@@ -92,3 +92,5 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
 
       @container.mouseClick = (e) =>
         radio('ew/game/shop/close').broadcast()
+
+  exports 'ShopUI', ShopUI

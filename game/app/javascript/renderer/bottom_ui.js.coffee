@@ -163,7 +163,7 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
           NextTurnAction = require('NextTurnAction')
           game.addAction new NextTurnAction(apBefore: apBefore, streakBefore: streakBefore, firedBefore: firedBefore)
 
-  exports class BottomUI extends UIElement
+  class BottomUI extends UIElement
     DIMENSIONS = {
       width: 555
       height: 50
@@ -213,3 +213,5 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
           player.bindProperty 'ap', (changedValues) ->
             if self.game.turnManager.currentPlayer() is this
               self.actionPointsIndicator.setRemainingActionPoints(changedValues.ap.new)
+
+  exports 'BottomUI', BottomUI

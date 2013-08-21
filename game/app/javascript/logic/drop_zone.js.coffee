@@ -1,7 +1,7 @@
 Module = require('Module')
 radio = require('radio')
 
-exports class DropZone extends Module
+class DropZone extends Module
   @include lazy: -> require('EventedObject')
   @include lazy: -> require('ObjectWithPosition')
 
@@ -12,3 +12,5 @@ exports class DropZone extends Module
     if @get('faction') != faction
       radio('ew/game/drope-zone-captured').broadcast()
       @set(faction: faction)
+
+exports 'DropZone', DropZone

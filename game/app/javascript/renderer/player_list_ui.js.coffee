@@ -79,4 +79,4 @@ needs ['radio', 'UIElement'], (radio, UIElement) ->
             setSize(width, 30).
             setLocation(@parent.container.width - width, 5)
 
-  exports PlayerListUI
+  exports 'PlayerListUI', PlayerListUI

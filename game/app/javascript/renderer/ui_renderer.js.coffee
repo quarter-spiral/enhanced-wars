@@ -1,6 +1,6 @@
 radio = require('radio')
 
-exports class UIElement
+class UIElement
     constructor: (@parent, @game, @director) ->
       @game ||= @parent.game
       @director ||= @parent.director
@@ -10,7 +10,9 @@ exports class UIElement
 
       @parent.container.addChild(@container)
 
-exports class UIRenderer extends require('Renderer')
+exports 'UIElement', UIElement
+
+class UIRenderer extends require('Renderer')
   assets: [
     "/assets/ui/undo.png"
     "/assets/ui/end_turn.png"
@@ -88,3 +90,5 @@ exports class UIRenderer extends require('Renderer')
           label = "Triple Threat!"
 
       @textOverlayQueue.add(label)
+
+exports 'UIRenderer', UIRenderer

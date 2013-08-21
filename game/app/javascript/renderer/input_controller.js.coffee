@@ -1,6 +1,6 @@
 radio = require('radio')
 
-exports class InputController
+class InputController
   constructor: (gameRenderer, parent) ->
     startDragEvent = null
 
@@ -66,3 +66,5 @@ exports class InputController
         rendererEvent: e
       }
       radio('ew/input/doubleClick').broadcast(ewEvent)
+
+exports 'InputController', InputController

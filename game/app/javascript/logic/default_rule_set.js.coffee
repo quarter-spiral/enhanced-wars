@@ -1,6 +1,6 @@
 infinity = 1 / 0
 
-exports class DefaultRuleSet
+class DefaultRuleSet
   apPerTurn: 20
   pointsForWin: 40
   rewards:
@@ -205,3 +205,5 @@ exports class DefaultRuleSet
         description: "Spider Bot Yay"
         weakVs: "weak weak"
         strongVs: "strong strong"
+
+exports 'DefaultRuleSet', DefaultRuleSet

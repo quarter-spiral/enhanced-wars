@@ -23,7 +23,7 @@ adjustMapSize = (tiles, spot) ->
   tiles.push([]) while tiles.length <= spot.y
   tiles[spot.y].push([]) while tiles[spot.y].length <= spot.x
 
-exports class MapEditMapImporter
+class MapEditMapImporter
   constructor: (mapEditData, game) ->
     Map  = require('Map')
     MapTile  = require('MapTile')
@@ -53,3 +53,5 @@ exports class MapEditMapImporter
     @units = units
 
     @map.initialize(game: game, tiles: tiles)
+
+exports 'MapEditMapImporter', MapEditMapImporter

@@ -3,6 +3,8 @@ require 'sprockets-helpers'
 require 'coffee_script'
 require 'newrelic_rpm'
 require 'new_relic/agent/instrumentation/rack'
+require 'uglifier'
+require 'yui/compressor'
 
 module EnhancedWars
   class App < Sprockets::Environment
@@ -20,6 +22,11 @@ module EnhancedWars
         # Debug mode automatically sets
         # expand = true, digest = false, manifest = false
         config.debug       = true if ENV['RACK_ENV'] != 'production'
+      end
+
+      if ENV['RACK_ENV'] == 'production'
+        self.js_compressor = Uglifier.new
+        self.css_compressor = YUI::CssCompressor.new
       end
 
       context_class.class_eval do

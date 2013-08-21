@@ -1,4 +1,4 @@
-exports class TextOverlayQueue
+class TextOverlayQueue
   constructor: (@parent, @game) ->
     @queue = []
 
@@ -19,3 +19,5 @@ exports class TextOverlayQueue
   timeout: =>
     delete @triggerTimeout
     @trigger()
+
+exports 'TextOverlayQueue', TextOverlayQueue

@@ -3,7 +3,7 @@ radio = require('radio')
 Module = require('Module')
 EventedObject = require('EventedObject')
 
-exports class Map extends Module
+class Map extends Module
   @include EventedObject
 
   initialize: (options) =>
@@ -55,3 +55,5 @@ exports class Map extends Module
 
   unitsPathTo: (unit, mapTile) =>
     @moveableTilesFor(unit).pathTo(mapTile)
+
+exports 'Map', Map

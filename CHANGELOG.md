@@ -1,5 +1,6 @@
 # 0.0.7 / Unreleased
 
+* Adds JS/CSS minification
 * Adds New Relic and ping middleware
 * Splits up index page for logged in and not logged in players
 * Adds a fake random match if no public match exists yet

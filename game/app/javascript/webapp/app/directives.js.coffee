@@ -4,7 +4,7 @@ fakeNgModel = (initValue) ->
 
   $viewValue: initValue
 
-angular.module('enhancedWars.directives', []).directive("actionRangeChange", ($rootScope) ->
+angular.module('enhancedWars.directives', []).directive("actionRangeChange", ['$rootScope', ($rootScope) ->
   radio = require('radio')
   linker = (scope, element, attrs) ->
     updateScope = ->
@@ -24,7 +24,7 @@ angular.module('enhancedWars.directives', []).directive("actionRangeChange", ($r
     updateScope() #get the default value
 
   link: linker
-).directive "scrollGlue", ->
+]).directive "scrollGlue", ->
     # By Luegg / https://github.com/Luegg/angularjs-scroll-glue/blob/master/src/scrollglue.js
   scrollingDoneByUs = false
   alreadyScrolled = false

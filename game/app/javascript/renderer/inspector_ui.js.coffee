@@ -3,7 +3,7 @@ needs ['radio'], (radio) ->
     constructor: (@parent, @unit) ->
 
 
-      #get current and default unit stats        
+      #get current and default unit stats
       hp = @unit.get('hp')
       mp = @unit.get('mp')
       tags =  @unit.specs().tags
@@ -42,7 +42,7 @@ needs ['radio'], (radio) ->
           enableEvents(false).
           setLocation(265, 20)
       @container.addChild(@coseX)
-      
+
 
       UNIT_TYPES =
         heavytank: ['ht']
@@ -105,8 +105,8 @@ needs ['radio'], (radio) ->
 
 
         stats = [
-          "Health: " + hp + " / " + hpSpecs, 
-          "Movement: " + mp + " / " + mpSpecs, 
+          "Health: " + hp + " / " + hpSpecs,
+          "Movement: " + mp + " / " + mpSpecs,
           "Attack: " + attackRange.min + " - " + attackRange.max
         ]
 
@@ -191,4 +191,4 @@ needs ['radio'], (radio) ->
       radio('ew/game/next-turn').subscribe remove
 
 
-  exports InspectorUI
+  exports 'InspectorUI', InspectorUI

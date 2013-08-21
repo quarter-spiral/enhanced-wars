@@ -160,9 +160,11 @@ angular.module('enhancedWars.services', []).
           Action = require('Action')
           action = Action.load(action)
           window.game.actions.push(action)
-          window.game.seekToAction(window.game.actions.length - 1)
-          radio('ew/game/actions/updated').broadcast(game)
-          radio('ew/game/won').broadcast(window.game.winner()) if window.game and window.game.winner()
+          console.log("YAY", window.game.gameRenderer.ready)
+          if window.game.gameRenderer.ready
+            window.game.seekToAction(window.game.actions.length - 1)
+            radio('ew/game/actions/updated').broadcast(game)
+            radio('ew/game/won').broadcast(window.game.winner()) if window.game and window.game.winner()
         applier.limit = 1
         window.game.onready(applier)
       if window.game.isAtLastAction() and !matchActionsLoaded

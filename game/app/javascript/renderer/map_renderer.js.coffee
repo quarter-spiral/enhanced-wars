@@ -133,7 +133,7 @@ class Tile
         @renderer.cache()
 
 
-exports class MapRenderer extends require('Renderer')
+class MapRenderer extends require('Renderer')
   assets: [
     "/assets/terrain/base.png"
     "/assets/terrain/deepwater.png"
@@ -258,3 +258,5 @@ exports class MapRenderer extends require('Renderer')
       return true
     radio('ew/input/map/clicked').broadcast(tile.tile)
     false
+
+exports 'MapRenderer', MapRenderer

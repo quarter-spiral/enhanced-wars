@@ -1,6 +1,6 @@
 radio = require('radio')
 
-exports class TurnManager
+class TurnManager
   init: (@players) ->
 
   currentPlayer: =>
@@ -20,3 +20,5 @@ exports class TurnManager
     @turn = turn
     radio('ew/game/next-turn').broadcast(@)
     @turn
+
+exports 'TurnManager', TurnManager
