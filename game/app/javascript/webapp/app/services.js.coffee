@@ -160,7 +160,6 @@ angular.module('enhancedWars.services', []).
           Action = require('Action')
           action = Action.load(action)
           window.game.actions.push(action)
-          console.log("YAY", window.game.gameRenderer.ready)
           if window.game.gameRenderer.ready
             window.game.seekToAction(window.game.actions.length - 1)
             radio('ew/game/actions/updated').broadcast(game)
