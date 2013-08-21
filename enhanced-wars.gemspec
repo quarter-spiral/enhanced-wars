@@ -27,6 +27,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "sass"
   spec.add_dependency "sprockets-helpers"
   spec.add_dependency "rack-ssl"
+  spec.add_dependency 'newrelic_rpm'
+  spec.add_dependency 'ping-middleware', '~> 0.0.2'
+
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"

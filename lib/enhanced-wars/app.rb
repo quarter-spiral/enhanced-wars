@@ -1,6 +1,8 @@
 require 'sprockets'
 require 'sprockets-helpers'
 require 'coffee_script'
+require 'newrelic_rpm'
+require 'new_relic/agent/instrumentation/rack'
 
 module EnhancedWars
   class App < Sprockets::Environment
@@ -24,5 +26,7 @@ module EnhancedWars
         include Sprockets::Helpers
       end
     end
+
+    include ::NewRelic::Agent::Instrumentation::Rack
   end
 end

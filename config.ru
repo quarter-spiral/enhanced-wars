@@ -12,6 +12,10 @@ if ENV['RACK_ENV'] == 'production'
   use Rack::SSL
 end
 
+require 'ping-middleware'
+
+use Ping::Middleware
+
 class IndexHtmlServer
   def initialize(app)
     @app = app
