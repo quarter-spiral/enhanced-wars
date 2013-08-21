@@ -10,17 +10,6 @@
   <meta name="viewport" content="width=device-width">
 
   <title>Enhanced Wars (pre-alpha)</title>
-
-  <% sdk_url = ENV['QS_SDK_URL'] || 'http://localhost:8192' %>
-  <script src="<%= sdk_url %>/javascripts/sdk.js" type="text/javascript"></script>
-
-  <script src="<%= asset_path('/app/javascript/game.js') %>"></script>
-
-  <script src="https://cdn.firebase.com/v0/firebase.js"></script>
-  <script src="<%= asset_path('/app/javascript/webapp.js') %>"></script>
-  <link rel="stylesheet" href="<%= asset_path('/app/stylesheet/game.css') %>"></link>
-  <link rel="stylesheet" href="<%= asset_path('/app/stylesheet/webapp.css') %>"></link>
-
   <script>
     window.ENV = {
       QS_FIREBASE_URL: <%= (ENV['QS_FIREBASE_URL'] || 'https://enhanced-wars-dev.firebaseio.com').to_json %>,
@@ -28,6 +17,8 @@
     }
   </script>
 
+  <link rel="stylesheet" href="<%= asset_path('/app/stylesheet/game.css') %>"></link>
+  <link rel="stylesheet" href="<%= asset_path('/app/stylesheet/webapp.css') %>"></link>
 </head>
 <body ng-app="enhancedWars" ng-controller="GamesController">
 
@@ -114,5 +105,11 @@
       <div ng-view></div>
     </div>
 
+    <% sdk_url = ENV['QS_SDK_URL'] || 'http://localhost:8192' %>
+    <script src="<%= sdk_url %>/javascripts/sdk.js" type="text/javascript" defer></script>
+
+    <script src="<%= asset_path('/app/javascript/game.js') %>" defer></script>
+    <script src="https://cdn.firebase.com/v0/firebase.js" defer></script>
+    <script src="<%= asset_path('/app/javascript/webapp.js') %>" defer></script>
 </body>
 </html>
