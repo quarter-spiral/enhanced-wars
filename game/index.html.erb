@@ -103,9 +103,8 @@
       </div>
     </div>
 
-    <div class="container">
-      <div ng-view></div>
-    </div>
+    
+    <div ng-view></div>
 
     <% sdk_url = ENV['QS_SDK_URL'] || 'http://localhost:8192' %>
     <script src="<%= sdk_url %>/javascripts/sdk.js" type="text/javascript" defer></script>
