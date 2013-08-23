@@ -153,7 +153,7 @@ class DefaultRuleSet
       returnsFire: false
       movesAndFires: false
       labels:
-        name: "Spear Chucker"
+        name: "Artillery"
         description: "Medium Artillery"
         weakVs: "weak weak"
         strongVs: "strong strong"
