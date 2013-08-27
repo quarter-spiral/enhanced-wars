@@ -398,6 +398,17 @@ a {
   }
 }
 
+.loading-app {
+  color:#666;
+  text-align:center;
+  height:300px;
+  line-height:300px;
+  .spinner {
+    margin-right:0.5em;
+    vertical-align:-25%;
+  }
+}
+
 .chat-input-block {
   background-color:#666;
   padding:10px 10px 1px 10px;
