@@ -13,7 +13,7 @@
     </li>
 
   </ul>
-  <form ng-submit="addChatMessage(chatMessage)" class="chat-input-block">
+  <form ng-submit="addChatMessage(chatMessage);chatMessage = ''" class="chat-input-block">
     <input type="text" ng-model="chatMessage" class="input-block-level" placeholder="Enter your message" />
     <button class="btn pull-right" type="submit" ng-show="false">Send</button>
   </form>
