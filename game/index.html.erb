@@ -22,95 +22,56 @@
 </head>
 <body ng-app="enhancedWars" ng-controller="GamesController">
 
-  <ul class="unstyled main-navigation" ng-hide="notLoggedIn()">
+  <ul class="unstyled main-navigation" ng-show="!notLoggedIn() && params.matchUuid">
     <li class="main-navigation-entry">
       <a href="#/matches" class="main-navigation-entry-link"><i class="icon-align-justify icon-white"></i><span class="main-navigation-entry-label">Your Games</span></a>
     </li>
     <li class="main-navigation-entry">
       <a href="#/join" class="main-navigation-entry-link"><i class="icon-plus icon-white"></i><span class="main-navigation-entry-label">New Game</span></a>
     </li>
-    <li class="main-navigation-entry" ng-show="params.matchUuid">
-      <a href="#" class="main-navigation-entry-link" ng-click="forfeitMatch();$event.preventDefault()"><i class="icon-flag icon-white"></i><span class="main-navigation-entry-label">Forfeit</span></a>
+    <li class="main-navigation-entry">
+      <a href="#" class="main-navigation-entry-link" ng-click="forfeitMatch();$event.preventDefault()"><i class="icon-flag icon-white"></i><span class="main-navigation-entry-label">Forfeit this game</span></a>
     </li>
     <li class="main-navigation-entry">
       <a href="https://forum.quarterspiral.com/discussions" target="new" class="main-navigation-entry-link"><i class="icon-white icon-comment"></i><span class="main-navigation-entry-label">Forum</span></a>
-    </li>
-    <li class="main-navigation-entry">
-      <a href="http://feedback.quarterspiral.com/forums/208101-enhanced-wars" target="new" class="main-navigation-entry-link"><i class="icon-white icon-inbox"></i><span class="main-navigation-entry-label">Feedback</span></a>
-    </li>
-    <li class="main-navigation-entry">
-      <a href="https://www.youtube.com/watch?v=ihbnx-1LzPE" target="new" class="main-navigation-entry-link"><i class="icon-white icon-play"></i><span class="main-navigation-entry-label">Video Guide</span></a>
-    </li>
-    <li class="main-navigation-entry">
-      <a href="#/specifications" class="main-navigation-entry-link"><i class="icon-tasks icon-white"></i><span class="main-navigation-entry-label">Specifications</span></a>
     </li>
 
 
 
   </ul>
 
-  <div ng-controller="GamesController">
-    <div class="ng-cloak">
-      <a class="in-game-chat-toggle un-read-messages" ng-click="showChat = !showChat;scrollChatDown();" ng-show="showChatIcon"><i class="icon-white icon-comment"></i></a>
-      <div class="chat in-game-chat" ng-show="showChatIcon && showChat">
-        <!--
-        <div class="chat-type-tabs">
-          <a class="chat-type-tab disabled" disabled>Game</a>
-          <a class="chat-type-tab active">Global</a>
-        </div>
-        -->
-        <ul class="chat-messages-list unstyled" scroll-glue="publicChatMessages">
-          <li class="chat-message-loading" ng-hide="publicChatMessages">
-            <span class="spinner"></span> Loading Chat History
-          </li>
-          <li class="chat-message" ng-repeat="(messageUuid, message) in publicChatMessages">
-            <span class="chat-message-author">{{message.author}}:</span><span class="chat-message-text" ng-bind-html-unsafe="message.messageText|autoLink"></span>
-          </li>
-        </ul>
-        <form ng-submit="addChatMessage(chatMessage)" class="chat-input-block">
-          <div class="input-append">
-            <input type="text" ng-model="chatMessage" class="span2" placeholder="Enter your message" />
-            <button class="btn" type="submit">Send</button>
-          </div>
-        </form>
-      </div>
-
-      <div ng-include="'/app/partials/_action-control.html'"></div>
-
-      <canvas id="game"></canvas>
-      <div id="ew-debug-panel" ng-include="'/app/partials/ew-debug.html'"></div>
+  <div class="ng-cloak">
+    <a class="in-game-chat-toggle un-read-messages" ng-click="showChat = !showChat;scrollChatDown();" ng-show="showChatIcon"><i class="icon-white icon-comment"></i></a>
+    <div class="chat in-game-chat" ng-show="showChatIcon && showChat">
+      <div ng-include="'/app/partials/_chat.html'"></div>
     </div>
 
+    <div ng-include="'/app/partials/_action-control.html'"></div>
 
-    <!-- Hide when not logged in -->
-    <div class="container">
-      <div class="row" ng-hide="notLoggedIn()">
-        <div class="span9 offset1">
-          <p class="alpha-message" >
-              This is a pre-alpha Demo. <a href="https://forum.quarterspiral.com/discussion/17/how-to-play-enhanced-wars#Item_1" target="new">Read the guide</a>, <a href="https://forum.quarterspiral.com/discussions" target="new">join the discussion</a> and give <a href="http://feedback.quarterspiral.com/forums/208101-enhanced-wars" target="new">plenty of feedback</a>.
-          </p>
-        </div>
+    <canvas id="game"></canvas>
+    <div id="ew-debug-panel" ng-include="'/app/partials/ew-debug.html'"></div>
+  </div>
 
-        <div class="span2">
-          <img class="enhanced-wars-logo" src="/app/images/ewlogo.png" />
-        </div>
 
-        <div ng-hide="loaded()" class="span6 offset1">
-          <p>Loading...</p>
-          <span ng-show="loadTimedOut"> (We might have a problem here. Try to reload the page to fix this.)</span>
-        </div>
+  <!-- Hide when not logged in -->
+  <div class="container">
+    <div class="row" ng-hide="notLoggedIn()">
 
+      <div ng-hide="loaded()" class="span6 offset1">
+        <p>Loading...</p>
+        <span ng-show="loadTimedOut"> (We might have a problem here. Try to reload the page to fix this.)</span>
       </div>
+
     </div>
+  </div>
 
-    
-    <div ng-view></div>
+  <div ng-view></div>
 
-    <% sdk_url = ENV['QS_SDK_URL'] || 'http://localhost:8192' %>
-    <script src="<%= sdk_url %>/javascripts/sdk.js" type="text/javascript" defer></script>
+  <% sdk_url = ENV['QS_SDK_URL'] || 'http://localhost:8192' %>
+  <script src="<%= sdk_url %>/javascripts/sdk.js" type="text/javascript" defer></script>
 
-    <script src="<%= asset_path('/app/javascript/game.js') %>" defer></script>
-    <script src="https://cdn.firebase.com/v0/firebase.js" defer></script>
-    <script src="<%= asset_path('/app/javascript/webapp.js') %>" defer></script>
+  <script src="<%= asset_path('/app/javascript/game.js') %>" defer></script>
+  <script src="https://cdn.firebase.com/v0/firebase.js" defer></script>
+  <script src="<%= asset_path('/app/javascript/webapp.js') %>" defer></script>
 </body>
 </html>

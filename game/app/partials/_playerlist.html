@@ -1,5 +1,4 @@
-<span ng-repeat="(uuid, player) in matchData(matchUuid).players">
-  <span ng-hide="$first || $last">,</span>
+<span ng-repeat="(uuid, player) in matchData(matchUuid).players" class="game-list-entry-player-list-entry" >
+  <img class="game-list-entry-player-list-avatar" src="/app/images/user-placeholder.png" />
   {{player.name}}
-  <span ng-show="$first && !$last">&amp;</span>
 </span>
