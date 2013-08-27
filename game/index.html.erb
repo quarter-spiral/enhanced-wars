@@ -57,8 +57,8 @@
   <div class="container">
     <div class="row" ng-hide="notLoggedIn()">
 
-      <div ng-hide="loaded()" class="span6 offset1">
-        <p>Loading...</p>
+      <div ng-hide="loaded()" class="span12 loading-app">
+        <p><span class="spinner"></span> Loading...</p>
         <span ng-show="loadTimedOut"> (We might have a problem here. Try to reload the page to fix this.)</span>
       </div>
 
