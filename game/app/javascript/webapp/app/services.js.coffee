@@ -92,8 +92,7 @@ angular.module('enhancedWars.services', []).
             playerData = data[uuid].venues[service.qs.data.info.venue]
             retrievedMatch.players[uuid] = playerData
 
-            overwrite(retrievedMatch.winner, playerData) if $rootScope.playerMatches[matchUuid].winner is uuid
-
+            overwrite(retrievedMatch.winner, playerData) if $rootScope.playerMatches and $rootScope.playerMatches[matchUuid] and $rootScope.playerMatches[matchUuid].winner is uuid
           $rootScope.$safeApply()
 
         overwrite(match, retrievedMatch)
