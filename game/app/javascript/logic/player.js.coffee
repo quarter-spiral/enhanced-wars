@@ -19,7 +19,7 @@ class Player extends Module
         @scorePoints(@get('game').ruleSet.rewards.streak(newStreak))
         radio('ew/game/streak').broadcast(streakValue: newStreak)
 
-    @get('game').onready =>
+    radio('ew/game/map/loaded').subscribe =>
       game = @get('game')
       game.map.eachTile (tile) =>
         if dropZone = tile.get('dropZone')
