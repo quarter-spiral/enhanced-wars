@@ -1,0 +1,20 @@
+<div class="chat-box">
+  <div class="chat-box-header">
+    <h2 class="chat-box-title">Chat</h2>
+  </div>
+
+  <ul class="chat-messages-list unstyled" scroll-glue="publicChatMessages">
+    <li class="chat-message-loading" ng-hide="publicChatMessages">
+     <span class="spinner"></span> Loading Chat History
+    </li>
+
+    <li class="chat-message" ng-repeat="(messageUuid, message) in publicChatMessages">
+      <span class="chat-message-author">{{message.author}}:</span><span class="chat-message-text" ng-bind-html-unsafe="message.messageText|autoLink"></span>
+    </li>
+
+  </ul>
+  <form ng-submit="addChatMessage(chatMessage)" class="chat-input-block">
+    <input type="text" ng-model="chatMessage" class="input-block-level" placeholder="Enter your message" />
+    <button class="btn pull-right" type="submit" ng-show="false">Send</button>
+  </form>
+</div>

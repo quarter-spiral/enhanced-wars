@@ -11,61 +11,18 @@ body {
 
 .section-header {
   font-size: 1.2em;
-  margin: 20px 0;
+  margin: 20px 0 10px 0;
   font-weight: normal;
   color:#999;
-}
-
-.games-header {
-  background:transparent url('../images/ui-icons/games-icon.png') no-repeat left 45%;
-  padding-left:45px;
-}
-
-.invited-header, .join-header {
-  background:transparent url('../images/ui-icons/join-icon.png') no-repeat left 50%;
-  padding-left:45px;
-}
-
-
-.waiting-header {
-  background:transparent url('../images/ui-icons/waiting-icon.png') no-repeat left 45%;
-  padding-left:45px;
-}
-
-.add-header {
-  background:transparent url('../images/ui-icons/add-icon.png') no-repeat left 50%;
-  padding-left:45px;
-}
-
-.opponents-header {
-  background:transparent url('../images/ui-icons/users-icon.png') no-repeat left 30%;
-  padding-left:45px;
-}
-
-.pace-header {
-  background:transparent url('../images/ui-icons/pace-icon.png') no-repeat left 50%;
-  padding-left:45px;
-}
-
-.maps-header {
-  background:transparent url('../images/ui-icons/maps-icon.png') no-repeat left 50%;
-  padding-left:45px;
-}
-
-.chat-header {
-  background:transparent url('../images/ui-icons/chat-icon.png') no-repeat left 65%;
-  padding-left:45px;
-}
-
-
-.create-game-link-block {
-  margin-top:50px;
 }
 
 .join-block {
   margin-top:50px;
 }
 
+.horizontal-nav {
+  padding:30px 0 0 0;
+}
 
 .main-navigation {
   position:absolute;
@@ -112,10 +69,10 @@ a {
   }
 }
 
-.new-game-button, .create-custom-game-link, .create-game-link {
-  display:block;
+.create-custom-game-link, .create-game-link {
+  display:inline-block;
   background-color: #8FBE00;
-  padding:15px 20px;
+  padding:15px 25px;
   color:#FFF;
   font-weight: bold;
   font-size:1.1em;
@@ -126,7 +83,6 @@ a {
   }
 }
 
-
 .call-to-action {
   margin-bottom:20px;
 }
@@ -136,27 +92,56 @@ a {
   display: block;
 }
 
-.pace-label {
-  display: block;
-}
-
-.game-list-container {
-  margin:0 0 30px 0;
-}
-
 .game-list {
-  background-color: #F6F6F6;
+  margin:0px;
+  padding:0px;
 }
 
 .game-list-loading {
   color:#666;
   text-align:center;
-  padding:25px 0;
+  padding:60px 0;
+  border:1px solid #DDD;
   .spinner {
     margin-right:0.5em;
     vertical-align:-25%;
   }
 }
+
+.no-active-games-warning {
+  color:#666;
+  text-align:center;
+  padding:60px 0;
+  background-color:#EEE;
+  a {
+    text-decoration:underline;
+  }
+}
+
+.game-list-box-title {
+  font-size: 1em;
+  margin:0 0 0 0;
+  padding:6px 0px;
+  color:#333;
+  font-weight:bold;
+}
+
+.chat-box-title {
+  font-size: 1em;
+  margin:0 0 0 0;
+  padding:6px 0px;
+  color:#333;
+  font-weight:bold;
+}
+
+.map-box-title {
+  font-size: 1em;
+  margin:0 0 0 0;
+  padding:6px 0;
+  color:#333;
+  font-weight:bold;
+}
+
 
 .no-games-warning {
   background-color: #F6F6F6;
@@ -166,22 +151,81 @@ a {
 }
 
 .game-list-entry {
-
+  margin-bottom:1px;
+  &:last-child {
+    //border-bottom:0px solid #DDD;
+  }
 }
 
 .game-list-entry-link {
   display:block;
-  padding:15px 20px;
-  .action {
-    display:none;
+  height:70px;
+  padding:15px;
+  background-color:#EEE;
+  border-left:10px solid #DDD;
+  &.current-turn {
+    border-left:10px solid #8FBE00;
+    background-color:#F9F9F9;
   }
   &:hover {
-    background-color: #00B2DE;
-    color:#FFF;
-    .action {
-      display:block;
-    }
+    border-width:20px;
   }
+}
+
+.game-list-game-status {
+  &.your-turn {
+    background-color:#8FBE00;
+    color:#FFF;
+  }
+  &.game-finished {
+    background-color:#666;
+    color:#FFF;
+  }
+  &.open-game {
+    background-color:#392DBC;
+    color:#FFF;
+  }
+  border-radius:3px;
+  padding:3px 8px;
+  margin-left:5px;
+  font-size:0.8em;
+  font-weight:bold;
+  text-transform:uppercase;
+}
+
+
+.game-list-entry-map-thump {
+  border-radius:3px;
+  width:70px;
+  height:70px;
+  background-color:#CCC;
+  border-width:0px;
+  display:none;
+}
+
+.game-list-entry-map-name {
+  font-weight: bold;
+  color:#000;
+}
+
+
+.game-list-entry-player-list {
+  display:block;
+  margin-top:12px;
+}
+
+.game-list-entry-player-list-entry {
+  margin-right:10px;
+  color:#333;
+}
+
+.game-list-entry-player-list-avatar {
+  width:30px;
+  height:30px;
+  vertical-align: bottom;
+  border-radius:15px;
+  border-width:0px;
+  display:none;
 }
 
 .action-control {
@@ -230,6 +274,9 @@ a {
   left:70px;
   width:250px;
   z-index: 450;
+  .chat-box-title {
+    display:none;
+  }
 }
 
 .pace-tabs, .map-tabs, .game-type-tabs, .chat-type-tabs {
@@ -259,21 +306,19 @@ a {
 
 
 .map-list {
-  background-color:#F6F6F6;
-  padding:10px;
+  margin-bottom:20px;
 }
 
 .map-list-entry {
   display: inline-block;
-  height:100px;
   width:150px;
-  line-height: 100px;
-  margin: 10px;
+  margin: 0 10px 10px 0;
   background-color: #FFF;
   text-align: center;
   .map-list-entry-link {
     display:block;
-    height:100px;
+    padding:50px 5px;
+    border:1px solid #DDD;
   }
   &.active {
     background-color: #00B2DE;
@@ -314,6 +359,7 @@ a {
 
 
 
+
 .chat-message-author {
   display:block;
   color:#999;
@@ -333,6 +379,7 @@ a {
   overflow:scroll;
   border:1px solid #DDD;
   padding:0 10px;
+  margin:0px;
   background-color:rgba(255,255,255,0.9);
 }
 
@@ -351,18 +398,13 @@ a {
   }
 }
 
-
-
-
-
-
-.alpha-message {
-  margin:20px 0;
-  padding:10px 0;
-  font-size:1.2em;
-  color:#999;
-  border-bottom:1px solid #DDD;
+.chat-input-block {
+  background-color:#666;
+  padding:10px 10px 1px 10px;
+  margin:0px;
 }
+
+
 
 .enhanced-wars-logo {
   margin-top:20px;
@@ -370,7 +412,7 @@ a {
 
 
 #game {
-   background:#000 url('../images/splash.jpg') no-repeat center top;
+   background:#000 url('..image/s/splash.jpg') no-repeat center top;
 }
 
 .video {
@@ -465,9 +507,10 @@ a {
 
 
 .frontpage-teaser-text {
-  font-size:1.1em;
+  margin-top:30px;
+  font-size:1em;
   line-height:1.5em;
-  color:#999;
+  color:#666;
   a {
     font-weight:bold;
     text-decoration:underline;
@@ -475,23 +518,23 @@ a {
 }
 
 .login-prompt {
-  margin-top:30px;
+ 
 }
 
 .frontpage-links {
-  text-align:right;
-  margin-top:30px;
+  margin-top:20px;
   a {
     display:inline-block;
-    padding:5px 10px;
-    border-radius:3px;
+    font-weight:normal;
+    padding:5px 0px;
     margin-bottom:3px;
-    border:1px solid #FFF;
+    color:#666;
+    text-decoration:none;
     i {
       margin-right:0.5em;
     }
     &:hover {
-      border:1px solid #EEE;
+      margin-left:5px;
     }
   }
 }
