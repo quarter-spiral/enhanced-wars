@@ -1,9 +1,10 @@
 <a href="#" ng-click="joinMatch(matchUuid)" class="game-list-entry-link current-turn" ng-class="'match-' + matchUuid">
-  <i class="action icon-chevron-right icon-white pull-right"></i>
-  <span class="pace-label">
-    <span ng-include="'/app/partials/_pace.html'"></span>
-    Join
-    <span ng-include="'/app/partials/_playerlist.html'"></span>
-    on {{matchData(matchUuid).map.name}}
-  </span>
+  <img class="game-list-entry-map-thump pull-right" src="/app/images/map-preview-comming-soon.png" />
+  <span class="game-list-entry-map-name">{{matchData(matchUuid).map.name}}</span>
+  <span class="game-list-game-status open-game">Open Game</span>
+  <span class="game-list-game-status game-finished" ng-show="matchData(matchUuid).winner.name">{{matchData(matchUuid).winner.name}} won</span>
+    <span ng-include="'/app/partials/_playerlist.html'" class="game-list-entry-player-list"></span>
+  <!--
+  <span ng-include="'/app/partials/_pace.html'" ng-hide="matchData(matchUuid).winner.name"></span>
+  -->
 </a>

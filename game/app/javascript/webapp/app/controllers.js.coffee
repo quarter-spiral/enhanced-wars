@@ -107,6 +107,12 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
           i++
       i
 
+    $scope.countplayerMatches = (matches) ->
+      i = 0
+      for uuid, match of matches when match.state isnt 'ended'
+        i++
+      i
+
     $scope.currentlyPlaying = (matches) ->
       return unless matches
       result = {}
