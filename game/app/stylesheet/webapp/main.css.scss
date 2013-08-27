@@ -8,6 +8,10 @@ body {
   background-color:#FFF;
 }
 
+h2 {
+  line-height:1.3em;
+}
+
 
 .section-header {
   font-size: 1.2em;
@@ -118,11 +122,29 @@ a {
   }
 }
 
+.kickstarter-call-to-action {
+  p {
+    color:#999;
+    padding-right:15px;
+  }
+  a {
+    text-decoration:underline;
+  }
+}
+
 .game-list-box-title {
   font-size: 1em;
   margin:0 0 0 0;
   padding:6px 0px;
   color:#333;
+  font-weight:bold;
+}
+
+.kickstarter-title {
+  font-size: 1em;
+  margin:0 0 0 0;
+  padding:6px 0px;
+  color:green;
   font-weight:bold;
 }
 

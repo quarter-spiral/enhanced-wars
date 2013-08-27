@@ -5,25 +5,29 @@
     <div ng-include="'/app/partials/_game-management-navigation.html'" ng-init="current='create'"></div>
   </div>
 
-    <div class="span7">
+  <div class="span10">
 
-      <h2 class="map-box-title">Select a Map:</h2>
+    <h2 class="map-box-title">Select a Map:</h2>
 
-      <ul ng-hide="useCustomMap" class="map-list unstyled">
-        <li ng-repeat="map in defaultMaps" class="map-list-entry" ng-class="{active: newMatch.map.name == map.name}">
-          <a ng-click="newMatch.map = cloneMap(map)" class="map-list-entry-link">{{map.name}}</a>
-        </li>
-      </ul>
+    <ul ng-hide="useCustomMap" class="map-list unstyled">
+      <li ng-repeat="map in defaultMaps" class="map-list-entry" ng-class="{active: newMatch.map.name == map.name}">
+        <a ng-click="newMatch.map = cloneMap(map)" class="map-list-entry-link">{{map.name}}</a>
+      </li>
+    </ul>
 
-      <div class="create-game-link-block">
-        <span class="create-game-link " ng-hide="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Select a map</span>
-        <a href="#" ng-click="createMatch(newMatch);$event.preventDefault()" class="create-game-link" ng-show="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white"></i> Play first turn</a>
-      </div>
+    <div class="create-game-link-block">
+      <span class="create-game-link " ng-hide="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white pull-right"></i> Select a map</span>
+      <a href="#" ng-click="createMatch(newMatch);$event.preventDefault()" class="create-game-link" ng-show="newMatch.map || newMatch.mapJson"><i class="icon-ok icon-white"></i> Play first turn</a>
     </div>
+  </div>
 
-    <div class="span5">
-      <div ng-include="'/app/partials/_chat.html'"></div>
+  <div class="span2">
+    <div class="kickstarter-call-to-action">
+      <h2 class="kickstarter-title">More Maps?</h2>
+      <p>Or want to make your own maps? Please <a href="http://www.kickstarter.com/projects/904858263/488628316" target="new">support us on Kickstarter today</a> so we can add more features like that.</p>
     </div>
+  </div>
+
 
   </div>
 </div>
