@@ -79,9 +79,9 @@ angular.module('enhancedWars.services', []).
       matches[matchUuid] = match
 
       matchDataCallbacks[matchUuid].push(callback) if callback
-
       service.firebaseRef.child('v2/matchData').child(matchUuid).on('value', (snapshot) ->
         retrievedMatch = snapshot.val()
+        return unless retrievedMatch
         retrievedMatch.uuid = matchUuid
         retrievedMatch.winner = {}
         playerUuids = []
