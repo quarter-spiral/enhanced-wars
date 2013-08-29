@@ -26,6 +26,11 @@ class Match
 
     return 'ended' for score in @actualPoints() when score >= rules.pointsForWin
 
+    forfeit = false
+    @eachAction 'ForfeitAction', ->
+      forfeit = true
+    return 'ended' if forfeit
+
     playerIndex = @actualCurrentPlayerIndex()
 
     return 'open-invitation' if playerIndex >= @objectSize(@data.players)
