@@ -206,4 +206,7 @@ class DefaultRuleSet
         weakVs: "weak weak"
         strongVs: "strong strong"
 
-exports 'DefaultRuleSet', DefaultRuleSet
+if typeof exports is 'function'
+  exports 'DefaultRuleSet', DefaultRuleSet
+else if module and module.exports
+  module.exports = {DefaultRuleSet: DefaultRuleSet}
