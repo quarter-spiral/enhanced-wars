@@ -1,5 +1,7 @@
 # 0.0.7 / Unreleased
 
+* Adds timestamps to actions
+* Adds housekeeping
 * Adds JS/CSS minification
 * Adds New Relic and ping middleware
 * Splits up index page for logged in and not logged in players

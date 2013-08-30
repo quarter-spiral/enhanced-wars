@@ -7,7 +7,13 @@ class Action
   constructor: ->
     @arguments = arguments
   dump: ->
-    {actionClass: @actionClass, arguments: @arguments}
+    {actionClass: @actionClass, arguments: @arguments, timestamp: @timestamp()}
+
+  timestamp: ->
+    d = new Date()
+    clientUTC = new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds()).getTime()
+    clientUTC - (window.timeDiff || 0)
+
 
 Action.load = (dump) ->
   actionClass = require(dump.actionClass)

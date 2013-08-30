@@ -73,5 +73,19 @@
   <script src="<%= asset_path('/app/javascript/game.js') %>" defer></script>
   <script src="https://cdn.firebase.com/v0/firebase.js" defer></script>
   <script src="<%= asset_path('/app/javascript/webapp.js') %>" defer></script>
+  <script type="text/javascript">
+    function timeOffsetFromTimeapiDotCom(json) {
+      function utcDate(dateString) {
+        var d = dateString ? new Date(dateString) : new Date();
+        return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds());
+      }
+
+      var serverDate = utcDate(new Date(json.datetime));
+      var clientDate = utcDate();
+
+      window.timeDiff = clientDate.getTime() - serverDate.getTime();
+    }
+  </script>
+  <script type="text/javascript" src="//json-time.appspot.com/time.json?tz=UTC&callback=timeOffsetFromTimeapiDotCom"></script>
 </body>
 </html>
