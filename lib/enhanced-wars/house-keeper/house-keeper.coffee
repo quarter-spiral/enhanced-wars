@@ -18,11 +18,13 @@ process.on 'exit', onExit
 process.on 'SIGINT', ->
   process.exit(0)
 
+PERIODIC_CLEANING_INTERVAL = (process.env.QS_HOUSE_KEEPING_INTERVAL || 30) * 1000
+
 runner = new TaskRunner(connection)
 runTasks = ->
   winston.info("Running periodical house keeping tasks...")
   runner.run ->
     winston.info("All house keeping tasks ran.")
-    setTimeout(runTasks, 30000)
+    setTimeout(runTasks, PERIODIC_CLEANING_INTERVAL)
 
 runTasks()

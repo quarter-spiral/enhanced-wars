@@ -29,7 +29,7 @@ class Connection
     winston.info("Authenticating house keeping connection")
     @rootRef.auth token, (error) =>
       throw error if(error)
-      @connectMatchData()
+      @connectData()
 
   epochTime: ->
     parseInt((new Date).getTime / 1000, 10)
@@ -41,10 +41,8 @@ class Connection
     winston.info("Generating new house keeping token")
     @tokenGenerator().createToken({}, expires: @epochTime() + FIREBASE_TOKEN_TTL, admin: true)
 
-  connectMatchData: =>
+  connectData: =>
     @connectResource(@matchData, 'matchData', 'v2/matchData')
-
-  connectPublicChatMessages = =>
     @connectResource(@publicChatMessages, 'publicChatMessages', 'v2/publicChatMessages')
 
   connectResource: (dataContainer, resourceName, refName) =>

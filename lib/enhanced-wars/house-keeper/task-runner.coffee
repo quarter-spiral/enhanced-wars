@@ -16,12 +16,14 @@ class TaskRunner
     runningTasks = []
 
     for taskId, task of @tasks
-      winston.info("Starting task: #{taskId}")
       runningTasks.push taskId
-      task.run =>
+
+    for taskId, task of @tasks
+      winston.info("Starting task: #{taskId}")
+      task.run () =>
+        winston.info("Finished task: #{taskId}")
         runningTasks.splice(runningTasks.indexOf(taskId), 1)
         callback() if runningTasks.length < 1
-      winston.info("Finished task: #{taskId}")
 
   initTasks: ->
     @tasks = {}
