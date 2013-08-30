@@ -81,6 +81,6 @@ class ValidateCurrentPlayerTask extends Task
 
   fixCurrentPlayer: (match) =>
     @log("Reparing match: #{match.uuid}. Setting currentPlayer from #{match.data.currentPlayer} to #{match.actualCurrentPlayer()}")
-    @connection.matchDataRef(match.uuid).child('currentPlayer').set(match.actualCurrentPlayer())
+    @connection.refs.matchData.child(match.uuid).child('currentPlayer').set(match.actualCurrentPlayer())
 
 module.exports = ValidateCurrentPlayerTask

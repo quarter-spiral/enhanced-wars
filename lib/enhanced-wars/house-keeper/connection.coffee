@@ -14,8 +14,10 @@ class Connection
 
   constructor: ->
     @rootRef = new Firebase(process.env.QS_FIREBASE_URL)
+    @refs = {}
 
     @matchData = {}
+    @publicChatMessages = {}
 
     @auth()
     setInterval(@auth, FIREBASE_TOKEN_RENEWAL_INTERVAL * 1000)
@@ -39,28 +41,36 @@ class Connection
     winston.info("Generating new house keeping token")
     @tokenGenerator().createToken({}, expires: @epochTime() + FIREBASE_TOKEN_TTL, admin: true)
 
-  matchDataRef: (matchUuid) =>
-    @rootMatchDataRef.child(matchUuid)
-
   connectMatchData: =>
-    @rootMatchDataRef = @rootRef.child('v2/matchData')
+    @connectResource(@matchData, 'matchData', 'v2/matchData')
 
-    updateMatchData = (snapshot) =>
-      @matchData[snapshot.name()] = snapshot.val()
-      @trigger('matchDataChanged', [snapshot.name(), snapshot.val()])
+  connectPublicChatMessages = =>
+    @connectResource(@publicChatMessages, 'publicChatMessages', 'v2/publicChatMessages')
 
-    @rootMatchDataRef.on 'child_added', updateMatchData
-    @rootMatchDataRef.on 'child_changed', updateMatchData
+  connectResource: (dataContainer, resourceName, refName) =>
+    ref = @rootRef.child(refName)
+    @refs[resourceName] = ref
 
-    @rootMatchDataRef.on('child_removed', (snapshot) =>
-      delete @matchData[snapshot.name()]
-      @trigger('matchDataChanged', [snapshot.name(), null])
+    changeEventName = "#{resourceName}Changed"
+
+    update = (snapshot) =>
+      dataContainer[snapshot.name()] = snapshot.val()
+      @trigger(changeEventName, [snapshot.name(), snapshot.val()])
+
+    ref.on 'child_added', update
+    ref.on 'child_changed', update
+
+    ref.on('child_removed', (snapshot) =>
+      delete dataContainer[snapshot.name()]
+      @trigger(changeEventName, [snapshot.name(), null])
     )
 
   close: =>
     winston.info("Closing house keeping connection")
     @rootRef.off()
-    @rootMatchDataRef.off() if @rootMatchDataRef
+    for resourceName, ref of @refs
+      ref.off()
+      delete @refs[resourceName]
 
 module.exports =
   Connection: Connection
