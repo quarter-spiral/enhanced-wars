@@ -18,7 +18,7 @@ process.on 'exit', onExit
 process.on 'SIGINT', ->
   process.exit(0)
 
-PERIODIC_CLEANING_INTERVAL = (process.env.QS_HOUSE_KEEPING_INTERVAL || 30) * 1000
+PERIODIC_CLEANING_INTERVAL = parseInt(process.env.QS_HOUSE_KEEPING_INTERVAL || 30, 10) * 1000
 
 runner = new TaskRunner(connection)
 runTasks = ->
