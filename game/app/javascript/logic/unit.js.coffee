@@ -1,4 +1,3 @@
-
 radio = require('radio')
 merge = require('merge')
 Module = require('Module')
@@ -82,7 +81,7 @@ class Unit extends Module
       capturedZones: []
       pointsBefore: @game().dumpPoints()
 
-    for tile in path when dropZone = tile.tile.get('dropZone')
+    for tile in path when dropZone = tile.tile.get('dropZone') and dropZone.get('faction') isnt @get('faction')
       actionOptions.capturedZones.push(tile: tile.tile.position(), oldFaction: dropZone.get('faction'))
       dropZone.capturedBy(@get('faction'))
 
