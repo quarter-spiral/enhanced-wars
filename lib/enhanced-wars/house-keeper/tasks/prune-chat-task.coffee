@@ -1,4 +1,4 @@
-Task = require('../task.coffee').Task
+Task = require('../task.coffee')
 
 class PruneChatTask extends Task
   MAX_MESSAGES = parseInt(process.env.QS_MAX_PUBLIC_CHAT_MESSAGES || 250, 10)
@@ -7,14 +7,12 @@ class PruneChatTask extends Task
   id: 'prune-chat'
 
   run: (callback) =>
-    unless @connection.refs.publicChatMessages
-      callback()
-      return
-
     @pruneChat(callback)
 
   pruneChat: (callback) =>
     messageRef = @connection.refs.publicChatMessages
+    return callack() unless messageRef
+
     messageRef.once 'value', (snapshot) =>
       existingMessages = snapshot.numChildren()
       messagesToPrune = existingMessages - MAX_MESSAGES
