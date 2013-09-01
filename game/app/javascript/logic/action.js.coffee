@@ -52,8 +52,7 @@ class MoveAction extends Action
     if @capturedZones
       for capture in @capturedZones
         dropZone = game.map.tileAt(capture.tile).get('dropZone')
-        oldFaction = if capture.oldFaction? then capture.oldFaction else null
-        dropZone.capturedBy(oldFaction)
+        dropZone.capturedBy(capture.oldFaction || null)
       radio('ew/time-control/adjust-score').broadcast(game, @pointsBefore)
 
 exports 'MoveAction', MoveAction

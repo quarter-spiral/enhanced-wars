@@ -12,7 +12,7 @@ class MapTile extends Module
     radio('ew/game/map/clicked').subscribe (mapTile) ->
       game = self.get('map').get('game')
       return if mapTile isnt self or (game.selectedUnit() or game.map.unitAt(self.position()))
-      if dropZone = self.get('dropZone') and self.get('dropZone').get('faction') is game.turnManager.currentPlayer().get('faction') and game.isAtLastAction()
+      if dropZone = self.get('dropZone') and self.get('dropZone').get('faction') is game.turnManager.currentPlayer().get('faction')
         self.get('map').get('game').activeDropZone = self.get('dropZone')
         radio('ew/game/shop/open').broadcast()
 
