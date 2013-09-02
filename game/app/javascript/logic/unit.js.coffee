@@ -81,9 +81,10 @@ class Unit extends Module
       capturedZones: []
       pointsBefore: @game().dumpPoints()
 
-    for tile in path when dropZone = tile.tile.get('dropZone') and dropZone.get('faction') isnt @get('faction')
-      actionOptions.capturedZones.push(tile: tile.tile.position(), oldFaction: dropZone.get('faction'))
-      dropZone.capturedBy(@get('faction'))
+    for tile in path when dropZone = tile.tile.get('dropZone')
+      if dropZone.get('faction') isnt @get('faction')
+        actionOptions.capturedZones.push(tile: tile.tile.position(), oldFaction: dropZone.get('faction'))
+        dropZone.capturedBy(@get('faction'))
 
     currentPlayer.deductAp(apCost)
     newMp = mp - movementCost
