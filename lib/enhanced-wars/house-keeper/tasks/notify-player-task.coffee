@@ -29,7 +29,7 @@ class NotifyPlayerTask extends Task
           @log("Could not create QS OAuth token!", 'error')
 
     parsedUrl = url.parse("#{process.env.QS_AUTH_BACKEND_URL}/api/v1/token/app")
-    client = if parsedUrl.protocol is 'https' then https else http
+    client = if parsedUrl.protocol is 'https:' then https else http
     client.request({host: parsedUrl.hostname, path: parsedUrl.pathname, port: parsedUrl.port, method: 'POST', headers: {Authorization: auth}}, onToken).end()
 
   run: (callback) =>
@@ -65,6 +65,44 @@ class NotifyPlayerTask extends Task
         count -= 1
         onDone() if count is 0
 
+
+  batchProcessMails: (uuids, playersToNotify, callback) =>
+    console.log("AYYYY")
+    i = 0
+    uuidsBatch = []
+    while uuids.length > 0 and i < 5
+      uuidsBatch.push uuids.shift()
+      i += 1
+
+    onDone = =>
+      console.log("Done here?", uuids.length)
+      if uuids.length < 1
+        console.log("Done here!", callback)
+        callback()
+      else
+        @batchProcessMails(uuids, playersToNotify, callback)
+
+    console.log("AYYYYA", uuidsBatch)
+
+    @getPlayerInfo uuidsBatch, (playerData) =>
+      count = ObjectHelper.size(playersToNotify)
+      console.log("KARAMBA")
+      for playerUuid, matches of playersToNotify
+        name = (playerData[playerUuid].venues.embedded || {}).name
+        name ||= (playerData[playerUuid].venues.facebook || {}).name
+        email = (playerData[playerUuid].venues.embedded || {}).email
+        email ||= (playerData[playerUuid].venues.facebook || {}).email
+
+        @log("Notify #{playerUuid} - #{name} - #{email} of #{matches.length} games.")
+
+        if name? and email? and email isnt 'unknown@example.com'
+          @sendMail name, email, playerUuid, matches, ->
+            count -= 1
+            onDone() if count is 0
+        else
+          count -= 1
+          onDone() if count is 0
+
   checkNotifications: (callback) =>
     if !@connection || !@token
       callback()
@@ -90,22 +128,7 @@ class NotifyPlayerTask extends Task
         for playerUuid, matches of playersToNotify
           uuids.push playerUuid
 
-        @getPlayerInfo uuids, (playerData) =>
-          count = ObjectHelper.size(playersToNotify)
-
-          for playerUuid, matches of playersToNotify
-            name = playerData[playerUuid].venues.embedded.name
-            email = playerData[playerUuid].venues.embedded.email
-
-            @log("Notify #{playerUuid} - #{name} - #{email} of #{matches.length} games.")
-
-            if name? and email? and email isnt 'unknown@example.com'
-              @sendMail name, email, playerUuid, matches, ->
-                count -= 1
-                callback() if count is 0
-            else
-              count -= 1
-              callback() if count is 0
+        @batchProcessMails(uuids, playersToNotify, callback)
 
     for matchUuid, matchData of @connection.matchData
       @gatherNotificationsFor(matchUuid, matchData, jobDone)
