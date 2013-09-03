@@ -42,18 +42,33 @@ class Connection
     @tokenGenerator().createToken({}, expires: @epochTime() + FIREBASE_TOKEN_TTL, admin: true)
 
   connectData: =>
-    @connectResource(@matchData, 'matchData', 'v2/matchData')
+    @connectResource @matchData, 'matchData', 'v2/matchData', (matchData, snapshot, onComplete) ->
+      matchData.players = []
+      snapshot.ref().child('players').once 'value', (snapshot) ->
+        playerCount = snapshot.numChildren()
+        snapshot.forEach (playerSnapshot) ->
+          matchData.players.push playerSnapshot.name()
+          onComplete() if matchData.players.length is playerCount
+
     @connectResource(@publicChatMessages, 'publicChatMessages', 'v2/publicChatMessages')
 
-  connectResource: (dataContainer, resourceName, refName) =>
+  connectResource: (dataContainer, resourceName, refName, callback) =>
     ref = @rootRef.child(refName)
     @refs[resourceName] = ref
 
     changeEventName = "#{resourceName}Changed"
 
     update = (snapshot) =>
-      dataContainer[snapshot.name()] = snapshot.val()
-      @trigger(changeEventName, [snapshot.name(), snapshot.val()])
+      onDone = (val) =>
+        dataContainer[snapshot.name()] = val
+        @trigger(changeEventName, [snapshot.name(), val])
+
+      if callback
+        val = snapshot.val()
+        callback val, snapshot, ->
+          onDone(val)
+      else
+        onDone(snapshot.val())
 
     ref.on 'child_added', update
     ref.on 'child_changed', update

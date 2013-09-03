@@ -30,9 +30,10 @@ class TaskRunner
     fs.readdir @tasksDir, (err,files) =>
       throw err if err
       files.forEach (file) =>
-        taskClass = require(@tasksDir + file)
-        task = new taskClass(@connection)
-        @tasks[task.id] = task
+        if file.match(/-task\.coffee$/)
+          taskClass = require(@tasksDir + file)
+          task = new taskClass(@connection)
+          @tasks[task.id] = task
       @tasksReady = true
 
 module.exports =
