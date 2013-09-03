@@ -3,7 +3,7 @@ Match = require('./match.coffee')
 NotificationMail = require('./notification-mail.coffee')
 ObjectHelper = require('./object-helper.coffee')
 http = require('http')
-https = require('http')
+https = require('https')
 url = require('url')
 sendgrid  = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD)
 
