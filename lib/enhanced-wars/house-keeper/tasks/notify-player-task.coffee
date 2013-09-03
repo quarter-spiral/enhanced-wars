@@ -3,6 +3,7 @@ Match = require('./match.coffee')
 NotificationMail = require('./notification-mail.coffee')
 ObjectHelper = require('./object-helper.coffee')
 http = require('http')
+https = require('http')
 url = require('url')
 sendgrid  = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD)
 
@@ -28,7 +29,8 @@ class NotifyPlayerTask extends Task
           @log("Could not create QS OAuth token!", 'error')
 
     parsedUrl = url.parse("#{process.env.QS_AUTH_BACKEND_URL}/api/v1/token/app")
-    http.request({host: parsedUrl.hostname, path: parsedUrl.pathname, port: parsedUrl.port, method: 'POST', headers: {Authorization: auth}}, onToken).end()
+    client = parsedUrl.protocol is 'https' then https else http
+    client.request({host: parsedUrl.hostname, path: parsedUrl.pathname, port: parsedUrl.port, method: 'POST', headers: {Authorization: auth}}, onToken).end()
 
   run: (callback) =>
     @checkNotifications(callback)
