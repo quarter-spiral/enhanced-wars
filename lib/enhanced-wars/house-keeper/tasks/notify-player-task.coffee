@@ -29,7 +29,7 @@ class NotifyPlayerTask extends Task
           @log("Could not create QS OAuth token!", 'error')
 
     parsedUrl = url.parse("#{process.env.QS_AUTH_BACKEND_URL}/api/v1/token/app")
-    client = parsedUrl.protocol is 'https' then https else http
+    client = if parsedUrl.protocol is 'https' then https else http
     client.request({host: parsedUrl.hostname, path: parsedUrl.pathname, port: parsedUrl.port, method: 'POST', headers: {Authorization: auth}}, onToken).end()
 
   run: (callback) =>
