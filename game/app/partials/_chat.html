@@ -1,7 +1,6 @@
 <div class="chat-box">
   <div class="chat-box-header">
-    <h2 class="chat-box-title" ng-hide="isInMatch()">Chat</h2>
-    <h2 class="chat-box-title" ng-show="isInMatch()">Private Match Chat</h2>
+    <h2 class="chat-box-title">Chat</h2>
   </div>
 
   <ul class="chat-messages-list unstyled" scroll-glue="publicChatMessages" ng-hide="isInMatch()">
@@ -18,6 +17,11 @@
     <li class="chat-message-loading" ng-hide="matchChat()">
      <span class="spinner"></span> Loading Chat History
     </li>
+
+    <li class="chat-message">
+      <span class="chat-message-author">System:</span><span class="chat-message-text">This chat room is for this match only. Enjoy the game!</span>
+    </li>
+
 
     <li class="chat-message" ng-repeat="(messageUuid, message) in matchChat()">
       <span class="chat-message-author">{{message.author}}:</span><span class="chat-message-text" ng-bind-html-unsafe="message.messageText|autoLink"></span>
