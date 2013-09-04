@@ -43,7 +43,7 @@
   <div class="ng-cloak">
     <a class="in-game-chat-toggle un-read-messages" ng-click="showChat = !showChat;scrollChatDown();" ng-show="showChatIcon"><i class="icon-white icon-comment"></i></a>
     <div class="chat in-game-chat" ng-show="showChatIcon && showChat">
-      <div ng-include="'/app/partials/_chat.html'"></div>
+      <div ng-include="'/app/partials/_chat.html'" ng-init="mode='local'"></div>
     </div>
 
     <div ng-include="'/app/partials/_action-control.html'"></div>
