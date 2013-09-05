@@ -54,6 +54,14 @@ class NotifyPlayerTask extends Task
     count = matches.length
 
     mail = new NotificationMail(name, email, playerUuid, matches)
+
+    onDoneSent = false
+    sendingTimeout = setTimeout(=>
+      @log("sending mail timed out")
+      onDoneSent = true
+      onDone()
+    , 30000)
+
     sendgrid.send mail.toSendgridOptions(), (err, json) =>
       if (err)
         @log(err.message, 'error')
@@ -64,7 +72,10 @@ class NotifyPlayerTask extends Task
       match.lastActionOf playerUuid, (lastAction, rawAction) =>
         @connection.refs.matchData.child(match.uuid).child('turnAtLastEmail').child(playerUuid).set(rawAction.index)
         count -= 1
-        onDone() if count is 0
+        if count is 0 and !onDoneSent
+          onDoneSent = true
+          clearTimeout(sendingTimeout)
+          onDone()
 
 
   batchProcessMails: (uuids, playersToNotify, callback) =>
@@ -80,9 +91,8 @@ class NotifyPlayerTask extends Task
       else
         @batchProcessMails(uuids, playersToNotify, callback)
 
-
     @getPlayerInfo uuidsBatch, (playerData) =>
-      count = ObjectHelper.size(playersToNotify)
+      count = uuidsBatch.length
       for uuid in uuidsBatch
         playerUuid = uuid
         matches = playersToNotify[playerUuid]
@@ -145,7 +155,7 @@ class NotifyPlayerTask extends Task
     jobTimeout = setTimeout(->
       callbackSent = true
       callback(false, match)
-    , 5000)
+    , 30000)
 
     match.lastActionOf currentPlayer, (lastAction, rawLastAction) ->
       weAreNotSpamming = !(match.turnAtLastEmail(currentPlayer)?) || match.turnAtLastEmail(currentPlayer) isnt rawLastAction.index
