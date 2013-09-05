@@ -26,6 +26,7 @@ class TaskRunner
         callback() if runningTasks.length < 1
 
     for taskId, task of @tasks
+      winston.info("Starting task: #{taskId}")
       task.run onDone(taskId)
 
   initTasks: ->

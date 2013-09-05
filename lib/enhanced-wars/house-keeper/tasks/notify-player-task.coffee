@@ -45,7 +45,8 @@ class NotifyPlayerTask extends Task
         callback(JSON.parse(str))
 
     parsedUrl = url.parse("#{process.env.QS_AUTH_BACKEND_URL}/api/v1/users/batch/identities")
-    http.request({host: parsedUrl.hostname, path: parsedUrl.pathname + "?uuids=#{encodeURIComponent(JSON.stringify(uuids))}", port: parsedUrl.port, method: 'GET', headers: {Authorization: "Bearer #{@token}"}}, onPlayerInfo).end()
+    client = if parsedUrl.protocol is 'https:' then https else http
+    client.request({host: parsedUrl.hostname, path: parsedUrl.pathname + "?uuids=#{encodeURIComponent(JSON.stringify(uuids))}", port: parsedUrl.port, method: 'GET', headers: {Authorization: "Bearer #{@token}"}}, onPlayerInfo).end()
 
   sendMail: (name, email, playerUuid, matches, onDone) =>
     @log("Sending notification email to #{name} (#{email})")
@@ -67,7 +68,6 @@ class NotifyPlayerTask extends Task
 
 
   batchProcessMails: (uuids, playersToNotify, callback) =>
-    console.log("AYYYY")
     i = 0
     uuidsBatch = []
     while uuids.length > 0 and i < 5
@@ -75,19 +75,17 @@ class NotifyPlayerTask extends Task
       i += 1
 
     onDone = =>
-      console.log("Done here?", uuids.length)
       if uuids.length < 1
-        console.log("Done here!", callback)
         callback()
       else
         @batchProcessMails(uuids, playersToNotify, callback)
 
-    console.log("AYYYYA", uuidsBatch)
 
     @getPlayerInfo uuidsBatch, (playerData) =>
       count = ObjectHelper.size(playersToNotify)
-      console.log("KARAMBA")
-      for playerUuid, matches of playersToNotify
+      for uuid in uuidsBatch
+        playerUuid = uuid
+        matches = playersToNotify[playerUuid]
         name = (playerData[playerUuid].venues.embedded || {}).name
         name ||= (playerData[playerUuid].venues.facebook || {}).name
         email = (playerData[playerUuid].venues.embedded || {}).email
@@ -127,9 +125,9 @@ class NotifyPlayerTask extends Task
         uuids = []
         for playerUuid, matches of playersToNotify
           uuids.push playerUuid
-
         @batchProcessMails(uuids, playersToNotify, callback)
 
+    i = 0
     for matchUuid, matchData of @connection.matchData
       @gatherNotificationsFor(matchUuid, matchData, jobDone)
 
@@ -142,10 +140,20 @@ class NotifyPlayerTask extends Task
     tenMinutesAgo = currentUtcTimestamp - @TEN_MINUTES
 
     currentPlayer = match.playerByIndex(match.actualCurrentPlayerIndex())
+    callbackSent = false
+
+    jobTimeout = setTimeout(->
+      callbackSent = true
+      callback(false, match)
+    , 5000)
+
     match.lastActionOf currentPlayer, (lastAction, rawLastAction) ->
       weAreNotSpamming = !(match.turnAtLastEmail(currentPlayer)?) || match.turnAtLastEmail(currentPlayer) isnt rawLastAction.index
       needsNotification = lastAction? and lastAction.timestamp? and lastAction.timestamp < tenMinutesAgo and match.actualCurrentPlayer() is match.playerByIndex(match.actualCurrentPlayerIndex()) and weAreNotSpamming
 
-      callback(needsNotification, match)
+      unless callbackSent
+        clearTimeout(jobTimeout)
+        callbackSent = true
+        callback(needsNotification, match)
 
 module.exports = NotifyPlayerTask
