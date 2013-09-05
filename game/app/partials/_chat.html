@@ -3,7 +3,12 @@
     <h2 class="chat-box-title">Chat</h2>
   </div>
 
-  <ul class="chat-messages-list unstyled" scroll-glue="publicChatMessages">
+  <div class="chat-switch" ng-show="isInMatch()">
+    <a ng-click="mode='local';" ng-class="{active: mode=='local'}">Game</a>
+    <a ng-click="mode='global';" ng-class="{active: mode=='global'}">Lobby</a>
+  </div>
+
+  <ul class="chat-messages-list unstyled" scroll-glue="publicChatMessages" ng-show="mode=='global'">
     <li class="chat-message-loading" ng-hide="publicChatMessages">
      <span class="spinner"></span> Loading Chat History
     </li>
@@ -11,9 +16,29 @@
     <li class="chat-message" ng-repeat="(messageUuid, message) in publicChatMessages">
       <span class="chat-message-author">{{message.author}}:</span><span class="chat-message-text" ng-bind-html-unsafe="message.messageText|autoLink"></span>
     </li>
-
   </ul>
-  <form ng-submit="addChatMessage(chatMessage);chatMessage = ''" class="chat-input-block">
+
+  <ul class="chat-messages-list unstyled" scroll-glue="matchChat()" ng-show="mode=='local'">
+    <li class="chat-message-loading" ng-hide="matchChat()">
+     <span class="spinner"></span> Loading Chat History
+    </li>
+
+    <li class="chat-message">
+      <span class="chat-message-author">System:</span><span class="chat-message-text">This chat room is for this match only. Enjoy the game!</span>
+    </li>
+
+
+    <li class="chat-message" ng-repeat="(messageUuid, message) in matchChat()">
+      <span class="chat-message-author">{{message.author}}:</span><span class="chat-message-text" ng-bind-html-unsafe="message.messageText|autoLink"></span>
+    </li>
+  </ul>
+
+  <form ng-submit="addChatMessage(chatMessage, 'public');chatMessage = ''" class="chat-input-block" ng-show="mode=='global'">
+    <input type="text" ng-model="chatMessage" class="input-block-level" placeholder="Enter your message" />
+    <button class="btn pull-right" type="submit" ng-show="false">Send</button>
+  </form>
+
+  <form ng-submit="addChatMessage(chatMessage, 'match');chatMessage = ''" class="chat-input-block" ng-show="mode=='local'">
     <input type="text" ng-model="chatMessage" class="input-block-level" placeholder="Enter your message" />
     <button class="btn pull-right" type="submit" ng-show="false">Send</button>
   </form>

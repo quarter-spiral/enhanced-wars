@@ -170,9 +170,12 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
 
     $scope.chatMessage = ""
 
-    $scope.addChatMessage = (message) ->
-      QSService.addChatMessage(message)
+    $scope.addChatMessage = (message, forceChannel) ->
+      QSService.addChatMessage(message, forceChannel)
       $scope.chatMessage = ""
+
+    $scope.isInMatch = ->
+      !!$location.path().match(/^\/match\//)
 
     $scope.scrollChatDown = ->
       $('.chat-messages-list').each ->
@@ -180,6 +183,12 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
         setTimeout(->
           self.scrollTop = self.scrollHeight
         , 200)
+
+    emptyChat = {}
+    $scope.matchChat = ->
+      return emptyChat unless window.game? && window.game.match?
+      matchChatKey = "matchChat-#{window.game.match.uuid}".replace(/-+/g, '')
+      $rootScope[matchChatKey]
 
     $scope.forfeitMatch = ->
       QSService.forfeitMatch()

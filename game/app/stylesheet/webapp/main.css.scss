@@ -326,6 +326,19 @@ a {
   color: #DDD;
 }
 
+.chat-switch {
+  padding:0.6em 1em;
+  background-color:#DDD;
+  a {
+    cursor:pointer;
+    margin-right: 1em;
+    &.active {
+      font-weight: bold;
+      text-decoration:underline;
+    }
+  }
+}
+
 
 .map-list {
   margin-bottom:20px;
