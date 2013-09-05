@@ -212,6 +212,9 @@ angular.module('enhancedWars.services', []).
       return unless winner
       winGame(winner, game)
 
+    service.matchChatRef = (match) ->
+      service.firebaseRef.child('v2/matchData').child(match.uuid).child('chat')
+
     service.openMatch = (match) ->
       Game = require('Game')
 
@@ -225,6 +228,11 @@ angular.module('enhancedWars.services', []).
       currentActionRef = service.firebaseRef.child('v2/matchData').child(match.uuid).child('actions')
       currentActionRef.on('child_added', reactOnAction)
 
+      matchChatKey = "matchChat-#{match.uuid}".replace(/-+/g, '')
+      unless $rootScope[matchChatKey]
+        matchChatRef = service.matchChatRef(match).limit(150)
+        angularFire(matchChatRef, $rootScope, matchChatKey, {})
+
     radio('ew/game/actions/updated').subscribe (game, action) ->
       $rootScope.maxActionSteps = game.actions.length - 1
       $rootScope.$safeApply()
@@ -237,10 +245,21 @@ angular.module('enhancedWars.services', []).
           nextPlayer ||= 'open-invitation'
           service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('currentPlayer').set(nextPlayer)
 
-    service.addChatMessage = (message) ->
+
+    service.chatRef = (forceChannel) ->
+      return service.matchChatRef(window.game.match) if forceChannel is 'match'
+      return service.firebaseRef.child("/v2/publicChatMessages") if forceChannel is 'public'
+
+      if $location.path().match(/^\/match\//)
+        service.matchChatRef(window.game.match)
+      else
+        service.firebaseRef.child("/v2/publicChatMessages")
+
+    service.addChatMessage = (message, forceChannel) ->
       return if message.match(/^\s*$/)
-      newMessageRef = service.firebaseRef.child('v2/publicChatMessages').push()
+      newMessageRef = service.chatRef(forceChannel).push()
       newMessageRef.set(author: service.firebaseUser.auth.name, authorUuid: service.myUuid(), messageText: message, time: new Date().getTime())
+      $rootScope.$safeApply()
 
     service.matchCanvasUrl = (uuid) ->
       url = '' + service.qs.data.info.url
