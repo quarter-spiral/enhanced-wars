@@ -246,15 +246,18 @@ angular.module('enhancedWars.services', []).
           service.firebaseRef.child('v2/matchData').child($rootScope.params.matchUuid).child('currentPlayer').set(nextPlayer)
 
 
-    service.chatRef = ->
+    service.chatRef = (forceChannel) ->
+      return service.matchChatRef(window.game.match) if forceChannel is 'match'
+      return service.firebaseRef.child("/v2/publicChatMessages") if forceChannel is 'public'
+
       if $location.path().match(/^\/match\//)
         service.matchChatRef(window.game.match)
       else
         service.firebaseRef.child("/v2/publicChatMessages")
 
-    service.addChatMessage = (message) ->
+    service.addChatMessage = (message, forceChannel) ->
       return if message.match(/^\s*$/)
-      newMessageRef = service.chatRef().push()
+      newMessageRef = service.chatRef(forceChannel).push()
       newMessageRef.set(author: service.firebaseUser.auth.name, authorUuid: service.myUuid(), messageText: message, time: new Date().getTime())
       $rootScope.$safeApply()
 

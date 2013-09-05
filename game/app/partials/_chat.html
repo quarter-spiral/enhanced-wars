@@ -33,7 +33,12 @@
     </li>
   </ul>
 
-  <form ng-submit="addChatMessage(chatMessage);chatMessage = ''" class="chat-input-block">
+  <form ng-submit="addChatMessage(chatMessage, 'public');chatMessage = ''" class="chat-input-block" ng-show="mode=='global'">
+    <input type="text" ng-model="chatMessage" class="input-block-level" placeholder="Enter your message" />
+    <button class="btn pull-right" type="submit" ng-show="false">Send</button>
+  </form>
+
+  <form ng-submit="addChatMessage(chatMessage, 'match');chatMessage = ''" class="chat-input-block" ng-show="mode=='local'">
     <input type="text" ng-model="chatMessage" class="input-block-level" placeholder="Enter your message" />
     <button class="btn pull-right" type="submit" ng-show="false">Send</button>
   </form>

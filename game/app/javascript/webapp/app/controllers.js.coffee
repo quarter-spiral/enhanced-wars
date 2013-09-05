@@ -170,8 +170,8 @@ angular.module('enhancedWars.controllers', ['enhancedWars.services', 'enhancedWa
 
     $scope.chatMessage = ""
 
-    $scope.addChatMessage = (message) ->
-      QSService.addChatMessage(message)
+    $scope.addChatMessage = (message, forceChannel) ->
+      QSService.addChatMessage(message, forceChannel)
       $scope.chatMessage = ""
 
     $scope.isInMatch = ->
