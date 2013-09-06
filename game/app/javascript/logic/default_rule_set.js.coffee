@@ -2,7 +2,7 @@ infinity = 1 / 0
 
 class DefaultRuleSet
   apPerTurn: 20
-  pointsForWin: 40
+  pointsForWin: 35
   rewards:
     captureDropZone: 4
     attack: 1
@@ -13,9 +13,9 @@ class DefaultRuleSet
         when 1
           1
         when 2
-          3
+          2
         else
-          5
+          4
 
   terrainCosts:
     base:
@@ -164,8 +164,8 @@ class DefaultRuleSet
         fire: 1
         move: 1
 
-      hp: 12
-      mp: 10
+      hp: 13
+      mp: 11
       attackRange:
         min: 1
         max: 1
